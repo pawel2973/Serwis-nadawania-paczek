@@ -10,7 +10,7 @@ pipeline {
             steps {
                 sh 'python3 manage.py makemigrations order'
                 sh 'python3 manage.py migrate'
-                sh 'python3 manage.py test'
+                sh 'python3 manage.py jenkins --enable-coverage'
             }
         }
     }

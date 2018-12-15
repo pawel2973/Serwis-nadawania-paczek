@@ -3,6 +3,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+                sh 'apt-get install python3-dev gcc'
                 sh 'pip3 install -r docker/jenkins/requirements.txt'                                    
             }
         }

@@ -1,0 +1,15 @@
+{% extends 'order/base.html' %}
+
+{% block body %}
+    <div class="wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    {% for courier in object_list %}
+                        <a href="{% url 'order:pricing_company' courier.id %}" class="btn btn-outline-danger my-2 my-sm-0">{{ courier.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

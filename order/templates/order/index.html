@@ -1,0 +1,27 @@
+{% extends 'order/base.html' %}
+
+{% block body %}
+    <div class="wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-2">
+                    <table class="table  table-bordered">
+                        <caption><h5>CourierCompany</h5></caption>
+                        <thead>
+                        <tr>
+                            <th scope="col">Company Name</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for courier in object_list %}
+                            <tr>
+                                <td>{{ courier.name }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'order/base.html' %}
+
+{% block body %}
+    <div class="wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Sign up</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit">Sign up</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

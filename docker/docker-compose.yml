@@ -1,0 +1,72 @@
+# Docker compose
+# Służy do uruchamiania i definiowania aplikacji składającej się z wielu kontenerów. 
+# Definiując pojedynczy plik Dockerfile nie mamy problemu z uruchomieniem go, 
+# jeśli natomiast mamy wiele takich plików(nasza aplikacja składa się z kilku kontenerów)
+# rozwiązaniem jest użycie Docker compose, który pozwala na uruchomienie kilku kontenerów
+# jeden po drugim bez konieczności uruchamiania każdego z osobno.
+
+# Usługi(Services) pozwalają na zarządzanie grupą kontenetów
+# Każda z usług obsługuje jeden obraz
+# Usługa określa sposób uruchomienia obrazu: używane porty, ilość replik, pojemność itp.
+
+version: '3' #wersja Docker Compose
+services: #sekcja w której definiujmy usługi
+
+    database: #nazwa własna usługi
+      image: postgres #obraz z którego budujemy kontener
+      environment: #zmienna środowiskowa dla danego kontenera
+        POSTGRES_PASSWORD: admin
+      ports: #definiujemy porty które będą mapowane z konteneru
+        - "5432:5432"        
+      volumes:
+        - pgdata_jenkins:/var/lib/postgresql/data/
+                                
+    webapp:
+      build: ./webapp #lokalizacja dockerfile pliku, który definiuje obraz na podstawie którego powstaje nasz kontener
+      restart: always
+      command: bash -c "python3 /var/jenkins_home/workspace/serwis_paczek/manage.py makemigrations && python3 /var/jenkins_home/workspace/serwis_paczek/manage.py migrate && python3 /var/jenkins_home/workspace/serwis_paczek/manage.py runserver 0.0.0.0:8000"           
+      ports:
+        - "8000:8000"        
+      volumes:        
+        - webapp_data:/docker_api        
+        - jenkins_data:/var/jenkins_home        
+      depends_on: # wskazuje na zależność między usługami pozwala uruchomić je w odpowiedniej kolejności
+        - database
+                
+    jenkins:
+          build: ./jenkins
+          restart: always         
+          ports:
+              - "8080:8080"
+              - "50000:50000"
+          volumes:            
+              - jenkins_data:/var/jenkins_home
+          depends_on: # wskazuje na zależność między usługami pozwala uruchomić je w odpowiedniej kolejności
+            - database
+volumes:
+    webapp_data:
+    jenkins_data:
+    pgdata_jenkins:
+
+# Możesz użyć instrukcji VOLUME w pliku Dockerfile, aby powiedzieć Dockerowi, że rzeczy, 
+# które przechowujesz w tym konkretnym katalogu, powinny być przechowywane w systemie plików hosta,
+# a nie w systemie plików kontenera. Oznacza to, że rzeczy przechowywane w woluminie
+# będą się utrzymywać i będą dostępne także po zniszczeniu kontenera.
+# Innymi słowy, najlepszą praktyką jest tworzenie woluminu dla plików danych, 
+# plików baz danych lub dowolnego pliku lub katalogu, który użytkownicy będą zmieniać 
+# podczas korzystania z aplikacji.
+
+# Volume labels
+# Wiele kontenerów może używać tego samego Volumena w tym samym okresie czasu. 
+# Jest to przydatne, jeśli dwa kontenery potrzebują dostępu do udostępnionych danych. 
+# Na przykład, jeśli jeden kontener nadpisuje/tworzy, a drugi odczytuje dane.
+
+# Nazwy woluminów muszą być unikalne wśród sterowników. 
+# Oznacza to, że nie można użyć tej samej nazwy woluminu z dwoma różnymi sterownikami. 
+# Jeśli spróbujesz, ten doker zwróci błąd.
+
+# Jeśli określisz nazwę woluminu, która jest już używana w bieżącym sterowniku, 
+# Docker zakłada, że ​​chcesz ponownie użyć istniejącego woluminu i nie zwróci błędu.
+
+# Sterowniki woluminów umożliwiają przechowywanie woluminów na zdalnych hostach 
+# lub dostawcach usług w chmurze, szyfrowanie zawartości woluminów lub dodawanie innych funkcji

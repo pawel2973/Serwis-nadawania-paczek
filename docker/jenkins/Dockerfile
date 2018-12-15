@@ -10,6 +10,7 @@ RUN apk add --no-cache --update \
     python-dev \
     build-base \
     && pip3 install --upgrade pip \
+    && pip3 install coverage \
     && pip3 install requirements.txt \
     && rm -rf /var/cache/apk/* 
 

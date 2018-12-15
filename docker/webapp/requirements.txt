@@ -3,3 +3,4 @@ django-jenkins
 pep8
 pyflakes
 psycopg2
+coverage

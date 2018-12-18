@@ -13,5 +13,11 @@ pipeline {
                 sh 'python3 manage.py jenkins'
             }
         }
+        
+    }
+    post {
+        always {
+            junit 'build/reports/**/*.xml'
+        }
     }
 }

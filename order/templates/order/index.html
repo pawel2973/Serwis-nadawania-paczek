@@ -1,27 +1,121 @@
 {% extends 'order/base.html' %}
 
 {% block body %}
+
+    <div class="row">
+        <div class="col-sm-8">
+            <h2 align="center"> Zamów kuriera </h2>
+            <div style="text-align: center;">
+                <h7> Krok 1/3</h7>
+            </div>
+
+
+            <form>
+                {% csrf_token %}
+                <div class="form-group">
+
+                    <div class="form-row">
+
+                        <!-- RODZAJ -->
+
+                        <div style="text-align: center;">
+                            <label>Rodzaj:</label>
+                            <div class="boxed2">
+                                <input type="radio" id="paczka" name="courier" value="Paczka">
+                                <label for="paczka">Paczka</label>
+
+                                <input type="radio" id="List" name="courier" value="List">
+                                <label for="List">List</label>
+
+                                <input type="radio" id="paleta" name="courier" value="Paleta">
+                                <label for="paleta">Paleta</label>
+                                <br><br>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="form-row">
+
+                            <!-- WAGA -->
+
+                            <div class="wrap-inputPaka">
+                                <input class="inputPaka" type="text" name="waga">
+                                <span class="focus-inputPaka" data-placeholder="Waga (kg)"></span>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- WYMIARY -->
+                    <label>Wymiary(cm):</label>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+
+                            <div class="wrap-inputPaka">
+                                <input class="inputPaka" type="text" name="dlugosc">
+                                <span class="focus-inputPaka" data-placeholder="Długość"></span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <div class="wrap-inputPaka">
+                                <input class="inputPaka" type="text" name="szerokosc">
+                                <span class="focus-inputPaka" data-placeholder="Szerokość"></span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <div class="wrap-inputPaka">
+                                <input class="inputPaka" type="text" name="wysokość">
+                                <span class="focus-inputPaka" data-placeholder="Wysokość"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="gridCheck">
+                                <label class="form-check-label" for="gridCheck">
+                                    Specjalne traktowanie
+                                </label>
+                            </div>
+
+                        </div>
+                        <div class="form-group col-md-4">
+                            <button class="btn btn-danger" type="button" data-toggle="collapse"
+                                    data-target="#collapsePrices" aria-expanded="false" aria-controls="collapseExample">
+                                Sprawdź ceny
+                            </button>
+
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <h1>tabelka z rankingiem kurierów</h1>
+    </div>
+
+
+   <h1> FORM TEST </h1>
+
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-2">
-                    <table class="table  table-bordered">
-                        <caption><h5>CourierCompany</h5></caption>
-                        <thead>
-                        <tr>
-                            <th scope="col">Company Name</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for courier in object_list %}
-                            <tr>
-                                <td>{{ courier.name }}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                <div class="col-lg2">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {{ form }}
+                        <br/>
+                        <input type="submit">
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <br /><br /><br />
 {% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'order/base.html' %}
+
+{% block body %}
+
+    <div style="text-align: center;">
+        <h2> Wybierz kuriera</h2>
+        <h7> Krok 2/3</h7>
+
+        <div class="boxed">
+            <input type="radio" id="dhl" name="courier" value="DHL">
+            <label for="dhl">DHL</label>
+
+            <input type="radio" id="DPD" name="courier" value="DPD">
+            <label for="DPD">DPD</label>
+
+            <input type="radio" id="Inpost" name="courier" value="Inpost">
+            <label for="Inpost">Inpost</label>
+            <input type="radio" id="GLS" name="courier" value="GLS">
+            <label for="GLS">GLS</label>
+            <input type="radio" id="UPS" name="courier" value="UPS">
+            <label for="UPS">UPS</label>
+            <input type="radio" id="Pocztex" name="courier" value="Pocztex">
+            <label for="Pocztex">Pocztex</label>
+            <br><br>
+
+        </div>
+        <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseAdressess"
+                aria-expanded="false" aria-controls="collapseExample">
+
+            Podaj adresy
+        </button>
+    </div>
+{% endblock %}

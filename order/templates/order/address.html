@@ -1,0 +1,113 @@
+{% extends 'order/base.html' %}
+
+{% block body %}
+    <div style="text-align: center;">
+        <h2> Podaj adresy</h2>
+        <h7> Krok 3/3</h7>
+    </div>
+
+    <div class="form-row">
+
+        <div class="form-group col-md-6">
+            <div class="wrap-inputPaka">
+                <input class="inputPaka" type="text" name="imie">
+                <span class="focus-inputPaka" data-placeholder="Imię odbiorcy"></span>
+            </div>
+            <div class="wrap-inputPaka">
+                <input class="inputPaka" type="text" name="nazwisko odbiorcy">
+                <span class="focus-inputPaka" data-placeholder="Nazwisko odbiorcy"></span>
+            </div>
+            <div class="wrap-inputPaka">
+                <input class="inputPaka" type="text" name="kod pocztowy odbiorcy">
+                <span class="focus-inputPaka" data-placeholder="Kod pocztowy odbiorcy"></span>
+            </div>
+            <div class="wrap-inputPaka">
+                <input class="inputPaka" type="text" name="miejscowosc odbiorcy">
+                <span class="focus-inputPaka" data-placeholder="Miejscowość odbiorcy"></span>
+            </div>
+            <div class="wrap-inputPaka">
+                <input class="inputPaka" type="text" name="ulica odbiorcy">
+                <span class="focus-inputPaka" data-placeholder="Ulica odbiorcy"></span>
+            </div>
+            <div class="wrap-inputPaka">
+                <input class="inputPaka" type="text" name="nr domu odbiorcy">
+                <span class="focus-inputPaka" data-placeholder="Nr domu odbiorcy"></span>
+            </div>
+            <div class="wrap-inputPaka">
+                <input class="inputPaka" type="text" name="nr lokalu odbiorcy">
+                <span class="focus-inputPaka" data-placeholder="Nr lokalu odbiorcy"></span>
+            </div>
+            <div class="wrap-inputPaka">
+                <input class="inputPaka" type="text" name="nr telefonu odbiorcy">
+                <span class="focus-inputPaka" data-placeholder="Nr telefonu odbiorcy"></span>
+            </div>
+            <div class="wrap-inputPaka">
+                <input class="inputPaka" type="text" name="email odbiorcy">
+                <span class="focus-inputPaka" data-placeholder="Email odbiorcy"></span>
+            </div>
+        </div>
+
+        <div class="form-group col-md-6">
+            <div class="wrap-inputPaka">
+                <input class="inputPaka" type="text" name="imie">
+                <span class="focus-inputPaka" data-placeholder="Imię nadawcy"></span>
+            </div>
+            <div class="wrap-inputPaka">
+                <input class="inputPaka" type="text" name="nazwisko nadawcy">
+                <span class="focus-inputPaka" data-placeholder="Nazwisko nadawcy"></span>
+            </div>
+            <div class="wrap-inputPaka">
+                <input class="inputPaka" type="text" name="kod pocztowy nadawcy">
+                <span class="focus-inputPaka" data-placeholder="Kod pocztowy nadawcy"></span>
+            </div>
+            <div class="wrap-inputPaka">
+                <input class="inputPaka" type="text" name="miejscowosc nadawcy">
+                <span class="focus-inputPaka" data-placeholder="Miejscowość nadawcy"></span>
+            </div>
+            <div class="wrap-inputPaka">
+                <input class="inputPaka" type="text" name="ulica nadawcy">
+                <span class="focus-inputPaka" data-placeholder="Ulica nadawcy"></span>
+            </div>
+            <div class="wrap-inputPaka">
+                <input class="inputPaka" type="text" name="nr domu nadawcy">
+                <span class="focus-inputPaka" data-placeholder="Nr domu nadawcy"></span>
+            </div>
+            <div class="wrap-inputPaka">
+                <input class="inputPaka" type="text" name="nr lokalu nadawcy">
+                <span class="focus-inputPaka" data-placeholder="Nr lokalu nadawcy"></span>
+            </div>
+            <div class="wrap-inputPaka">
+                <input class="inputPaka" type="text" name="nr telefonu nadawcy">
+                <span class="focus-inputPaka" data-placeholder="Nr telefonu nadawcy"></span>
+            </div>
+            <div class="wrap-inputPaka">
+                <input class="inputPaka" type="text" name="email nadawcy">
+                <span class="focus-inputPaka" data-placeholder="Email nadawcy"></span>
+            </div>
+
+        </div>
+
+    </div>
+    <div style="text-align: center;">
+        <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseOrder"
+                aria-expanded="false" aria-controls="collapseExample">
+            Zamów
+        </button>
+    </div>
+
+
+
+
+    <div class="wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    {% for courier in object_list %}
+                        <a href="{% url 'order:pricing_company' courier.id %}"
+                           class="btn btn-outline-danger my-2 my-sm-0">{{ courier.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

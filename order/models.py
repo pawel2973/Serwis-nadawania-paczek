@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.utils.datetime_safe import datetime
 
 
+
 class Address(models.Model):
     name = models.CharField(max_length=90)
     surname = models.CharField(max_length=90)
@@ -100,8 +101,3 @@ class Order(models.Model):
     price = models.FloatField(validators=[MinValueValidator(0)])
     date = models.DateField(default=datetime.now)
 
-# Jak określamy cene:
-# Wymiary dzielimy na 3 kategorie np.
-# wymiarA: 600x500x300, ratio: 1x  # max. wymiary paczki
-# wymiarB: 3000x1500x1500, ratio: 2x
-# wymiarC: 6000x3000x3000, ratio: 3x

@@ -7,7 +7,6 @@ from django.urls import reverse
 from django.utils.datetime_safe import datetime
 
 
-
 class Address(models.Model):
     name = models.CharField(max_length=90)
     surname = models.CharField(max_length=90)
@@ -19,7 +18,8 @@ class Address(models.Model):
     apartment_number = models.IntegerField(null=True, blank=True, validators=[MaxLengthValidator(7)])  # isOptional
     telephone_number = models.CharField(max_length=20, validators=[MinLengthValidator(9)])  # !!! READ DOC !!!
     email_address = models.EmailField(max_length=250)
-    nip = models.CharField(null=True, blank=True, max_length=10, validators=[MinLengthValidator(10), MaxLengthValidator(10)])  # !!! READ DOC !!!
+    nip = models.CharField(null=True, blank=True, max_length=10,
+                           validators=[MinLengthValidator(10), MaxLengthValidator(10)])  # !!! READ DOC !!!
 
 
 class Profile(models.Model):
@@ -88,7 +88,7 @@ class Parcel(models.Model):
     width = models.FloatField(validators=[MinValueValidator(0)])
     weight = models.FloatField(validators=[MinValueValidator(0)])
     type = models.CharField(max_length=8)  # enum ???
-    content = models.TextField(max_length=3000)
+    content = models.TextField(max_length=3000, blank=True)  # dodac blank
 
 
 class Order(models.Model):
@@ -97,7 +97,7 @@ class Order(models.Model):
     parcel = models.OneToOneField(Parcel, on_delete=models.CASCADE, null=False)  # parcel_id
     recipient = models.ForeignKey(RecipientAddress, on_delete=models.CASCADE, null=False)  # recipient_id
     sender = models.ForeignKey(SenderAddress, on_delete=models.CASCADE, null=False)  # sender_id
-    status = models.IntegerField(validators=[MinLengthValidator(1), MaxLengthValidator(1), MinValueValidator(0)])
+    status = models.IntegerField(validators=[MinLengthValidator(1), MaxLengthValidator(1), MinValueValidator(0)],
+                                 default=1)
     price = models.FloatField(validators=[MinValueValidator(0)])
     date = models.DateField(default=datetime.now)
-

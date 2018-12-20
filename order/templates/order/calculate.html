@@ -5,38 +5,41 @@
 
     <div style="text-align: center;">
         <h2> Wybierz kuriera</h2>
-        <h7> Krok 2/3</h7>
+        <h7> Krok 2/5</h7>
 
         <div class="boxed">
-            {# KOPERTA #}
-            {% if request.session.typ_paczki == 'koperta' %}
-                {% for envelope in object_list %}
-                    <input type="radio" id="{{ envelope.0 }}" name="courier" value="{{ envelope.1 }}">
-                    <label for="{{ envelope.0 }}"><strong>{{ envelope.1 }}</strong> {{ envelope.2 }}zł</label>
-                {% endfor %}
-            {% endif %}
+            <form action="" method="post">
+                {% csrf_token %}
+                {# KOPERTA #}
+                {% if request.session.typ_paczki == 'koperta' %}
+                    {% for envelope in object_list %}
+                        <input type="radio" id="{{ envelope.0 }}" name="courier" value="{{ envelope.0 }}">
+                        <label for="{{ envelope.0 }}"><strong>{{ envelope.1 }}</strong> {{ envelope.2 }}zł</label>
+                    {% endfor %}
+                {% endif %}
 
-            {# PACZKA #}
-            {% if request.session.typ_paczki == 'paczka' %}
+                {# PACZKA #}
+                {% if request.session.typ_paczki == 'paczka' %}
 
-                {% for pack in object_list %}
-                    <input type="radio" id="{{ pack.0 }}" name="courier" value="{{ pack.1 }}">
-                    <label for="{{ pack.0 }}"><strong>{{ pack.1 }}</strong>{{ pack.2 }}zł</label>
-                {% endfor %}
-            {% endif %}
+                    {% for pack in object_list %}
+                        <input type="radio" id="{{ pack.0 }}" name="courier" value="{{ pack.0 }}">
+                        <label for="{{ pack.0 }}"><strong>{{ pack.1 }}</strong>{{ pack.2 }}zł</label>
+                    {% endfor %}
+                {% endif %}
 
-            {# PALETA #}
-            {% if request.session.typ_paczki == 'paleta' %}
-                {% for pallet in object_list %}
-                    <input type="radio" id="{{ pallet.0 }}" name="courier" value="{{ pallet.1 }}">
-                    <label for="{{ pallet.0 }}"><strong>{{ pallet.1 }}</strong> {{ pallet.2 }}zł</label>
-                {% endfor %}
-            {% endif %}
-            <br/>
-            <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseAdressess"
-                    aria-expanded="false" aria-controls="collapseExample">
-                Podaj adresy
-            </button>
+                {# PALETA #}
+                {% if request.session.typ_paczki == 'paleta' %}
+                    {% for pallet in object_list %}
+                        <input type="radio" id="{{ pallet.0 }}" name="courier" value="{{ pallet.0 }}">
+                        <label for="{{ pallet.0 }}"><strong>{{ pallet.1 }}</strong> {{ pallet.2 }}zł</label>
+                    {% endfor %}
+                {% endif %}
+                <br/>
+                <button class="btn btn-danger" type="submit"  data-toggle="collapse" data-target="#collapseAdressess"
+                        aria-expanded="false" aria-controls="collapseExample">
+                    Podaj adresy
+                </button>
+            </form>
         </div>
     </div>
 {% endblock %}

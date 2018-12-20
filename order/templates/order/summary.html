@@ -1,0 +1,18 @@
+{% extends 'order/base.html' %}
+
+{% block body %}
+    <div style="text-align: center;">
+        <h2> Potwierdz zamowienie</h2>
+        <h7> Krok 5/5</h7>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 center">
+            <center>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-danger" type="submit">Potwierdz zamowiene</button>
+                </form>
+            </center>
+        </div>
+    </div>
+{% endblock %}

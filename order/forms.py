@@ -1,6 +1,15 @@
 from django import forms
+from .models import Address
+from django.db import models
+from django.forms import ModelForm
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+
+class AddressForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = '__all__'
+        #exclude = ['title']
 
 class ContactForm(forms.Form):
     name = forms.CharField(max_length=30)
@@ -34,6 +43,7 @@ class MyForm(forms.Form):  # Note that it is not inheriting from forms.ModelForm
     dlugosc = forms.FloatField(validators=[MinValueValidator(0)])
     szerokosc = forms.FloatField(validators=[MinValueValidator(0)])
     wysokosc = forms.FloatField(validators=[MinValueValidator(0)])
+
 
     # def clean(self):
     #     cleaned_data = super(MyForm, self).clean()

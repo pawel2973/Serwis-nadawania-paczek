@@ -36,7 +36,7 @@
         <a class="navbar-brand" href="{% url 'order:index' %}">
             <img src="{% static 'order/images/logo.png' %}" width="30" height="30" class="d-inline-block align-top"
                  alt="">
-            Paki</a>
+            My Parcel</a>
 
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-2">
@@ -84,13 +84,13 @@
 
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img class="d-block w-100" src="{% static 'order/images/slajd.jpg' %}" alt="First slide">
+                <img class="d-block w-100" src="{% static 'order/images/slajd1.jpg' %}" alt="First slide">
             </div>
             <div class="carousel-item">
-                <img class="d-block w-100" src="{% static 'order/images/slajd.jpg' %}" alt="Second slide">
+                <img class="d-block w-100" src="{% static 'order/images/slajd2.jpg' %}" alt="Second slide">
             </div>
             <div class="carousel-item">
-                <img class="d-block w-100" src="{% static 'order/images/slajd.jpg' %}" alt="Third slide">
+                <img class="d-block w-100" src="{% static 'order/images/slajd3.jpg' %}" alt="Third slide">
             </div>
         </div>
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -102,6 +102,7 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
+    
     {% block body %}
     {% endblock %}
 </div>

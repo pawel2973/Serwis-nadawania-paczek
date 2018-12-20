@@ -2,10 +2,10 @@
 
 {% block body %}
     <div style="text-align: center;">
-        <h2> Podaj adresy</h2>
-        <h7> Krok 3/3</h7>
+        <h2> Podaj adres nadawcy</h2>
+        <h7> Krok 3/5</h7>
     </div>
-
+    <!--
     <div class="form-row">
 
         <div class="form-group col-md-6">
@@ -102,10 +102,38 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    {% for courier in object_list %}
-                        <a href="{% url 'order:pricing_company' courier.id %}"
+                    {#% for courier in object_list %#}
+                        <a href="{#% url 'order:pricing_company' courier.id %#}"
                            class="btn btn-outline-danger my-2 my-sm-0">{{ courier.name }}</a>
-                    {% endfor %}
+                    {#% endfor %#}
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+
+                        <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                            <div class="form-row">
+                                {% csrf_token %}
+                                {% for field in form %}
+                                    <div class="form-group">
+                                        <span class="text-danger small">{{ field.errors }}</span>
+                                        <label class="control-label col-lg-12 col-sm-2"> {{ field.label_tag }}</label>
+                                        <div class="col-lg-12 col-sm-10"
+                                             style="border: 1px solid red; border-radius: 5px;">{{ field }} </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <button class="btn btn-danger" type="submit">Submit</button>
+                        </form>
+
+                    </div>
                 </div>
             </div>
         </div>

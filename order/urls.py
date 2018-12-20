@@ -13,7 +13,9 @@ urlpatterns = [
     path('calculate/', views.CalculateView.as_view(), name='calculate'),
     path('', include('django.contrib.auth.urls'),  name='login'),
     path('signup/', views.SignUpView.as_view(),  name='signup'),
-    path('address/', views.AddressView.as_view(),  name='address'),
+    path('sender/', views.SenderAddressView.as_view(),  name='sender_address'),
+    path('recipient/', views.RecipientAddressView.as_view(),  name='recipient_address'),
+    path('summary/', views.SummaryView.as_view(),  name='summary'),
     path('courier/', views.CourierView.as_view(),  name='courier'),
     path('pricing/<pk>/', views.PricingCompanyView.as_view(), name='pricing_company'),
 ]

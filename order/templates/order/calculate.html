@@ -54,6 +54,12 @@
                 </a>
                 {% endif %}
             </form>
+             {% if request.session.error_courier %}
+                <br>
+                <div class="alert alert-danger text-center" role="alert">
+                    {{  request.session.error_courier }}
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

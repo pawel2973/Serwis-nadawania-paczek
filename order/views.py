@@ -10,18 +10,57 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.edit import ModelFormMixin, FormMixin, FormView
 
-from order.forms import MyForm, ContactForm, AddressForm
+from order.forms import FormParcelSize, AddressForm
 from .models import Courier, PackPricing, PalletPricing, EnvelopePricing, Parcel, Order, SenderAddress, Address, \
     RecipientAddress, Profile
 
 
 class IndexView(generic.FormView):
     template_name = 'order/index.html'
-    form_class = MyForm
+    form_class = FormParcelSize
+
+    def choose_pricing_col_and_ratio(self, type, weight, length, width, height):
+        col_name_pricing = None
+        if type == "koperta":  # Envelope Price
+            col_name_pricing = 'up_to_1'
+        elif type == "paczka":  # Pack Price
+            # Set ratio for pack
+            if length <= 60 and width <= 50 and height <= 30:  # pack size A
+                self.request.session['ratio'] = 1.0
+            elif length <= 80 and width <= 70 and height <= 50:  # pack size B
+                self.request.session['ratio'] = 2.0
+            elif length <= 100 and width <= 90 and height <= 70:  # pack size C
+                self.request.session['ratio'] = 3.0
+            # Set pack price
+            if weight <= 1:
+                col_name_pricing = 'up_to_1'
+            elif weight <= 2:
+                col_name_pricing = 'up_to_2'
+            elif weight <= 5:
+                col_name_pricing = 'up_to_5'
+            elif weight <= 10:
+                col_name_pricing = 'up_to_10'
+            elif weight <= 15:
+                col_name_pricing = 'up_to_15'
+            elif weight <= 20:
+                col_name_pricing = 'up_to_20'
+            elif weight <= 30:
+                col_name_pricing = 'up_to_30'
+
+        elif type == "paleta":  # Pallet Price
+            if weight <= 300:
+                col_name_pricing = 'up_to_300'
+            elif weight <= 500:
+                col_name_pricing = 'up_to_500'
+            elif weight <= 800:
+                col_name_pricing = 'up_to_800'
+            elif weight <= 1000:
+                col_name_pricing = 'up_to_1000'
+
+        return col_name_pricing
 
     def post(self, request, *args, **kwargs):
-        # TODO: TUTAJ OKRESLIC IF-Y NA CNAME stworzc funkcje ??
-        form = MyForm(request.POST)  # A form bound to the POST data
+        form = FormParcelSize(request.POST)  # A form bound to the POST data
 
         if form.is_valid():
             # SESSION VARS
@@ -33,55 +72,54 @@ class IndexView(generic.FormView):
 
             if type == "koperta":
                 # envelope size: .5kg x 35cm x 25cm x 5cm
-                if length > 35 or width > 25 or height > 5 or weight > 0.5:
+                if length > 35 or width > 25 or height > 5 or weight > 1:
                     context = {'form': form, 'error_parcel': 'Niepoprawne wymiary dla koperty!'}
                     return render(request, 'order/index.html', context)
             elif type == "paczka":
-                # pack size: 30kg x 600cm x 300cm x 300cm
-                if length > 600 or width > 300 or height > 300 or weight > 30:  # pack size C
+                # pack size: 30kg x 100cm x 90cm x 70cm
+                if length > 100 or width > 90 or height > 70 or weight > 30:  # pack size C
                     context = {'form': form, 'error_parcel': 'Niepoprawne wymiary dla paczki!'}
                     return render(request, 'order/index.html', context)
             elif type == "paleta":
-                # pallet size: 1000kg x 120cm x 80cm x 200cm
-                if length > 6000 or width > 3000 or height > 3000 or weight > 1000:  # pack size C
+                # pallet size: 1000kg x 200cm x 140cm x 200cm
+                if length > 200 or width > 140 or height > 200 or weight > 1000:  # pack size C
                     context = {'form': form, 'error_parcel': 'Niepoprawne wymiary dla palety!'}
                     return render(request, 'order/index.html', context)
 
+            request.session['col_name_pricing'] = self.choose_pricing_col_and_ratio(type, weight, length, width, height)
             request.session['type'] = type
             request.session['weight'] = weight
             request.session['length'] = length
             request.session['width'] = width
             request.session['height'] = height
-            # objs = Parcel.objects.create(length=1, height=1, width=1, weight=1, type=a)
-            # print(objs.id)
             return redirect('order:calculate')
         else:
             return render(request, 'order/index.html', {'form': form})
-
-
-##########################
-# FOR testing purposes
-col_name_pricing = None
-
-
-#########################
 
 
 class CalculateView(generic.ListView):
     template_name = 'order/calculate.html'
 
     def post(self, request, *args, **kwargs):
-        global col_name_pricing
-        type = self.request.session.get('type')  # get pack type from session
         courier_id = request.session['courier_id'] = request.POST.get('courier')  # get courier_id from button
+        if courier_id is None:
+            request.session['error_courier'] = "Nie wybrałeś kuriera!"
+            return redirect('order:calculate')
+        if request.session.get('error_courier') is not None:
+            del request.session['error_courier']
+
+        col_name_pricing = request.session.get('col_name_pricing')
+        type = request.session.get('type')  # get pack type from session
+        ratio = request.session.get('ratio')
 
         if type == "koperta":
-            query = list(EnvelopePricing.objects.filter(courier__id=courier_id).values(col_name_pricing))  # query: price from db
+            query = list(
+                EnvelopePricing.objects.filter(courier__id=courier_id).values(col_name_pricing))  # query: price from db
             price = query[0].get(col_name_pricing)  # value: price from query
             request.session['price'] = price  # save to session
         elif type == "paczka":
             query = list(PackPricing.objects.filter(courier__id=courier_id).values(col_name_pricing))
-            price = query[0].get(col_name_pricing)
+            price = query[0].get(col_name_pricing) * ratio
             request.session['price'] = price
         elif type == "paleta":
             query = list(PalletPricing.objects.filter(courier__id=courier_id).values(col_name_pricing))
@@ -90,69 +128,21 @@ class CalculateView(generic.ListView):
         return redirect('order:sender_address')
 
     def get_queryset(self):
-        global col_name_pricing
-        ratio = None
+        col_name_pricing = self.request.session.get('col_name_pricing')
         type = self.request.session.get('type')
-        weight = float(self.request.session.get('weight'))
-        length = float(self.request.session.get('length'))
-        width = float(self.request.session.get('width'))
-        height = float(self.request.session.get('height'))
+        ratio = self.request.session.get('ratio')
+        if type == 'koperta':
+            return EnvelopePricing.objects.values_list('courier', 'courier__name', col_name_pricing)
+        elif type == 'paczka':
+            pack_price_col = list(PackPricing.objects.values_list('courier', 'courier__name', col_name_pricing))
+            real_pack_price = list()
 
-        if type == "koperta":  # Envelope Price
-            # lista = list()
-            # print(lista[0])
-            # for l in lista:
-            #     print(l['up_to_1']*2)
-            col_name_pricing = 'up_to_1'
-            return EnvelopePricing.objects.values_list('courier', 'courier__name', 'up_to_1')
-
-        elif type == "paczka":  # Pack Price
-            # Set ratio for pack
-            if length <= 60 and width <= 50 and height <= 30:  # pack size A
-                self.ratio = 1
-            elif length <= 300 and width <= 150 and height <= 150:  # pack size B
-                self.ratio = 2
-            elif length <= 600 and width <= 300 and height <= 300:  # pack size C
-                self.ratio = 3
-
-            # Set pack price
-            if weight <= 1:
-                col_name_pricing = 'up_to_1'
-                return PackPricing.objects.values_list('courier', 'courier__name', 'up_to_1')
-            elif weight <= 2:
-                col_name_pricing = 'up_to_2'
-                return PackPricing.objects.values_list('courier', 'courier__name', 'up_to_2')
-            elif weight <= 5:
-                col_name_pricing = 'up_to_5'
-                return PackPricing.objects.values_list('courier', 'courier__name', 'up_to_5')
-            elif weight <= 10:
-                col_name_pricing = 'up_to_10'
-                return PackPricing.objects.values_list('courier', 'courier__name', 'up_to_10')
-            elif weight <= 15:
-                col_name_pricing = 'up_to_15'
-                return PackPricing.objects.values_list('courier', 'courier__name', 'up_to_15')
-            elif weight <= 20:
-                col_name_pricing = 'up_to_20'
-                return PackPricing.objects.values_list('courier', 'courier__name', 'up_to_20')
-            elif weight <= 30:
-                col_name_pricing = 'up_to_30'
-                return PackPricing.objects.values_list('courier', 'courier__name', 'up_to_30')
-            else:
-                render(request, 'order/index.html')
-
-        elif type == "paleta":  # Pallet Price
-            if weight <= 300:
-                col_name_pricing = 'up_to_300'
-                return PalletPricing.objects.values_list('courier', 'courier__name', 'up_to_300')
-            elif weight <= 500:
-                col_name_pricing = 'up_to_500'
-                return PalletPricing.objects.values_list('courier', 'courier__name', 'up_to_500')
-            elif weight <= 800:
-                col_name_pricing = 'up_to_800'
-                return PalletPricing.objects.values_list('courier', 'courier__name', 'up_to_800')
-            elif weight <= 1000:
-                col_name_pricing = 'up_to_1000'
-                return PalletPricing.objects.values_list('courier', 'courier__name', 'up_to_1000')
+            for x in pack_price_col:
+                price = round(x[2] * ratio, 2)
+                real_pack_price.append(tuple([x[0], x[1], price]))
+            return real_pack_price
+        elif type == 'paleta':
+            return PalletPricing.objects.values_list('courier', 'courier__name', col_name_pricing)
 
 
 class AboutCompanyView(generic.TemplateView):
@@ -255,6 +245,7 @@ class SummaryView(generic.TemplateView):
         del request.session['height']
         del request.session['courier_id']
         del request.session['price']
+        del request.session['ratio']
         del request.session['sender_form']
         del request.session['recipient_form']
 

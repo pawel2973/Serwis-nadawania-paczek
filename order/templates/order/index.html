@@ -23,6 +23,17 @@
                 </div>
             {% endif %}
 
+            {% if form.errors %}
+                <br>
+                <div class="alert alert-danger text-center" role="alert">
+                    {% for key, value in form.errors.items %}
+                        <strong>{% if key != '__all__' %}{{ key }} {% endif %}{{ value }}</strong>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+
+
             <br>
             <div class="alert alert-info text-center" role="alert"><strong>Wybierz rodzaj paczki</strong>
             </div>
@@ -140,20 +151,16 @@
                    href="#list-home" role="tab" aria-controls="home"><h5>Maksymalne wymiary</h5> waga x dł. x szer. x
                     wys.</a>
                 <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list"
-                   href="#list-settings" role="tab" aria-controls="settings"><strong>Koperta:</strong> 0.5kg x 35cm x
+                   href="#list-settings" role="tab" aria-controls="settings"><strong>Koperta:</strong> 1kg x 35cm x
                     25cm x 5cm</a>
                 <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
-                   href="#list-profile" role="tab" aria-controls="profile"><strong>Paczka:</strong> 30kg x 600cm x 300cm
-                    x 300cm</a>
+                   href="#list-profile" role="tab" aria-controls="profile"><strong>Paczka:</strong> 30kg x 100cm x 90cm
+                    x 70cm</a>
                 <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list"
-                   href="#list-messages" role="tab" aria-controls="messages"><strong>Paleta:</strong> 1000kg x 120cm x
-                    80cm x 200cm</a>
+                   href="#list-messages" role="tab" aria-controls="messages"><strong>Paleta:</strong> 1000kg x 200cm x
+                    140cm x 200cm</a>
 
             </div>
         </div>
-
     </div>
-
-
-
 {% endblock %}

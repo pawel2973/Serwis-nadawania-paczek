@@ -1,8 +1,19 @@
 from django import forms
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+
 from .models import Address
 from django.db import models
 from django.forms import ModelForm
 from django.core.validators import MinValueValidator, MaxValueValidator
+
+
+def greaterThanZeroValidator(value):
+    if value <= 0:
+        raise ValidationError(
+            _('Wartość musi być większa od 0'),
+            params={'value': value},
+        )
 
 
 class AddressForm(forms.ModelForm):
@@ -35,15 +46,15 @@ TYPE = [
 ]
 
 
-class MyForm(forms.Form):  # Note that it is not inheriting from forms.ModelForm
+class FormParcelSize(forms.Form):  # Note that it is not inheriting from forms.ModelForm
     type = forms.ChoiceField(
         choices=TYPE,
         widget=forms.RadioSelect(attrs={'class': 'exampleCSSclass'}),
     )
-    weight = forms.FloatField(validators=[MinValueValidator(0)])
-    length = forms.FloatField(validators=[MinValueValidator(0)])
-    width = forms.FloatField(validators=[MinValueValidator(0)])
-    height = forms.FloatField(validators=[MinValueValidator(0)])
+    weight = forms.FloatField(validators=[greaterThanZeroValidator])
+    length = forms.FloatField(validators=[greaterThanZeroValidator])
+    width = forms.FloatField(validators=[greaterThanZeroValidator])
+    height = forms.FloatField(validators=[greaterThanZeroValidator])
 
 # class EnvelopeForm(forms.Form):
 #     pack_type = forms.CharField(default="koperta", hidden=True)

@@ -1,75 +1,70 @@
 {% extends 'order/base.html' %}
 
+{% block carousel %}
+{% endblock %}
+
 {% block body %}
-<div class="limiter">
-		<div class="container-loginPaka">
-			<div class="wrap-loginPaka">
-				<form class="loginPaka-form validate-form">
-					<span class="loginPaka-form-title p-b-26">
-						Witaj
-
-					</span>
-						<span class="loginPaka-form-title p-b-26">
+      {% if error_not_logged_in %}
+            <div class="alert alert-danger text-center" role="alert">
+            {{ error_not_logged_in }}
+            </div>
+            {% endif %}
+    {% if form.errors %}
+        <div class="alert alert-danger text-center" role="alert">
+            {% for key, value in form.errors.items %}
+                <strong>{% if key != '__all__' %}{{ key }} {% endif %}{{ value }}</strong>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="limiter">
+        <div class="container-loginPaka">
+            <div class="wrap-loginPaka">
+                <form class="loginPaka-form validate-form" action="" method="post">
+                    {% csrf_token %}
+                    <span class="loginPaka-form-title p-b-26">
 						Zaloguj się!
-
 					</span>
+                    <br>
 
 
-					<div class="wrap-inputPaka"">
-						<input class="inputPaka" type="text" name="email">
-						<span class="focus-inputPaka" data-placeholder="Email"></span>
-					</div>
+                    <div class="wrap-inputPaka">
+                        <!-- <input class="inputPaka" type="text" name="email"> -->
+                        {{ form.username }}
+                        <span class="focus-inputPaka" data-placeholder=""></span>
+                    </div>
 
-					<div class="wrap-inputPaka">
-						<input class="inputPaka" type="password" name="pass">
-						<span class="focus-inputPaka" data-placeholder="Hasło"></span>
-					</div>
+                    <div class="wrap-inputPaka">
+                        {{ form.password }}
+                        <!-- <input class="inputPaka" type="password" name="pass"> -->
+                        <span class="focus-inputPaka" data-placeholder=""></span>
+                    </div>
 
 
-					<div class="container-loginPaka-form-btn">
-						<div class="wrap-loginPaka-form-btn">
-							<div class="loginPaka-form-bgbtn"></div>
-							<button class="loginPaka-form-btn">
-								Zaloguj się
-							</button>
-						</div>
-					</div>
+                    <div class="container-loginPaka-form-btn">
+                        <div class="wrap-loginPaka-form-btn">
+                            <div class="loginPaka-form-bgbtn"></div>
+                            <button class="loginPaka-form-btn" type="submit">
+                                Zaloguj się
+                            </button>
+                        </div>
+                    </div>
 
-					<div class="text-center p-t-115">
+                    <div class="text-center p-t-115">
 						<span class="txt1">
 							Nie masz konta?
 						</span>
 
-						<a class="txt2" href="register.html">
-							Zarejestruj się!
-
-						</a>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-
-
-	<div id="dropDownSelect1"></div>
-
-
-    <div class="wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h2>Log In</h2>
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit">Log In</button>
-                    </form>
-                    <p>Don't have an account? </p>
-                    <a href="{% url 'order:signup' %}" class="button">Sign up!</a>
-                </div>
+                        <a class="txt2" href="{% url 'order:signup' %}">
+                            Zarejestruj się!
+                        </a>
+                    </div>
+                </form>
 
             </div>
+
         </div>
     </div>
 
+
+    <div id="dropDownSelect1"></div>
 {% endblock %}

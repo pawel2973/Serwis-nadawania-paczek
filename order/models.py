@@ -1,25 +1,38 @@
 from django.contrib.auth.models import User
-from django.core.validators import MinLengthValidator, MaxLengthValidator, MinValueValidator  # !!! READ DOC !!!
+from django.core.validators import MinLengthValidator, MaxLengthValidator, MinValueValidator, RegexValidator, \
+    MaxValueValidator  # !!! READ DOC !!!
 from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-from django.urls import reverse
 from django.utils.datetime_safe import datetime
 
 
+def name_validator():
+    return RegexValidator(
+        r"^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$",
+        'To pole moze skladac sie tylko z liter.')
+
+
+def zip_code_validator():
+    return RegexValidator(r'\d{2}-\d{3}', 'Podaj poprawny adres pocztowy NN-NNN')
+
+
 class Address(models.Model):
-    name = models.CharField(max_length=90)
-    surname = models.CharField(max_length=90)
+    name = models.CharField(max_length=90, validators=[name_validator()])
+    surname = models.CharField(max_length=90, validators=[name_validator()])
     company_name = models.CharField(max_length=500, blank=True)  # isOptional
-    zip_code = models.CharField(max_length=6)  # Poland only
-    city = models.CharField(max_length=350)
+    zip_code = models.CharField(max_length=6, validators=[zip_code_validator()])  # Poland only
+    city = models.CharField(max_length=350, validators=[name_validator()])
     street = models.CharField(max_length=350)
-    house_number = models.CharField(max_length=7)
-    apartment_number = models.IntegerField(null=True, blank=True, validators=[MaxLengthValidator(7)])  # isOptional
+    house_number = models.IntegerField(validators=[MinValueValidator(0)])
+    apartment_number = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(0)])  # isOptional
     telephone_number = models.CharField(max_length=20, validators=[MinLengthValidator(9)])  # !!! READ DOC !!!
     email_address = models.EmailField(max_length=250)
     nip = models.CharField(null=True, blank=True, max_length=10,
                            validators=[MinLengthValidator(10), MaxLengthValidator(10)])  # !!! READ DOC !!!
+
+    def __str__(self):
+        return self.zip_code + " " + self.city
 
 
 class Profile(models.Model):
@@ -38,16 +51,22 @@ class Profile(models.Model):
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
 
-    # def get_absolute_url(self):
-    #     return reverse('order:index', kwargs={'pk': self.pk})
+    def __str__(self):
+        return self.user.__str__()
 
 
 class RecipientAddress(models.Model):
     address = models.OneToOneField(Address, on_delete=models.PROTECT, null=True)  # address_id
 
+    def __str__(self):
+        return self.address.name + " " + self.address.surname
+
 
 class SenderAddress(models.Model):
     address = models.OneToOneField(Address, on_delete=models.PROTECT, null=True)  # address_id
+
+    def __str__(self):
+        return self.address.name + " " + self.address.surname
 
 
 class Courier(models.Model):
@@ -68,6 +87,9 @@ class PackPricing(models.Model):
     up_to_20 = models.FloatField(validators=[MinValueValidator(0)])
     up_to_30 = models.FloatField(validators=[MinValueValidator(0)])
 
+    def __str__(self):
+        return self.courier.__str__()
+
 
 class PalletPricing(models.Model):
     courier = models.OneToOneField(Courier, on_delete=models.CASCADE, null=True)  # courier_id
@@ -76,28 +98,52 @@ class PalletPricing(models.Model):
     up_to_800 = models.FloatField(validators=[MinValueValidator(0)])
     up_to_1000 = models.FloatField(validators=[MinValueValidator(0)])
 
+    def __str__(self):
+        return self.courier.__str__()
+
 
 class EnvelopePricing(models.Model):
     courier = models.OneToOneField(Courier, on_delete=models.CASCADE, null=True)  # courier_id
     up_to_1 = models.FloatField(validators=[MinValueValidator(0)])
 
+    def __str__(self):
+        return self.courier.__str__()
+
 
 class Parcel(models.Model):
     length = models.FloatField(validators=[MinValueValidator(0)])
-    height = models.FloatField(validators=[MinValueValidator(0)])
     width = models.FloatField(validators=[MinValueValidator(0)])
+    height = models.FloatField(validators=[MinValueValidator(0)])
     weight = models.FloatField(validators=[MinValueValidator(0)])
     type = models.CharField(max_length=8)  # enum ???
     content = models.TextField(max_length=3000, blank=True)  # dodac blank
 
+    def __str__(self):
+        return self.type + ": " + str(self.weight) + "kg " + str(self.length) + "cm " + str(
+            self.weight) + "cm " + str(self.height) + "cm "
+
+
+PACK_STATUS = (
+    (0, 'Przygotowane do wysyłki'),
+    (1, 'W drodze'),
+    (2, 'Dostarczono'),
+    (3, 'Anulowano'),
+)
+
 
 class Order(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.PROTECT, null=False)  # profile_id
-    courier = models.OneToOneField(Courier, on_delete=models.CASCADE, null=False)  # courier_id
+    courier = models.ForeignKey(Courier, on_delete=models.CASCADE, null=False)  # courier_id
     parcel = models.OneToOneField(Parcel, on_delete=models.CASCADE, null=False)  # parcel_id
     recipient = models.ForeignKey(RecipientAddress, on_delete=models.CASCADE, null=False)  # recipient_id
     sender = models.ForeignKey(SenderAddress, on_delete=models.CASCADE, null=False)  # sender_id
-    status = models.IntegerField(validators=[MinLengthValidator(1), MaxLengthValidator(1), MinValueValidator(0)],
-                                 default=1)
+    status = models.IntegerField(
+        default=0,
+        choices=PACK_STATUS,
+        validators=[MinValueValidator(0), MaxValueValidator(3)],
+    )
     price = models.FloatField(validators=[MinValueValidator(0)])
     date = models.DateField(default=datetime.now)
+
+    def __str__(self):
+        return "id: " + str(self.id)

@@ -5,13 +5,18 @@
 
     <div style="text-align: center;">
         <h2> Wybierz kuriera</h2>
-        <h7> Krok 2/5</h7>
+        <h7><strong>Krok 2/5</strong></h7>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0"
+                 aria-valuemax="100"></div>
+        </div>
+        <br />
 
         <div class="boxed">
             <form action="" method="post">
                 {% csrf_token %}
                 {# KOPERTA #}
-                {% if request.session.typ_paczki == 'koperta' %}
+                {% if request.session.type == 'koperta' %}
                     {% for envelope in object_list %}
                         <input type="radio" id="{{ envelope.0 }}" name="courier" value="{{ envelope.0 }}">
                         <label for="{{ envelope.0 }}"><strong>{{ envelope.1 }}</strong> {{ envelope.2 }}zł</label>
@@ -19,7 +24,7 @@
                 {% endif %}
 
                 {# PACZKA #}
-                {% if request.session.typ_paczki == 'paczka' %}
+                {% if request.session.type == 'paczka' %}
 
                     {% for pack in object_list %}
                         <input type="radio" id="{{ pack.0 }}" name="courier" value="{{ pack.0 }}">
@@ -28,17 +33,26 @@
                 {% endif %}
 
                 {# PALETA #}
-                {% if request.session.typ_paczki == 'paleta' %}
+                {% if request.session.type == 'paleta' %}
                     {% for pallet in object_list %}
                         <input type="radio" id="{{ pallet.0 }}" name="courier" value="{{ pallet.0 }}">
                         <label for="{{ pallet.0 }}"><strong>{{ pallet.1 }}</strong> {{ pallet.2 }}zł</label>
                     {% endfor %}
                 {% endif %}
+
                 <br/>
-                <button class="btn btn-danger" type="submit"  data-toggle="collapse" data-target="#collapseAdressess"
-                        aria-expanded="false" aria-controls="collapseExample">
-                    Podaj adresy
-                </button>
+                {% if user.is_authenticated %}
+                    <button class="btn btn-danger" type="submit" data-toggle="collapse" data-target="#collapseAdressess"
+                            aria-expanded="false" aria-controls="collapseExample">
+                        Podaj adresy
+                    </button>
+                {% else %}
+                    <div class="alert alert-danger text-center" role="alert">
+                        <strong>Musisz byc zalogowanym aby nadać przesyłkę!</strong>
+                    </div><a href="{% url 'order:login' %}">
+                    <button type="button" class="btn btn-primary">Zaloguj</button>
+                </a>
+                {% endif %}
             </form>
         </div>
     </div>

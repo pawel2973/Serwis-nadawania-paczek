@@ -4,32 +4,54 @@
 
     <div class="row">
         <div class="col-sm-8">
+            <br>
             <h2 align="center"> Zamów kuriera </h2>
+
+
             <div style="text-align: center;">
-                <h7>Krok 1/5</h7>
+                <h7><strong>Krok 1/5</strong></h7>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0"
+                         aria-valuemax="100"></div>
+                </div>
             </div>
 
+            {% if error_parcel %}
+                <br>
+                <div class="alert alert-danger text-center" role="alert">
+                    {{ error_parcel }}
+                </div>
+            {% endif %}
 
-            <form>
+            <br>
+            <div class="alert alert-info text-center" role="alert"><strong>Wybierz rodzaj paczki</strong>
+            </div>
+            <form action="" method="post">
                 {% csrf_token %}
                 <div class="form-group">
 
                     <div class="form-row">
 
                         <!-- RODZAJ -->
-
                         <div style="text-align: center;">
-                            <label>Rodzaj:</label>
                             <div class="boxed2">
-                                <input type="radio" id="paczka" name="courier" value="Paczka">
-                                <label for="paczka">Paczka</label>
 
-                                <input type="radio" id="List" name="courier" value="List">
-                                <label for="List">List</label>
+                                {% for radio in form.type %}
+                                    {{ radio }}
+                                {% endfor %}<br/>
 
-                                <input type="radio" id="paleta" name="courier" value="Paleta">
-                                <label for="paleta">Paleta</label>
-                                <br><br>
+                                <!--
+                                                                <input type="radio" id="paczka" name="courier" value="Paczka">
+
+                                                                <label for="paczka">Paczka</label>
+
+                                                                <input type="radio" id="List" name="courier" value="List">
+                                                                <label for="List">List</label>
+
+                                                                <input type="radio" id="paleta" name="courier" value="Paleta">
+                                                                <label for="paleta">Paleta</label>
+                                -->
+                                <br>
                             </div>
                         </div>
 
@@ -42,33 +64,46 @@
                             <!-- WAGA -->
 
                             <div class="wrap-inputPaka">
-                                <input class="inputPaka" type="text" name="waga">
-                                <span class="focus-inputPaka" data-placeholder="Waga (kg)"></span>
+                                <!-- <input class="inputPaka" type="text" name="waga"> -->
+                                <div class="alert alert-warning ">
+                                    {{ form.weight.label_tag }} {{ form.weight }}
+                                </div>
+                                <span class="focus-inputPaka" data-placeholder=""></span>
 
                             </div>
                         </div>
                     </div>
 
                     <!-- WYMIARY -->
-                    <label>Wymiary(cm):</label>
+                    <div class="alert alert-success alert-info text-center" role="alert"><strong>Wymiary(cm)</strong>
+                    </div>
                     <div class="form-row">
                         <div class="form-group col-md-4">
 
                             <div class="wrap-inputPaka">
-                                <input class="inputPaka" type="text" name="dlugosc">
-                                <span class="focus-inputPaka" data-placeholder="Długość"></span>
+                                <div class="alert alert-warning ">
+                                    {{ form.length.label_tag }} {{ form.length }}
+                                </div>
+                                <!--  <input class="inputPaka" type="text" name="dlugosc">-->
+                                <span class="focus-inputPaka" data-placeholder=""></span>
                             </div>
                         </div>
                         <div class="form-group col-md-4">
                             <div class="wrap-inputPaka">
-                                <input class="inputPaka" type="text" name="szerokosc">
-                                <span class="focus-inputPaka" data-placeholder="Szerokość"></span>
+                                <div class="alert alert-warning ">
+                                    {{ form.width.label_tag }} {{ form.width }}
+                                </div>
+                                <!-- <input class="inputPaka" type="text" name="szerokosc">-->
+                                <span class="focus-inputPaka" data-placeholder=""></span>
                             </div>
                         </div>
                         <div class="form-group col-md-4">
                             <div class="wrap-inputPaka">
-                                <input class="inputPaka" type="text" name="wysokość">
-                                <span class="focus-inputPaka" data-placeholder="Wysokość"></span>
+                                <div class="alert alert-warning ">
+                                    {{ form.height.label_tag }} {{ form.height }}
+                                </div>
+                                <!-- <input class="inputPaka" type="text" name="wysokość">-->
+                                <span class="focus-inputPaka" data-placeholder=""></span>
                             </div>
                         </div>
                     </div>
@@ -85,37 +120,40 @@
 
                         </div>
                         <div class="form-group col-md-4">
-                            <button class="btn btn-danger" type="button" data-toggle="collapse"
+                            <button class="btn btn-danger" type="submit" data-toggle="collapse"
                                     data-target="#collapsePrices" aria-expanded="false" aria-controls="collapseExample">
                                 Sprawdź ceny
                             </button>
-
                         </div>
                     </div>
             </form>
         </div>
     </div>
+
+
     <div class="col-sm-4">
-        <h1>tabelka z rankingiem kurierów</h1>
-    </div>
+        <br>
+        <div class="col-12">
+            <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-action active text-center" id="list-home-list"
+                   data-toggle="list"
+                   href="#list-home" role="tab" aria-controls="home"><h5>Maksymalne wymiary</h5> waga x dł. x szer. x
+                    wys.</a>
+                <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list"
+                   href="#list-settings" role="tab" aria-controls="settings"><strong>Koperta:</strong> 0.5kg x 35cm x
+                    25cm x 5cm</a>
+                <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                   href="#list-profile" role="tab" aria-controls="profile"><strong>Paczka:</strong> 30kg x 600cm x 300cm
+                    x 300cm</a>
+                <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list"
+                   href="#list-messages" role="tab" aria-controls="messages"><strong>Paleta:</strong> 1000kg x 120cm x
+                    80cm x 200cm</a>
 
-
-    <h1> FORM TEST </h1>
-
-    <div class="wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg2">
-                    <form action="" method="post">
-                        {% csrf_token %}
-                        {{ form }}
-                        <br/>
-                        <input type="submit">
-                    </form>
-                </div>
             </div>
         </div>
+
     </div>
 
-    <br/><br/><br/>
+
+
 {% endblock %}

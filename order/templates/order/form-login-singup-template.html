@@ -1,0 +1,36 @@
+{% for field in form %}
+    <div class="form-group">
+        <span class="text-danger small">{{ field.errors }}</span>
+        <label class="control-label col-sm-2"> {{ field.label_tag }}</label>
+        <div class="col-sm-10">{{ field }}</div>
+    </div>
+{% endfor %}
+
+
+
+
+
+<div class="wrap-inputPaka">
+
+    <div class="inputPaka" type="text" name="email">{{ field }}</div>
+    <span class="focus-inputPaka" data-placeholder="Email"></span>
+</div>
+
+
+
+<div class="wrap-inputPaka">
+    <input class="inputPaka" type="password" name="pass">
+    <span class="focus-inputPaka" data-placeholder="Hasło"></span>
+</div>
+
+
+
+
+<div class="container-loginPaka-form-btn">
+    <div class="wrap-loginPaka-form-btn">
+        <div class="loginPaka-form-bgbtn"></div>
+        <button class="loginPaka-form-btn">
+            Zaloguj się
+        </button>
+    </div>
+</div>

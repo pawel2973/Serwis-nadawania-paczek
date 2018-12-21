@@ -1,3 +1,5 @@
+import pickle
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 # from django.http import request
@@ -18,12 +20,12 @@ class IndexView(generic.FormView):
     form_class = MyForm
 
     def post(self, request, *args, **kwargs):
+        # TODO: TUTAJ OKRESLIC IF-Y NA CNAME stworzc funkcje ??
         form = MyForm(request.POST)  # A form bound to the POST data
 
         if form.is_valid():
             # SESSION VARS
             type = request.POST['type']
-            print("INDEX" + type)
             weight = float(request.POST['weight'])
             length = float(request.POST['length'])
             width = float(request.POST['width'])
@@ -59,9 +61,7 @@ class IndexView(generic.FormView):
 
 ##########################
 # FOR testing purposes
-g_cname = None
-sender_form = None
-recipient_form = None
+col_name_pricing = None
 
 
 #########################
@@ -71,26 +71,26 @@ class CalculateView(generic.ListView):
     template_name = 'order/calculate.html'
 
     def post(self, request, *args, **kwargs):
-        global g_cname
+        global col_name_pricing
         type = self.request.session.get('type')  # get pack type from session
         courier_id = request.session['courier_id'] = request.POST.get('courier')  # get courier_id from button
 
         if type == "koperta":
-            query = list(EnvelopePricing.objects.filter(courier__id=courier_id).values(g_cname))  # query: price from db
-            price = query[0].get(g_cname)  # value: price from query
+            query = list(EnvelopePricing.objects.filter(courier__id=courier_id).values(col_name_pricing))  # query: price from db
+            price = query[0].get(col_name_pricing)  # value: price from query
             request.session['price'] = price  # save to session
         elif type == "paczka":
-            query = list(PackPricing.objects.filter(courier__id=courier_id).values(g_cname))
-            price = query[0].get(g_cname)
+            query = list(PackPricing.objects.filter(courier__id=courier_id).values(col_name_pricing))
+            price = query[0].get(col_name_pricing)
             request.session['price'] = price
         elif type == "paleta":
-            query = list(PalletPricing.objects.filter(courier__id=courier_id).values(g_cname))
-            price = query[0].get(g_cname)
+            query = list(PalletPricing.objects.filter(courier__id=courier_id).values(col_name_pricing))
+            price = query[0].get(col_name_pricing)
             request.session['price'] = price
         return redirect('order:sender_address')
 
     def get_queryset(self):
-        global g_cname
+        global col_name_pricing
         ratio = None
         type = self.request.session.get('type')
         weight = float(self.request.session.get('weight'))
@@ -103,7 +103,7 @@ class CalculateView(generic.ListView):
             # print(lista[0])
             # for l in lista:
             #     print(l['up_to_1']*2)
-            g_cname = 'up_to_1'
+            col_name_pricing = 'up_to_1'
             return EnvelopePricing.objects.values_list('courier', 'courier__name', 'up_to_1')
 
         elif type == "paczka":  # Pack Price
@@ -117,41 +117,41 @@ class CalculateView(generic.ListView):
 
             # Set pack price
             if weight <= 1:
-                g_cname = 'up_to_1'
+                col_name_pricing = 'up_to_1'
                 return PackPricing.objects.values_list('courier', 'courier__name', 'up_to_1')
             elif weight <= 2:
-                g_cname = 'up_to_2'
+                col_name_pricing = 'up_to_2'
                 return PackPricing.objects.values_list('courier', 'courier__name', 'up_to_2')
             elif weight <= 5:
-                g_cname = 'up_to_5'
+                col_name_pricing = 'up_to_5'
                 return PackPricing.objects.values_list('courier', 'courier__name', 'up_to_5')
             elif weight <= 10:
-                g_cname = 'up_to_10'
+                col_name_pricing = 'up_to_10'
                 return PackPricing.objects.values_list('courier', 'courier__name', 'up_to_10')
             elif weight <= 15:
-                g_cname = 'up_to_15'
+                col_name_pricing = 'up_to_15'
                 return PackPricing.objects.values_list('courier', 'courier__name', 'up_to_15')
             elif weight <= 20:
-                g_cname = 'up_to_20'
+                col_name_pricing = 'up_to_20'
                 return PackPricing.objects.values_list('courier', 'courier__name', 'up_to_20')
             elif weight <= 30:
-                g_cname = 'up_to_30'
+                col_name_pricing = 'up_to_30'
                 return PackPricing.objects.values_list('courier', 'courier__name', 'up_to_30')
             else:
                 render(request, 'order/index.html')
 
         elif type == "paleta":  # Pallet Price
             if weight <= 300:
-                g_cname = 'up_to_300'
+                col_name_pricing = 'up_to_300'
                 return PalletPricing.objects.values_list('courier', 'courier__name', 'up_to_300')
             elif weight <= 500:
-                g_cname = 'up_to_500'
+                col_name_pricing = 'up_to_500'
                 return PalletPricing.objects.values_list('courier', 'courier__name', 'up_to_500')
             elif weight <= 800:
-                g_cname = 'up_to_800'
+                col_name_pricing = 'up_to_800'
                 return PalletPricing.objects.values_list('courier', 'courier__name', 'up_to_800')
             elif weight <= 1000:
-                g_cname = 'up_to_1000'
+                col_name_pricing = 'up_to_1000'
                 return PalletPricing.objects.values_list('courier', 'courier__name', 'up_to_1000')
 
 
@@ -168,13 +168,9 @@ class SenderAddressView(generic.FormView):
     form_class = AddressForm
 
     def post(self, request, *args, **kwargs):
-        global sender_form
         form = AddressForm(request.POST)  # A form bound to the POST data
         if form.is_valid():
-            sender_form = form
-            # sender_obj = form.save(commit=False)
-            # sender_obj.save()
-            # request.session['sender_obj'] = sender_obj # aborted
+            request.session['sender_form'] = form.cleaned_data  # thanks to pickle serializer
             return redirect('order:recipient_address')
         else:
             return render(request, 'order/sender_address.html', {'form': form})
@@ -185,11 +181,9 @@ class RecipientAddressView(generic.FormView):
     form_class = AddressForm
 
     def post(self, request, *args, **kwargs):
-        global recipient_form
         form = AddressForm(request.POST)  # A form bound to the POST data
         if form.is_valid():
-            recipient_form = form
-            # request.session['recipient_obj'] = recipient_obj
+            request.session['recipient_form'] = form.cleaned_data
             return redirect('order:summary')
         else:
             return render(request, 'order/recipient_address.html', {'form': form})
@@ -199,9 +193,6 @@ class SummaryView(generic.TemplateView):
     template_name = 'order/summary.html'
 
     def post(self, request, *args, **kwargs):
-        global recipient_form
-        global sender_form
-
         # Creating parcel
         type = self.request.session.get('type')
         weight = float(self.request.session.get('weight'))
@@ -209,36 +200,44 @@ class SummaryView(generic.TemplateView):
         width = float(self.request.session.get('width'))
         height = float(self.request.session.get('height'))
 
+        # Creating Parcel db
         parcel_obj = Parcel.objects.create(length=length, height=height, width=width, weight=weight, type=type)
         parcel_id = parcel_obj.id
         parcel_obj = Parcel.objects.get(id=parcel_id)
 
-        # Creating address
-        # sender_obj = request.session.get('sender_obj')
-        sender_obj = None
-        sender_obj = sender_form.save(commit=False)
+        # Creating Address for sender db
+        sender_form = request.session.get('sender_form')
+        sender_obj = Address(
+            **sender_form)  # Unwrap the dictionary, making its keys and values act like named arguments
+
+        # TODO clean the data before sending form !
+        # sender_obj = sender_obj.save(commit=False) # now impossible
+
+        # Save Address form
         sender_obj.save()
         sender_id = sender_obj.id
         sender_obj = Address.objects.get(id=sender_id)
 
-        # Creating sender address
+        # Creating SenderAddress db
         sender_address_obj = SenderAddress.objects.create(address=sender_obj)
         sender_address_obj_id = sender_address_obj.id
         sender_address_obj = SenderAddress.objects.get(id=sender_address_obj_id)
 
-        # Creating recipient address
-        # recipient_obj = request.session.get('recipient_obj')
-        recipient_obj = None
-        recipient_obj = recipient_form.save(commit=False)
+        # Creating Address for recipient db
+        recipient_form = request.session.get('recipient_form')
+        recipient_obj = Address(**recipient_form)
+
+        # Save Address form
         recipient_obj.save()
         recipient_id = recipient_obj.id
         recipient_obj = Address.objects.get(id=recipient_id)
 
+        # Creating RecipientAddress db
         recipient_address_obj = RecipientAddress.objects.create(address=recipient_obj)
         recipient_address_obj_id = recipient_address_obj.id
         recipient_address_obj = RecipientAddress.objects.get(id=recipient_address_obj_id)
 
-        # Creating order
+        # Creating order db
         profile_obj = Profile.objects.get(id=3)
         courier_id = int(request.session.get('courier_id'))
         courier_obj = Courier.objects.get(id=courier_id)
@@ -256,6 +255,8 @@ class SummaryView(generic.TemplateView):
         del request.session['height']
         del request.session['courier_id']
         del request.session['price']
+        del request.session['sender_form']
+        del request.session['recipient_form']
 
         return redirect('order:index')
 

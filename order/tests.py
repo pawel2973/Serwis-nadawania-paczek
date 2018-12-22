@@ -1,6 +1,6 @@
 from django.test import TestCase
-from order.forms import MyForm
-from order.models import Courier, EnvelopePricing
+from .forms import FormParcelSize
+from .models import Courier, EnvelopePricing
 from django.urls import reverse
 
 
@@ -19,15 +19,15 @@ class CourierTest(TestCase):
         self.assertTrue(isinstance(courier_object,Courier))
         self.assertEqual(courier_object.__str__(), courier_object.name)
 
-class MyFormTest(TestCase):
+class FormParcelSizeTest(TestCase):
     def test_valid_form(self):
-        data = {'typ_paczki':'koperta', 'waga_paczki':0.5,'dlugosc':1,'szerokosc':1,'wysokosc':1}
-        form = MyForm(data=data)
+        data = {'type':'koperta', 'weight':0.5,'length':1,'width':1,'height':1}
+        form = FormParcelSize(data=data)
         self.assertTrue(form.is_valid())
 
     def test_invalid_form(self):
-        data = {'typ_paczki':'koperta', 'waga_paczki':-1,'dlugosc':1,'szerokosc':1,'wysokosc':1}
-        form = MyForm(data=data)
+        data = {'type': 'koperta', 'weight': -1, 'length': 1, 'width': 1, 'height': 1}
+        form = FormParcelSize(data=data)
         self.assertFalse(form.is_valid())
 
 class EnvelopePricingTest(TestCase):

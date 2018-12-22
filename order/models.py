@@ -39,7 +39,7 @@ class Profile(models.Model):
     # default: username, password, email, groups
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # user_id
     address = models.OneToOneField(Address, on_delete=models.CASCADE, null=True, blank=True)  # address_id
-    premium_points = models.IntegerField(default=0, editable=False, validators=[MinValueValidator(0)])
+    premium_points = models.IntegerField(default=0, validators=[MinValueValidator(0)])
 
     # przy tworzeniu użytkownika user, tworzony jest automatycznie profil
     @receiver(post_save, sender=User)
@@ -132,7 +132,7 @@ PACK_STATUS = (
 
 
 class Order(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.PROTECT, null=False)  # profile_id
+    profile = models.ForeignKey(Profile, on_delete=models.PROTECT, null=False)  # profile_id != user_id ?
     courier = models.ForeignKey(Courier, on_delete=models.CASCADE, null=False)  # courier_id
     parcel = models.OneToOneField(Parcel, on_delete=models.CASCADE, null=False)  # parcel_id
     recipient = models.ForeignKey(RecipientAddress, on_delete=models.CASCADE, null=False)  # recipient_id

@@ -49,7 +49,7 @@ TYPE = [
 class FormParcelSize(forms.Form):  # Note that it is not inheriting from forms.ModelForm
     type = forms.ChoiceField(
         choices=TYPE,
-        widget=forms.RadioSelect(attrs={'class': 'exampleCSSclass'}),
+        widget=forms.RadioSelect(attrs={'class': ''}),
     )
     weight = forms.FloatField(validators=[greaterThanZeroValidator])
     length = forms.FloatField(validators=[greaterThanZeroValidator])

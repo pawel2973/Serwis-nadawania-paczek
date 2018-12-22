@@ -1,0 +1,47 @@
+{% extends 'order/base.html' %}
+
+{% block carousel %}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+
+        {{ test.address.address. }}
+
+        <div class="col-lg-4">
+
+            <div class="col-12">
+                <div class="list-group" id="list-tab" role="tablist">
+                    <a class="list-group-item list-group-item-action active text-center" id="list-home-list"
+                       data-toggle="list"
+                       href="#list-home" role="tab" aria-controls="home"><h5>Witaj <strong>{{ profile.user.username }}</strong>
+                    </h5></a>
+                    <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list"
+                       href="#list-settings" role="tab" aria-controls="settings"><strong>Punkty premium:</strong> {{ profile.premium_points }}</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <table class="table  table-bordered">
+                <thead>
+                <tr>
+                    <th colspan="2" scope="col" class="text-center">Twoje dane adresowe</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for key, value in profile_address.items %}
+                    {% if key != '_state' and key != 'id' %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>{{ value }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+{% endblock %}

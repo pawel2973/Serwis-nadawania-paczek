@@ -1,4 +1,6 @@
 import pickle
+import random
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 # from django.http import request
@@ -10,7 +12,7 @@ from django.views import generic
 from django.views.generic import RedirectView
 from django.views.generic.edit import ModelFormMixin, FormMixin, FormView
 
-from order.forms import FormParcelSize, AddressForm
+from .forms import FormParcelSize, AddressForm
 from .models import Courier, PackPricing, PalletPricing, EnvelopePricing, Parcel, Order, SenderAddress, Address, \
     RecipientAddress, Profile
 from django.contrib.auth import logout
@@ -229,8 +231,11 @@ class SummaryView(generic.TemplateView):
         recipient_address_obj_id = recipient_address_obj.id
         recipient_address_obj = RecipientAddress.objects.get(id=recipient_address_obj_id)
 
+        # Get profile id
+        get_profile = Profile.objects.get(user_id=self.request.user.id)
+
         # Creating order db
-        profile_obj = Profile.objects.get(id=3)
+        profile_obj = Profile.objects.get(id=get_profile.id)
         courier_id = int(request.session.get('courier_id'))
         courier_obj = Courier.objects.get(id=courier_id)
 
@@ -273,7 +278,59 @@ class PricingCompanyView(generic.TemplateView):
         return context
 
 
+class ProfileView(generic.TemplateView):
+    # TODO: EDYTUJ ADRES, USUN ADRES - VIEW
+    template_name = 'order/profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        get_profile = Profile.objects.get(user_id=self.request.user.id)
+        print("ProfileView: " + str(get_profile))
+        if get_profile.address is not None:
+            profile_address = get_profile.address.__dict__
+            context['profile_address'] = profile_address
+        context['profile'] = get_profile
+
+        return context
+
+
+class OrdersView(generic.TemplateView):
+    # TODO: WYPISAC ZAMOWIENIA UZYTKOWNIKA
+    # TODO: PRZYCISK ANULUJ ZAMOWIENIE
+    # TODO: SZCZEGOLY ZAMOWIENIA, OPCJONALNE
+    template_name = 'order/user_orders.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        get_profile = Profile.objects.get(user_id=self.request.user.id)
+        orders = get_profile.order_set.all()
+        print(orders.values_list())
+        # get_courier = Courier.objects.values('name').filter(id=orders[2])
+        print(orders.values_list().values())
+        # get_orders = Order.objects.get(profile=get_profile)
+        # print(get_orders.__dict__)
+        # profile_address = get_profile.address.__dict__
+        # context['profile'] = get_profile
+        # context['profile_address'] = profile_address
+        return context
+
+
+class ProfileAddressView(generic.FormView):
+    template_name = 'order/create_profile_address.html'
+    form_class = AddressForm
+
+    def post(self, request, *args, **kwargs):
+        form = AddressForm(request.POST)  # A form bound to the POST data
+        if form.is_valid():
+            object = form.save()
+            Profile.objects.filter(user_id=self.request.user.id).update(address=object.id)
+            return redirect('order:profile')
+        else:
+            return render(request, self.template_name, {'form': form})
+
+
 class SignUpView(generic.CreateView):
+    # TODO: FORMULARZ ZMIANY HASLA ???
     form_class = UserCreationForm
     success_url = reverse_lazy('order:login')
     template_name = 'registration/signup.html'

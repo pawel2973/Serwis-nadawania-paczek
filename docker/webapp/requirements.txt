@@ -4,3 +4,4 @@ pep8
 pyflakes
 psycopg2
 coverage
+django-widget-tweaks

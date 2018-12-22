@@ -2,5 +2,6 @@ django==2.1.2
 django-jenkins
 pep8
 pyflakes
+django-widget-tweaks
 # coverage
 # psycopg2

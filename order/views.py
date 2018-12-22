@@ -1,5 +1,4 @@
 import pickle
-
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 # from django.http import request
@@ -8,11 +7,14 @@ from django.http import Http404, HttpResponseForbidden, HttpResponseRedirect, re
 from django.shortcuts import render, redirect, render_to_response
 from django.urls import reverse_lazy
 from django.views import generic
+from django.views.generic import RedirectView
 from django.views.generic.edit import ModelFormMixin, FormMixin, FormView
 
 from order.forms import FormParcelSize, AddressForm
 from .models import Courier, PackPricing, PalletPricing, EnvelopePricing, Parcel, Order, SenderAddress, Address, \
     RecipientAddress, Profile
+from django.contrib.auth import logout
+from django.contrib.auth.views import LoginView
 
 
 class IndexView(generic.FormView):
@@ -245,9 +247,10 @@ class SummaryView(generic.TemplateView):
         del request.session['height']
         del request.session['courier_id']
         del request.session['price']
-        del request.session['ratio']
         del request.session['sender_form']
         del request.session['recipient_form']
+        if request.session.get('ratio') is not None:
+            del request.session['ratio']
 
         return redirect('order:index')
 
@@ -274,3 +277,17 @@ class SignUpView(generic.CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('order:login')
     template_name = 'registration/signup.html'
+
+    def dispatch(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect('order:index')
+        return super().dispatch(*args, **kwargs)
+
+
+class LogoutView(RedirectView):
+    # Provides users the ability to logout
+    url = '/'
+
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return super(LogoutView, self).get(request, *args, **kwargs)

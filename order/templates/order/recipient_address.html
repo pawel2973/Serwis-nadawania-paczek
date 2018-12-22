@@ -125,13 +125,14 @@
 
                         <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
                             <div class="form-row">
+                                {% load widget_tweaks %}
                                 {% csrf_token %}
                                 {% for field in form %}
                                     <div class="form-group">
                                         <span class="text-danger small">{{ field.errors }}</span>
                                         <label class="control-label col-lg-12 col-sm-2"> {{ field.label_tag }}</label>
                                         <div class="col-lg-12 col-sm-10"
-                                             style="border: 1px solid red; border-radius: 5px;">{{ field }} </div>
+                                             style="border: 1px solid red; border-radius: 5px;">{{ field|add_class:"inputPaka" }} </div>
                                     </div>
                                 {% endfor %}
                             </div>

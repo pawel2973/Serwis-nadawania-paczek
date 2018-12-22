@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_jenkins',
+    'widget_tweaks',  # for adding css class to field forms in html templates
 ]
 
 # Change default serializer to pickle

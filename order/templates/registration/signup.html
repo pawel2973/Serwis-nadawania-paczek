@@ -14,6 +14,7 @@
         <div class="container-loginPaka">
             <div class="wrap-loginPaka">
                 <form class="loginPaka-form validate-form" action="" method="post">
+                    {% load widget_tweaks %}
                     {% csrf_token %}
                     <span class="loginPaka-form-title p-b-26">
 						Zarejestruj się!
@@ -21,24 +22,24 @@
                     <br/>
 
                     <div class="wrap-inputPaka">
-                        {{ form.username }}
+                        {{ form.username|add_class:"inputPaka" }}
                         <!-- <input class="inputPaka" type="text" name="email"> -->
-                        <span class="focus-inputPaka" data-placeholder=""></span>
+                        <span class="focus-inputPaka" data-placeholder="Nazwa Użytkownika"></span>
                     </div>
 
                     <div class="wrap-inputPaka">
-                        {{ form.password1 }}
+                        {{ form.password1|add_class:"inputPaka"  }}
                         <!-- <input class="inputPaka" type="password" name="pass"> -->
-                        <span class="focus-inputPaka" data-placeholder=""></span>
+                        <span class="focus-inputPaka" data-placeholder="Hasło"></span>
                     </div>
 
                     <div class="wrap-inputPaka validate-input" data-validate="">
 						<span class="btn-show-pass">
 							<i class="zmdi zmdi-eye"></i>
 						</span>
-                        {{ form.password2 }}
+                        {{ form.password2|add_class:"inputPaka"  }}
                         <!-- <input class="inputPaka" type="password" name="pass"> -->
-                        <span class="focus-inputPaka" data-placeholder=""></span>
+                        <span class="focus-inputPaka" data-placeholder="Potwierdź hasło"></span>
                     </div>
 
 

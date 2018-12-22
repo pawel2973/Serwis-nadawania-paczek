@@ -1,3 +1,6 @@
+
+
+
 {% extends 'order/base.html' %}
 
 {% block carousel %}
@@ -20,6 +23,7 @@
         <div class="container-loginPaka">
             <div class="wrap-loginPaka">
                 <form class="loginPaka-form validate-form" action="" method="post">
+                    {% load widget_tweaks %}
                     {% csrf_token %}
                     <span class="loginPaka-form-title p-b-26">
 						Zaloguj się!
@@ -29,14 +33,14 @@
 
                     <div class="wrap-inputPaka">
                         <!-- <input class="inputPaka" type="text" name="email"> -->
-                        {{ form.username }}
-                        <span class="focus-inputPaka" data-placeholder=""></span>
+                        {{ form.username|add_class:"inputPaka" }}
+                        <span class="focus-inputPaka" data-placeholder="Nazwa Użytkownika"></span>
                     </div>
 
                     <div class="wrap-inputPaka">
-                        {{ form.password }}
+                        {{ form.password|add_class:"inputPaka"}}
                         <!-- <input class="inputPaka" type="password" name="pass"> -->
-                        <span class="focus-inputPaka" data-placeholder=""></span>
+                        <span class="focus-inputPaka" data-placeholder="Hasło"></span>
                     </div>
 
 

@@ -28,5 +28,8 @@ pipeline {
             //    reportName: 'Coverage Test Report'
             //]
         }
+        success {
+            cobertura coberturaReportFile: 'reports/coverage.xml' 
+        }
     }
 }

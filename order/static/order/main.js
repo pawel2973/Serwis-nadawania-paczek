@@ -67,8 +67,109 @@ $(document).ready(function(){
 
 	
 	
-	
-	
+	$(document).ready(function() {
+  $(".dlugosc").on("keydown", function(e) {
+    var char = e.originalEvent.key.replace(/[^0-9^.^,]/, "");
+    if (char.length == 0 && !(e.originalEvent.ctrlKey || e.originalEvent.metaKey)) {
+      e.preventDefault();
+    }
+  });
+
+  $(".dlugosc").bind("paste", function(e) {
+    var numbers = e.originalEvent.clipboardData
+      .getData("text")
+      .replace(/[^0-9^.^,]/g, "");
+    e.preventDefault();
+    var the_val = parseFloat(numbers);
+    if (the_val > 0) {
+      $(this).val(the_val.toFixed(2));
+    }
+  });
+
+  $(".dlugosc").focusout(function(e) {
+    if (!isNaN(this.value) && this.value.length != 0) {
+      this.value = Math.abs(parseFloat(this.value)).toFixed(2);
+    } else {
+      this.value = 0;
+    }
+  });
+  $(".szerokosc").on("keydown", function(e) {
+    var char = e.originalEvent.key.replace(/[^0-9^.^,]/, "");
+    if (char.length == 0 && !(e.originalEvent.ctrlKey || e.originalEvent.metaKey)) {
+      e.preventDefault();
+    }
+  });
+
+  $(".szerokosc").bind("paste", function(e) {
+    var numbers = e.originalEvent.clipboardData
+      .getData("text")
+      .replace(/[^0-9^.^,]/g, "");
+    e.preventDefault();
+    var the_val = parseFloat(numbers);
+    if (the_val > 0) {
+      $(this).val(the_val.toFixed(2));
+    }
+  });
+
+  $(".szerokosc").focusout(function(e) {
+    if (!isNaN(this.value) && this.value.length != 0) {
+      this.value = Math.abs(parseFloat(this.value)).toFixed(2);
+    } else {
+      this.value = 0;
+    }
+  });
+  $(".wysokosc").on("keydown", function(e) {
+    var char = e.originalEvent.key.replace(/[^0-9^.^,]/, "");
+    if (char.length == 0 && !(e.originalEvent.ctrlKey || e.originalEvent.metaKey)) {
+      e.preventDefault();
+    }
+  });
+
+  $(".wysokosc").bind("paste", function(e) {
+    var numbers = e.originalEvent.clipboardData
+      .getData("text")
+      .replace(/[^0-9^.^,]/g, "");
+    e.preventDefault();
+    var the_val = parseFloat(numbers);
+    if (the_val > 0) {
+      $(this).val(the_val.toFixed(2));
+    }
+  });
+
+  $(".wysokosc").focusout(function(e) {
+    if (!isNaN(this.value) && this.value.length != 0) {
+      this.value = Math.abs(parseFloat(this.value)).toFixed(2);
+    } else {
+      this.value = 0;
+    }
+  });
+  
+  $(".waga").on("keydown", function(e) {
+    var char = e.originalEvent.key.replace(/[^0-9^.^,]/, "");
+    if (char.length == 0 && !(e.originalEvent.ctrlKey || e.originalEvent.metaKey)) {
+      e.preventDefault();
+    }
+  });
+
+  $(".waga").bind("paste", function(e) {
+    var numbers = e.originalEvent.clipboardData
+      .getData("text")
+      .replace(/[^0-9^.^,]/g, "");
+    e.preventDefault();
+    var the_val = parseFloat(numbers);
+    if (the_val > 0) {
+      $(this).val(the_val.toFixed(2));
+    }
+  });
+
+  $(".waga").focusout(function(e) {
+    if (!isNaN(this.value) && this.value.length != 0) {
+      this.value = Math.abs(parseFloat(this.value)).toFixed(2);
+    } else {
+      this.value = 0;
+    }
+  });
+});
 	
 	
 	

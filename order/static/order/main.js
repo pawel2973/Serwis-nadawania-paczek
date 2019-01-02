@@ -88,6 +88,8 @@ $(document).ready(function(){
 
   $(".dlugosc").focusout(function(e) {
     if (!isNaN(this.value) && this.value.length != 0) {
+		if(this.value <= 0){
+		this.value=1;}
       this.value = Math.abs(parseFloat(this.value)).toFixed(2);
     } else {
       this.value = 0;
@@ -113,6 +115,8 @@ $(document).ready(function(){
 
   $(".szerokosc").focusout(function(e) {
     if (!isNaN(this.value) && this.value.length != 0) {
+			if(this.value <= 0){
+		this.value=1;}
       this.value = Math.abs(parseFloat(this.value)).toFixed(2);
     } else {
       this.value = 0;
@@ -138,6 +142,8 @@ $(document).ready(function(){
 
   $(".wysokosc").focusout(function(e) {
     if (!isNaN(this.value) && this.value.length != 0) {
+			if(this.value <= 0){
+		this.value=1;}
       this.value = Math.abs(parseFloat(this.value)).toFixed(2);
     } else {
       this.value = 0;
@@ -164,6 +170,8 @@ $(document).ready(function(){
 
   $(".waga").focusout(function(e) {
     if (!isNaN(this.value) && this.value.length != 0) {
+			if(this.value <= 0){
+		this.value=1;}
       this.value = Math.abs(parseFloat(this.value)).toFixed(2);
     } else {
       this.value = 0;

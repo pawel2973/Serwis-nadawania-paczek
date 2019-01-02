@@ -8,13 +8,13 @@
 .carousel-control-next-icon:after {
     content: '>';
     font-size: 50px;
-    color: red;
+    color: blue;
 }
 
 .carousel-control-prev-icon:after {
     content: '<';
     font-size: 50px;
-    color: red;
+    color: blue;
 
 }
 
@@ -26,7 +26,7 @@
 }
 
 .carousel-indicators li.active {
-    background-color: red;
+    background-color: blue;
 }
 
 .carousel slide {
@@ -61,7 +61,7 @@
 }
 
 .boxed input[type="radio"]:checked + label {
-    border: solid 2px red;
+    border: solid 2px blue;
 }
 
 .boxed2 label {
@@ -81,7 +81,7 @@
 }
 
 .boxed2 input[type="radio"]:checked + label {
-    border: solid 2px red;
+    border: solid 2px blue;
 }
 
 .inputPaka {
@@ -139,7 +139,7 @@
     transition: all 0.4s;
 
 
-    background: red;
+    background: blue;
 }
 
 .wrap-inputPaka {
@@ -321,7 +321,7 @@ textarea {
 button {
     outline: none !important;
     border: none;
-    background: red;
+    background: blue;
 }
 
 button:hover {

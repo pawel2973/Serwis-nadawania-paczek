@@ -42,12 +42,12 @@
 
                 <br/>
                 {% if user.is_authenticated %}
-                    <button class="btn btn-danger" type="submit" data-toggle="collapse" data-target="#collapseAdressess"
+                    <button class="btn btn-primary" type="submit" data-toggle="collapse" data-target="#collapseAdressess"
                             aria-expanded="false" aria-controls="collapseExample">
                         Podaj adresy
                     </button>
                 {% else %}
-                    <div class="alert alert-danger text-center" role="alert">
+                    <div class="alert alert-primary text-center" role="alert">
                         <strong>Musisz byc zalogowanym aby nadać przesyłkę!</strong>
                     </div><a href="{% url 'order:login' %}">
                     <button type="button" class="btn btn-primary">Zaloguj</button>

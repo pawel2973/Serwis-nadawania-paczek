@@ -1,7 +1,7 @@
 {% extends 'order/base.html' %}
 
 {% block body %}
-
+      {% load widget_tweaks %}
     <div class="row">
         <div class="col-sm-8">
             <br>
@@ -47,21 +47,15 @@
                         <div style="text-align: center;">
                             <div class="boxed2">
 
+                    
+
                                 {% for radio in form.type %}
                                     {{ radio }}
                                 {% endfor %}<br/>
 
-                                <!--
-                                                                <input type="radio" id="paczka" name="courier" value="Paczka">
-
-                                                                <label for="paczka">Paczka</label>
-
-                                                                <input type="radio" id="List" name="courier" value="List">
-                                                                <label for="List">List</label>
-
-                                                                <input type="radio" id="paleta" name="courier" value="Paleta">
-                                                                <label for="paleta">Paleta</label>
-                                -->
+                            
+                                                                
+                               
                                 <br>
                             </div>
                         </div>
@@ -77,7 +71,7 @@
                             <div class="wrap-inputPaka">
                                 <!-- <input class="inputPaka" type="text" name="waga"> -->
                                 <div class="alert alert-warning ">
-                                    {{ form.weight.label_tag }} {{ form.weight }}
+                                    Waga: {{ form.weight|add_class:"waga" }}
                                 </div>
                                 <span class="focus-inputPaka" data-placeholder=""></span>
 
@@ -93,7 +87,7 @@
 
                             <div class="wrap-inputPaka">
                                 <div class="alert alert-warning ">
-                                    {{ form.length.label_tag }} {{ form.length }}
+                                    Długość: {{ form.length|add_class:"dlugosc" }}
                                 </div>
                                 <!--  <input class="inputPaka" type="text" name="dlugosc">-->
                                 <span class="focus-inputPaka" data-placeholder=""></span>
@@ -102,7 +96,7 @@
                         <div class="form-group col-md-4">
                             <div class="wrap-inputPaka">
                                 <div class="alert alert-warning ">
-                                    {{ form.width.label_tag }} {{ form.width }}
+                                    Szerokość: {{ form.width|add_class:"szerokosc" }}
                                 </div>
                                 <!-- <input class="inputPaka" type="text" name="szerokosc">-->
                                 <span class="focus-inputPaka" data-placeholder=""></span>
@@ -111,7 +105,7 @@
                         <div class="form-group col-md-4">
                             <div class="wrap-inputPaka">
                                 <div class="alert alert-warning ">
-                                    {{ form.height.label_tag }} {{ form.height }}
+                                     Wysokość:  {{ form.height|add_class:"wysokosc" }}
                                 </div>
                                 <!-- <input class="inputPaka" type="text" name="wysokość">-->
                                 <span class="focus-inputPaka" data-placeholder=""></span>
@@ -131,7 +125,7 @@
 
                         </div>
                         <div class="form-group col-md-4">
-                            <button class="btn btn-danger" type="submit" data-toggle="collapse"
+                            <button class="btn btn-primary" type="submit" data-toggle="collapse"
                                     data-target="#collapsePrices" aria-expanded="false" aria-controls="collapseExample">
                                 Sprawdź ceny
                             </button>

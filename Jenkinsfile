@@ -10,7 +10,7 @@ pipeline {
             steps {
                 sh 'python3 manage.py makemigrations order'
                 sh 'python3 manage.py migrate'
-                sh 'python3 manage.py jenkins --enable-coverage --coverage-format html'
+                sh 'python3 manage.py jenkins --enable-coverage'
             }
         }
         
@@ -19,14 +19,14 @@ pipeline {
         always {
             junit 'reports/junit.xml'
              // publish coverage html
-            publishHTML target: [
-                allowMissing: false,
-                alwaysLinkToLastBuild: false,
-                keepAll: true,
-                reportDir: 'reports/coverage',
-                reportFiles: 'index.html',
-                reportName: 'Coverage Test Report'
-            ]
+            //publishHTML target: [
+            //    allowMissing: false,
+            //    alwaysLinkToLastBuild: false,
+            //    keepAll: true,
+            //    reportDir: 'reports/coverage',
+            //    reportFiles: 'index.html',
+            //    reportName: 'Coverage Test Report'
+            //]
         }
     }
 }

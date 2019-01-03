@@ -159,4 +159,3 @@ class UrlsTest(TestCase):
 # class IndexViewTest(TestCase):
 #     def choose_pricing_test(self):
 #         response = self.client.get(reverse('order:index'))
-

@@ -5,6 +5,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 # from django.http import request
 from django.core.checks import messages
+from django.db.models import Count
 from django.http import Http404, HttpResponseForbidden, HttpResponseRedirect, request, HttpResponse
 from django.shortcuts import render, redirect, render_to_response
 from django.urls import reverse_lazy
@@ -166,7 +167,20 @@ class AboutCompanyView(generic.TemplateView):
 
 class CourierView(generic.TemplateView):
     template_name = 'order/courier.html'
+    
+class CourierRankingView(generic.TemplateView):
+    template_name = 'order/courier_ranking.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(CourierRankingView, self).get_context_data(**kwargs)
+        context['top'] = list(Order.objects.all().values('courier__name').annotate(total=Count('courier')).order_by('-total')[:5])
+        all_couriers = Order.objects.all().count()
+        for i in range(5):
+            context['top'][i]['total'] /= all_couriers
+            context['top'][i]['total'] *= 100
+            context['top'][i]['total'] = round(context['top'][i]['total'],2)
+        context['top'].append( {'courier__name':'Inne firmy','total':round(100 - sum(list(d['total'] for d in context['top'])),2)})
+        return context
 
 class SenderAddressView(generic.FormView):
     template_name = 'order/sender_address.html'

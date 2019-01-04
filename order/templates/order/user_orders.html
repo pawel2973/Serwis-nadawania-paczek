@@ -36,8 +36,12 @@
                                         <td><strong>Informacje o przesyłce</strong></td>
                                         <td>{{ order.parcel }}</td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td><strong>Status przesyłki</strong></td>
+                                        <td>{{ order.date }}</td>
+                                    </tr>
+                                     <tr>
+                                        <td><strong>Data zamówienia</strong></td>
                                         <td>{{ order.get_status_display }}</td>
                                     </tr>
                                      <tr>

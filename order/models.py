@@ -138,8 +138,8 @@ class Parcel(models.Model):
     content = models.TextField(max_length=3000, blank=True)  # dodac blank
 
     def __str__(self):
-        return self.type + ": " + str(self.weight) + " kg - (" + str(self.length) + " x " + str(
-            self.weight) + " x " + str(self.height) + ") cm "
+        return self.type + " / " + str(self.weight) + " kg / " + str(self.length) + " x " + str(
+            self.weight) + " x " + str(self.height) + " cm "
 
 
 PACK_STATUS = (
@@ -165,5 +165,5 @@ class Order(models.Model):
     date = models.DateField(default=datetime.now)
 
     def __str__(self):
-        return "Zamówienie #" + str(self.id) + " | " + str(self.courier) + " | " + str(
+        return "#" + str(self.id) + " | " + str(self.courier) + " | " + str(
             self.parcel) + " | status: " + str(PACK_STATUS[self.status][1]) + " | cena: " + str(self.price) + " zł"

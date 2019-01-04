@@ -96,6 +96,8 @@ class IndexView(generic.FormView):
             request.session['length'] = length
             request.session['width'] = width
             request.session['height'] = height
+            if request.session.get('courier_id') is not None:
+                del request.session['courier_id']
             return redirect('order:calculate')
         else:
             return render(request, 'order/index.html', {'form': form})
@@ -208,18 +210,36 @@ class SummaryView(generic.TemplateView):
     template_name = 'order/summary.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if request.session.get('recipient_form') is None:
+        print(request.session.get('recipient_form'))
+        print(request.session.get('courier_id'))
+        if request.session.get('recipient_form') is None or request.session.get('courier_id') is None:
             return redirect('order:index')
         else:
             return super(SummaryView, self).dispatch(request, *args, **kwargs)
 
-    # def get_context_data(self, **kwargs):
-    #     # parcel info
-    #     type = self.request.session.get('type')
-    #     weight = float(self.request.session.get('weight'))
-    #     length = float(self.request.session.get('length'))
-    #     width = float(self.request.session.get('width'))
-    #     height = float(self.request.session.get('height'))
+    def get_context_data(self, **kwargs):
+        context = super(SummaryView, self).get_context_data(**kwargs)
+        # parcel info
+        context['type'] = self.request.session.get('type')
+        context['weight'] = float(self.request.session.get('weight'))
+        context['length'] = float(self.request.session.get('length'))
+        context['width'] = float(self.request.session.get('width'))
+        context['height'] = float(self.request.session.get('height'))
+        context['price'] = float(self.request.session.get('price'))
+
+        # courier info
+        courier_id = int(self.request.session.get('courier_id'))
+        context['courier'] = Courier.objects.get(id=courier_id)
+
+        # sender info
+        sender_form = self.request.session.get('sender_form')
+        context['sender_obj'] = Address(**sender_form)
+
+        # recipient info
+        recipient_form = self.request.session.get('recipient_form')
+        context['recipient_obj'] = Address(**recipient_form)
+
+        return context
 
     def post(self, request, *args, **kwargs):
         # Creating parcel

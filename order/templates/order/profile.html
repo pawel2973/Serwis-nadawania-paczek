@@ -5,9 +5,6 @@
 
 {% block body %}
     <div class="row">
-
-        {{ test.address.address. }}
-
         <div class="col-lg-4">
 
             <div class="col-12">
@@ -33,9 +30,9 @@
                 </thead>
                 <tbody>
                 {% for key, value in profile_address.items %}
-                    {% if key != '_state' and key != 'id' %}
+                    {% if key != '_state' and key != 'id' and value is not None and value != '' %}
                         <tr>
-                            <td>{{ key }}</td>
+                            <td><strong>{{ key }}</strong></td>
                             <td>{{ value }}</td>
                         </tr>
                     {% endif %}
@@ -47,19 +44,22 @@
         <div class="col-lg-4">
             {% if not profile_address %}
                 <!-- if user don't have address -->
-                <a href="{% url 'order:profile_address' %}">
+                <a href="{% url 'order:profile_address_create' %}">
                     <button class="btn btn-primary btn-lg">Stworz adres</button>
                 </a>
             {% else %}
-                <a href="#">
+
+                <a href="{% url 'order:profile_address_update' profile.address_id %}">
                     <button class="btn btn-primary btn-lg">Edytuj adres</button>
                 </a>
 
-                <a href="#">
-                    <button class="btn btn-primary btn-lg">Usun adres</button>
-                </a>
+                <form action="{% url 'order:profile_address_delete' profile.address_id %}" method="post"
+                      style="display: inline;">
+                    {% csrf_token %}
+                    <button class="btn btn-primary btn-lg" type="submit">Usun adres</button>
+                </form>
+
             {% endif %}
         </div>
-    </div>
     </div>
 {% endblock %}

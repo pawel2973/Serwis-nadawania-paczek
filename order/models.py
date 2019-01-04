@@ -32,13 +32,32 @@ class Address(models.Model):
                            validators=[MinLengthValidator(10), MaxLengthValidator(10)])  # !!! READ DOC !!!
 
     def __str__(self):
-        return self.zip_code + " " + self.city
+        show_nip = self.nip
+        show_apartment_number = self.apartment_number
+        show_company = self.company_name
+
+        if show_nip is None:
+            show_nip = ""
+        else:
+            show_nip = " - nip: " + show_nip
+        if show_apartment_number is None:
+            show_apartment_number = ""
+        else:
+            show_apartment_number = "/" + str(show_apartment_number)
+        if show_company is None:
+            show_company = ""
+
+        return str(self.name) + " " + str(self.surname) + " | " + str(
+            self.zip_code) + " " + str(self.city) + " ul. " + str(self.street) + " " + str(
+            self.house_number) + str(
+            show_apartment_number) + " | tel: " + str(self.telephone_number) + " | " + str(
+            self.email_address) + " | " + str(show_company) + str(show_nip)
 
 
 class Profile(models.Model):
     # default: username, password, email, groups
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # user_id
-    address = models.OneToOneField(Address, on_delete=models.CASCADE, null=True, blank=True)  # address_id
+    address = models.OneToOneField(Address, on_delete=models.SET_NULL, null=True, blank=True)  # address_id
     premium_points = models.IntegerField(default=0, validators=[MinValueValidator(0)])
 
     # przy tworzeniu użytkownika user, tworzony jest automatycznie profil
@@ -119,8 +138,8 @@ class Parcel(models.Model):
     content = models.TextField(max_length=3000, blank=True)  # dodac blank
 
     def __str__(self):
-        return self.type + ": " + str(self.weight) + "kg " + str(self.length) + "cm " + str(
-            self.weight) + "cm " + str(self.height) + "cm "
+        return self.type + ": " + str(self.weight) + " kg - (" + str(self.length) + " x " + str(
+            self.weight) + " x " + str(self.height) + ") cm "
 
 
 PACK_STATUS = (
@@ -132,7 +151,7 @@ PACK_STATUS = (
 
 
 class Order(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.PROTECT, null=False)  # profile_id != user_id ?
+    profile = models.ForeignKey(Profile, on_delete=models.PROTECT, null=False)  # profile_id != user_id
     courier = models.ForeignKey(Courier, on_delete=models.CASCADE, null=False)  # courier_id
     parcel = models.OneToOneField(Parcel, on_delete=models.CASCADE, null=False)  # parcel_id
     recipient = models.ForeignKey(RecipientAddress, on_delete=models.CASCADE, null=False)  # recipient_id
@@ -146,4 +165,5 @@ class Order(models.Model):
     date = models.DateField(default=datetime.now)
 
     def __str__(self):
-        return "id: " + str(self.id)
+        return "Zamówienie #" + str(self.id) + " | " + str(self.courier) + " | " + str(
+            self.parcel) + " | status: " + str(PACK_STATUS[self.status][1]) + " | cena: " + str(self.price) + " zł"

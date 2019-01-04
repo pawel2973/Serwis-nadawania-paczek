@@ -2,109 +2,121 @@
 
 {% block body %}
     <div class="wrapper">
+
         <div class="container-fluid">
-            <br>
-            <div class="alert alert-primary text-center" role="alert">
-                <h1>{{ envelopepricing.courier }}</h1>
-            </div>
-            <div class="row">
-
-                <!-- KOPERTA -->
-                <div class="col-lg-4">
-                    <table class="table  table-bordered">
-                        <caption><h5>Koperta</h5></caption>
-                        <thead>
-                        <tr>
-                            <th scope="col">Waga</th>
-                            <th scope="col">Cena Brutto</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>do 1 kg</td>
-                            <td>{{ envelopepricing.up_to_1 }} zł</td>
-                        </tr>
-                        </tbody>
-                    </table>
-
+            {% if not error %}
+                <br>
+                <div class="alert alert-primary text-center" role="alert">
+                    <h1>{{ envelopepricing.courier }}</h1>
                 </div>
 
-                <!-- PACZKA -->
-                <div class="col-lg-4">
-                    <table class="table  table-bordered">
-                        <caption><h5>Paczka</h5></caption>
-                        <thead>
-                        <tr>
-                            <th scope="col">Waga</th>
-                            <th scope="col">Cena Brutto</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>do 1 kg</td>
-                            <td>{{ packpricing.up_to_1 }} zł</td>
-                        </tr>
-                        <tr>
-                            <td>do 2 kg</td>
-                            <td>{{ packpricing.up_to_2 }} zł</td>
-                        </tr>
-                        <tr>
-                            <td>do 5 kg</td>
-                            <td>{{ packpricing.up_to_5 }} zł</td>
-                        </tr>
-                        <tr>
-                            <td>do 10 kg</td>
-                            <td>{{ packpricing.up_to_10 }} zł</td>
-                        </tr>
-                        <tr>
-                            <td>do 15 kg</td>
-                            <td>{{ packpricing.up_to_15 }} zł</td>
-                        </tr>
-                        <tr>
-                            <td>do 20 kg</td>
-                            <td>{{ packpricing.up_to_20 }} zł</td>
-                        </tr>
-                        <tr>
-                            <td>do 30 kg</td>
-                            <td>{{ packpricing.up_to_30 }} zł</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div class="row">
 
+                    <!-- KOPERTA -->
+                    <div class="col-lg-4">
+                        <table class="table  table-bordered">
+                            <caption><h5>Koperta</h5></caption>
+                            <thead>
+                            <tr>
+                                <th scope="col">Waga</th>
+                                <th scope="col">Cena Brutto</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>do 1 kg</td>
+                                <td>{{ envelopepricing.up_to_1 }} zł</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <!-- PACZKA -->
+                    <div class="col-lg-4">
+                        <table class="table  table-bordered">
+                            <caption><h5>Paczka</h5></caption>
+                            <thead>
+                            <tr>
+                                <th scope="col">Waga</th>
+                                <th scope="col">Cena Brutto</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>do 1 kg</td>
+                                <td>{{ packpricing.up_to_1 }} zł</td>
+                            </tr>
+                            <tr>
+                                <td>do 2 kg</td>
+                                <td>{{ packpricing.up_to_2 }} zł</td>
+                            </tr>
+                            <tr>
+                                <td>do 5 kg</td>
+                                <td>{{ packpricing.up_to_5 }} zł</td>
+                            </tr>
+                            <tr>
+                                <td>do 10 kg</td>
+                                <td>{{ packpricing.up_to_10 }} zł</td>
+                            </tr>
+                            <tr>
+                                <td>do 15 kg</td>
+                                <td>{{ packpricing.up_to_15 }} zł</td>
+                            </tr>
+                            <tr>
+                                <td>do 20 kg</td>
+                                <td>{{ packpricing.up_to_20 }} zł</td>
+                            </tr>
+                            <tr>
+                                <td>do 30 kg</td>
+                                <td>{{ packpricing.up_to_30 }} zł</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <!-- PALETA -->
+                    <div class="col-lg-4">
+                        <table class="table  table-bordered">
+                            <caption><h5>Paleta</h5></caption>
+                            <thead>
+                            <tr>
+                                <th scope="col">Waga</th>
+                                <th scope="col">Cena Brutto</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>do 300 kg</td>
+                                <td>{{ palletpricing.up_to_300 }} zł</td>
+                            </tr>
+                            <tr>
+                                <td>do 500 kg</td>
+                                <td>{{ palletpricing.up_to_500 }} zł</td>
+                            </tr>
+                            <tr>
+                                <td>do 800 kg</td>
+                                <td>{{ palletpricing.up_to_800 }} zł</td>
+                            </tr>
+                            <tr>
+                                <td>do 1000 kg</td>
+                                <td>{{ palletpricing.up_to_1000 }} zł</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-
-                <!-- PALETA -->
-                <div class="col-lg-4">
-                    <table class="table  table-bordered">
-                        <caption><h5>Paleta</h5></caption>
-                        <thead>
-                        <tr>
-                            <th scope="col">Waga</th>
-                            <th scope="col">Cena Brutto</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>do 300 kg</td>
-                            <td>{{ palletpricing.up_to_300 }} zł</td>
-                        </tr>
-                        <tr>
-                            <td>do 500 kg</td>
-                            <td>{{ palletpricing.up_to_500 }} zł</td>
-                        </tr>
-                        <tr>
-                            <td>do 800 kg</td>
-                            <td>{{ palletpricing.up_to_800 }} zł</td>
-                        </tr>
-                        <tr>
-                            <td>do 1000 kg</td>
-                            <td>{{ palletpricing.up_to_1000 }} zł</td>
-                        </tr>
-                        </tbody>
-                    </table>
-
+            {% else %}
+                <br>
+                <div class="alert alert-danger text-center" role="alert">
+                    <h1>Wybierz prawidłową firmę kurierską!</h1>
                 </div>
-            </div>
+                <div class="text-center">
+                    <a class="btn btn-primary" href="{% url 'order:pricing' %}" role="button">Powrót do wyboru
+                        kuriera</a>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

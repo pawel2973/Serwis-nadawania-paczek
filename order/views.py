@@ -104,6 +104,14 @@ class IndexView(generic.FormView):
 class CalculateView(generic.ListView):
     template_name = 'order/calculate.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        type = self.request.session.get('type')
+
+        if type is None:
+            return redirect('order:index')
+        else:
+            return super(CalculateView, self).dispatch(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         courier_id = request.session['courier_id'] = request.POST.get('courier')  # get courier_id from button
         if courier_id is None:
@@ -135,6 +143,7 @@ class CalculateView(generic.ListView):
         col_name_pricing = self.request.session.get('col_name_pricing')
         type = self.request.session.get('type')
         ratio = self.request.session.get('ratio')
+
         if type == 'koperta':
             return EnvelopePricing.objects.values_list('courier', 'courier__name', col_name_pricing)
         elif type == 'paczka':
@@ -161,6 +170,12 @@ class SenderAddressView(generic.FormView):
     template_name = 'order/sender_address.html'
     form_class = AddressForm
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.session.get('courier_id') is None:
+            return redirect('order:index')
+        else:
+            return super(SenderAddressView, self).dispatch(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         form = AddressForm(request.POST)  # A form bound to the POST data
         if form.is_valid():
@@ -174,6 +189,12 @@ class RecipientAddressView(generic.FormView):
     template_name = 'order/recipient_address.html'
     form_class = AddressForm
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.session.get('sender_form') is None:
+            return redirect('order:index')
+        else:
+            return super(RecipientAddressView, self).dispatch(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         form = AddressForm(request.POST)  # A form bound to the POST data
         if form.is_valid():
@@ -185,6 +206,20 @@ class RecipientAddressView(generic.FormView):
 
 class SummaryView(generic.TemplateView):
     template_name = 'order/summary.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.session.get('recipient_form') is None:
+            return redirect('order:index')
+        else:
+            return super(SummaryView, self).dispatch(request, *args, **kwargs)
+
+    # def get_context_data(self, **kwargs):
+    #     # parcel info
+    #     type = self.request.session.get('type')
+    #     weight = float(self.request.session.get('weight'))
+    #     length = float(self.request.session.get('length'))
+    #     width = float(self.request.session.get('width'))
+    #     height = float(self.request.session.get('height'))
 
     def post(self, request, *args, **kwargs):
         # Creating parcel
@@ -272,19 +307,28 @@ class PricingCompanyView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(PricingCompanyView, self).get_context_data(**kwargs)
-        context['packpricing'] = PackPricing.objects.get(courier_id=self.kwargs['pk'])
-        context['palletpricing'] = PalletPricing.objects.get(courier_id=self.kwargs['pk'])
-        context['envelopepricing'] = EnvelopePricing.objects.get(courier_id=self.kwargs['pk'])
-        return context
+        try:
+            context['packpricing'] = PackPricing.objects.get(courier_id=self.kwargs['pk'])
+            context['palletpricing'] = PalletPricing.objects.get(courier_id=self.kwargs['pk'])
+            context['envelopepricing'] = EnvelopePricing.objects.get(courier_id=self.kwargs['pk'])
+        except:
+            context['error'] = True
+        finally:
+            return context
 
 
 class ProfileView(generic.TemplateView):
-    # TODO: EDYTUJ ADRES, USUN ADRES - VIEW
     template_name = 'order/profile.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return super(ProfileView, self).dispatch(request, *args, **kwargs)
+        return redirect('order:index')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         get_profile = Profile.objects.get(user_id=self.request.user.id)
+        print(get_profile.address_id)
         print("ProfileView: " + str(get_profile))
         if get_profile.address is not None:
             profile_address = get_profile.address.__dict__
@@ -294,30 +338,65 @@ class ProfileView(generic.TemplateView):
         return context
 
 
-class OrdersView(generic.TemplateView):
-    # TODO: WYPISAC ZAMOWIENIA UZYTKOWNIKA
+class DeleteAddressProfileView(generic.DeleteView):
+    model = Address
+    success_url = reverse_lazy('order:profile')
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            get_profile = Profile.objects.get(user_id=self.request.user.id)
+            obj = self.get_object()
+            # Check address ownership
+            if obj.id != get_profile.address_id:
+                return redirect('order:profile')
+            return super(DeleteAddressProfileView, self).dispatch(request, *args, **kwargs)
+        return redirect('order:index')
+
+
+class UpdateAddressProfileView(generic.UpdateView):
+    template_name = 'order/create_profile_address.html'
+    model = Address
+    form_class = AddressForm
+    success_url = reverse_lazy('order:profile')
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            get_profile = Profile.objects.get(user_id=self.request.user.id)
+            obj = self.get_object()
+            # Check address ownership
+            if obj.id != get_profile.address_id:
+                return redirect('order:profile')
+            return super(UpdateAddressProfileView, self).dispatch(request, *args, **kwargs)
+        return redirect('order:index')
+
+
+class OrdersProfileView(generic.TemplateView):
     # TODO: PRZYCISK ANULUJ ZAMOWIENIE
-    # TODO: SZCZEGOLY ZAMOWIENIA, OPCJONALNE
     template_name = 'order/user_orders.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return super(OrdersProfileView, self).dispatch(request, *args, **kwargs)
+        return redirect('order:index')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         get_profile = Profile.objects.get(user_id=self.request.user.id)
-        orders = get_profile.order_set.all()
-        print(orders.values_list())
-        # get_courier = Courier.objects.values('name').filter(id=orders[2])
-        print(orders.values_list().values())
-        # get_orders = Order.objects.get(profile=get_profile)
-        # print(get_orders.__dict__)
-        # profile_address = get_profile.address.__dict__
-        # context['profile'] = get_profile
-        # context['profile_address'] = profile_address
+        get_order_list = Order.objects.filter(profile_id=get_profile.id)
+        context['order_list'] = get_order_list
         return context
 
 
-class ProfileAddressView(generic.FormView):
+class ProfileAddressCreateView(generic.FormView):
     template_name = 'order/create_profile_address.html'
     form_class = AddressForm
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            get_profile = Profile.objects.get(user_id=self.request.user.id)
+            if get_profile.address_id is None:
+                return super(ProfileAddressCreateView, self).dispatch(request, *args, **kwargs)
+        return redirect('order:profile')
 
     def post(self, request, *args, **kwargs):
         form = AddressForm(request.POST)  # A form bound to the POST data
@@ -330,7 +409,6 @@ class ProfileAddressView(generic.FormView):
 
 
 class SignUpView(generic.CreateView):
-    # TODO: FORMULARZ ZMIANY HASLA ???
     form_class = UserCreationForm
     success_url = reverse_lazy('order:login')
     template_name = 'registration/signup.html'

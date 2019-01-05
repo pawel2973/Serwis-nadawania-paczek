@@ -167,3 +167,12 @@ class Order(models.Model):
     def __str__(self):
         return "#" + str(self.id) + " | " + str(self.courier) + " | " + str(
             self.parcel) + " | status: " + str(PACK_STATUS[self.status][1]) + " | cena: " + str(self.price) + " zł"
+
+class Opinion(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, null=False)
+    date = models.DateField(default=datetime.now)
+    content = models.TextField(max_length=3000)
+    rating = models.IntegerField(choices=list(zip(range(1, 11), range(1, 11))))
+
+    def __str__(self):
+        return "Ocena: " + str(self.rating) + " | " + str(self.order.courier) + "  | Dnia: " + str(self.date)

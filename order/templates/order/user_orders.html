@@ -4,92 +4,99 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-lg-12">
+<div class="row">
+    <div class="col-lg-12">
 
-            {% if cancel_error %}
-                <div class="alert alert-danger text-center" role="alert">
-                    <strong>{{ cancel_error }}</strong>
+        {% if cancel_error %}
+        <div class="alert alert-danger text-center" role="alert">
+            <strong>{{ cancel_error }}</strong>
+        </div>
+        {% endif %}
+
+        {% if cancel_success %}
+        <div class="alert alert-info text-center" role="alert">
+            <strong>{{ cancel_success }}</strong>
+        </div>
+        {% endif %}
+        {% if order_success %}
+        <div class="alert alert-info text-center" role="alert">
+            <strong>{{ order_success }}</strong>
+        </div>
+        {% endif %}
+
+
+        <div class="accordion" id="accordionOrder">
+
+            {% for order in order_list %}
+
+            <div class="card">
+                <div class="card-header" id="heading{{ forloop.counter }}">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                                data-target="#collapse{{ forloop.counter }}"
+                                aria-expanded="true" aria-controls="collapse{{ forloop.counter }}">
+                            {{ order }}
+                        </button>
+                    </h2>
                 </div>
-            {% endif %}
 
-            {% if cancel_success %}
-                <div class="alert alert-info text-center" role="alert">
-                    <strong>{{ cancel_success }}</strong>
-                </div>
-            {% endif %}
-            {% if order_success %}
-                <div class="alert alert-info text-center" role="alert">
-                    <strong>{{ order_success }}</strong>
-                </div>
-            {% endif %}
+                <div id="collapse{{ forloop.counter }}" class="collapse"
+                     aria-labelledby="heading{{ forloop.counter }}"
+                     data-parent="#accordionOrder">
+                    <div class="card-body">
 
+                        <table class="table  table-bordered">
+                            <tbody>
+                            <tr>
+                                <td><strong>Informacje o przesyłce</strong></td>
+                                <td>{{ order.parcel }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Status przesyłki</strong></td>
+                                <td>{{ order.get_status_display }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Data zamówienia</strong></td>
+                                <td>{{ order.date }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cena</strong></td>
+                                <td>{{ order.price }} zł</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Kurier</strong></td>
+                                <td>{{ order.courier }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Adres nadawcy</strong></td>
+                                <td>{{ order.sender.address }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Adres odbiorcy</strong></td>
+                                <td>{{ order.recipient.address }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        {% if order.status == 0 %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <button class="button btn-primary btn-md" value="{{ order.id }}" name="submit"
+                                    type="submit">Anuluj zamówienie
+                            </button>
+                        </form>
+                        {% endif %}
 
-            <div class="accordion" id="accordionOrder">
-
-                {% for order in order_list %}
-
-                    <div class="card">
-                        <div class="card-header" id="heading{{ forloop.counter }}">
-                            <h2 class="mb-0">
-                                <button class="btn btn-link" type="button" data-toggle="collapse"
-                                        data-target="#collapse{{ forloop.counter }}"
-                                        aria-expanded="true" aria-controls="collapse{{ forloop.counter }}">
-                                    {{ order }}
-                                </button>
-                            </h2>
-                        </div>
-
-                        <div id="collapse{{ forloop.counter }}" class="collapse"
-                             aria-labelledby="heading{{ forloop.counter }}"
-                             data-parent="#accordionOrder">
-                            <div class="card-body">
-
-                                <table class="table  table-bordered">
-                                    <tbody>
-                                    <tr>
-                                        <td><strong>Informacje o przesyłce</strong></td>
-                                        <td>{{ order.parcel }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Status przesyłki</strong></td>
-                                        <td>{{ order.get_status_display }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Data zamówienia</strong></td>
-                                        <td>{{ order.date }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Cena</strong></td>
-                                        <td>{{ order.price }} zł</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Kurier</strong></td>
-                                        <td>{{ order.courier }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Adres nadawcy</strong></td>
-                                        <td>{{ order.sender.address }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Adres odbiorcy</strong></td>
-                                        <td>{{ order.recipient.address }}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                {% if order.status == 0 %}
-                                    <form method="post">
-                                        {% csrf_token %}
-                                        <button class="button btn-primary btn-md" value="{{ order.id }}" name="submit"
-                                                type="submit">Anuluj zamówienie
-                                        </button>
-                                    </form>
-                                {% endif %}
-                            </div>
-                        </div>
+                        <form action="{% url 'order:opinion_create' %}" method="get">
+                            <input type="hidden" name="order_id" value="{{ order.id }}"/>
+                            <button class="button btn-primary btn-md"
+                                    type="submit">Oceń zamówienie
+                            </button>
+                        </form>
                     </div>
-                {% endfor %}
+                </div>
             </div>
+            {% endfor %}
         </div>
     </div>
+</div>
 {% endblock %}

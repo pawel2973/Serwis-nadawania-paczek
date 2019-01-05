@@ -24,4 +24,5 @@ urlpatterns = [
     path('profile_address/<pk>/update/', views.UpdateAddressProfileView.as_view(), name='profile_address_update'),
     path('orders/', views.OrdersProfileView.as_view(), name='orders'),
     path('ranking/', views.CourierRankingView.as_view(), name='ranking'),
+    path('opinion/', views.OpinionCreateView.as_view(), name='opinion_create'),
 ]

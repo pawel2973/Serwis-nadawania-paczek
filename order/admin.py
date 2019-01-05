@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Courier, Order, Parcel, SenderAddress, RecipientAddress, Profile, Address, EnvelopePricing, \
-    PackPricing, PalletPricing
+    PackPricing, PalletPricing, Opinion
 
 admin.site.register(Address)
 admin.site.register(Profile)
@@ -12,3 +12,4 @@ admin.site.register(PalletPricing)
 admin.site.register(EnvelopePricing)
 admin.site.register(Parcel)
 admin.site.register(Order)
+admin.site.register(Opinion)

@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from .models import Address
+from .models import Address, Opinion
 from django.db import models
 from django.forms import ModelForm
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -57,6 +57,11 @@ class FormParcelSize(forms.Form):  # Note that it is not inheriting from forms.M
     length = forms.FloatField(validators=[greaterThanZeroValidator])
     width = forms.FloatField(validators=[greaterThanZeroValidator])
     height = forms.FloatField(validators=[greaterThanZeroValidator])
+
+class OpinionForm(forms.ModelForm):
+    class Meta:
+        model = Opinion
+        fields = ['rating', 'content']
 
 # class EnvelopeForm(forms.Form):
 #     pack_type = forms.CharField(default="koperta", hidden=True)

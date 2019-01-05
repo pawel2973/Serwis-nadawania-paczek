@@ -5,6 +5,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 # from django.http import request
 from django.core.checks import messages
+from django.db import IntegrityError
 from django.db.models import Count
 from django.http import Http404, HttpResponseForbidden, HttpResponseRedirect, request, HttpResponse
 from django.shortcuts import render, redirect, render_to_response
@@ -13,12 +14,16 @@ from django.views import generic
 from django.views.generic import RedirectView
 from django.views.generic.edit import ModelFormMixin, FormMixin, FormView
 
-from .forms import FormParcelSize, AddressForm
+from .forms import FormParcelSize, AddressForm, OpinionForm
 from .models import Courier, PackPricing, PalletPricing, EnvelopePricing, Parcel, Order, SenderAddress, Address, \
-    RecipientAddress, Profile
+    RecipientAddress, Profile, Opinion
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
+from django.template.defaulttags import register
 
+@register.filter
+def get_range(value):
+    return range(value)
 
 class IndexView(generic.FormView):
     template_name = 'order/index.html'
@@ -360,8 +365,43 @@ class PricingCompanyView(generic.TemplateView):
             context['envelopepricing'] = EnvelopePricing.objects.get(courier_id=self.kwargs['pk'])
         except:
             context['error'] = True
-        finally:
-            return context
+
+        context['opinion'] = Opinion.objects.filter(order__courier_id=self.kwargs['pk'])
+        if not context['opinion']:
+            context['no_opinions'] = True
+
+        return context
+
+
+class OpinionCreateView(generic.FormView):
+    template_name = 'order/opinion_create.html'
+    form_class = OpinionForm
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.GET.get('order_id') is None:
+            return redirect('order:index')
+        else:
+            return super(OpinionCreateView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        request.session['order_id'] = request.GET.get('order_id')
+        return super(OpinionCreateView, self).get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        form = OpinionForm(request.POST)  # A form bound to the POST data
+        if form.is_valid():
+            my_data = form.cleaned_data
+            order_obj = Order.objects.get(pk=request.session['order_id'])
+            try:
+                Opinion.objects.create(order=order_obj, content=my_data['content'],
+                                   rating=my_data['rating'])
+                del request.session['order_id']
+                return redirect('order:pricing_company', pk=order_obj.courier_id)
+            except IntegrityError:
+                return render(request, 'order/opinion_create.html', {'form': form,'error_unique':'To zamowienie juz ma dodana opinie'})
+            # return redirect('order:pricing_company', pk=order_obj.courier_id)
+        else:
+            return render(request, 'order/opinion_create.html', {'form': form})
 
 
 class ProfileView(generic.TemplateView):
@@ -428,9 +468,8 @@ class OrdersProfileView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
         get_profile = Profile.objects.get(user_id=self.request.user.id)
         get_order_list = Order.objects.filter(profile_id=get_profile.id).order_by('-id')
-        print(get_order_list)
+        # print(get_order_list)
         context['order_list'] = get_order_list
-
         if self.request.session.get('order_success') is not None:
             context['order_success'] = self.request.session.get('order_success')
             del self.request.session['order_success']

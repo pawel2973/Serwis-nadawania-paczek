@@ -202,6 +202,7 @@ class UrlsTest(TestCase):
         response = self.client.get(reverse('order:orders'))
         self.assertEqual(302, response.status_code)
 
+    #checking ranking without couriers in database
     def test_ranking_view(self):
         response = self.client.get(reverse('order:ranking'))
         self.assertEqual(200, response.status_code)

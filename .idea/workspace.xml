@@ -17,94 +17,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/order/templates/order/profile.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1105">
-              <caret line="65" lean-forward="true" selection-start-line="65" selection-end-line="65" />
-              <folding>
-                <element signature="n#style#0;n#form#0;n#div#2;n#div#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/order/templates/order/summary.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="21" column="20" lean-forward="true" selection-start-line="21" selection-start-column="20" selection-end-line="21" selection-end-column="20" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/order/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2454">
-              <caret line="219" column="41" lean-forward="true" selection-start-line="219" selection-start-column="41" selection-end-line="219" selection-end-column="41" />
+            <state relative-caret-position="176">
+              <caret line="421" column="84" selection-start-line="421" selection-start-column="84" selection-end-line="421" selection-end-column="84" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
-                <element signature="e#1037#2576#0" />
-                <element signature="e#6933#6967#0" />
-                <element signature="e#7015#7051#0" />
-                <element signature="e#7101#7565#0" />
-                <element signature="e#7618#8050#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/order/templates/order/pricing_company.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="25" column="32" lean-forward="true" selection-start-line="25" selection-start-column="32" selection-end-line="25" selection-end-column="32" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/order/templates/order/courier.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="22" column="48" lean-forward="true" selection-start-line="22" selection-start-column="48" selection-end-line="22" selection-end-column="48" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/order/templates/order/user_orders.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="43" column="67" selection-start-line="43" selection-start-column="67" selection-end-line="43" selection-end-column="67" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/order/templates/order/pricing.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" column="14" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/order/templates/order/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="124" column="34" lean-forward="true" selection-start-line="124" selection-start-column="34" selection-end-line="124" selection-end-column="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/order/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="25" column="1" lean-forward="true" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
+            <state relative-caret-position="412">
+              <caret line="83" column="30" lean-forward="true" selection-start-line="83" selection-start-column="30" selection-end-line="83" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -112,8 +41,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/order/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1330">
-              <caret line="57" column="48" lean-forward="true" selection-start-line="57" selection-start-column="48" selection-end-line="57" selection-end-column="48" />
+            <state relative-caret-position="259">
+              <caret line="151" lean-forward="true" selection-start-line="151" selection-end-line="151" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/order/templates/order/pricing.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="7" selection-start-line="7" selection-end-line="9" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -130,9 +68,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>call</find>
-      <find>calc</find>
-      <find>dłu</find>
       <find>inputDługość</find>
       <find>cou</find>
       <find>courier</find>
@@ -160,6 +95,9 @@
       <find>order</find>
       <find>PricingCOm</find>
       <find>filter</find>
+      <find>ranki</find>
+      <find>pricin</find>
+      <find>orders</find>
     </findStrings>
     <replaceStrings>
       <replace>g_cname</replace>
@@ -198,21 +136,22 @@
         <option value="$PROJECT_DIR$/order/templates/order/index.html" />
         <option value="$PROJECT_DIR$/order/forms.py" />
         <option value="$PROJECT_DIR$/order/templates/order/about.html" />
-        <option value="$PROJECT_DIR$/order/templates/order/base.html" />
         <option value="$PROJECT_DIR$/order/templates/order/create_profile_address.html" />
         <option value="$PROJECT_DIR$/order/templates/order/pricing_company.html" />
         <option value="$PROJECT_DIR$/order/urls.py" />
         <option value="$PROJECT_DIR$/order/models.py" />
-        <option value="$PROJECT_DIR$/order/views.py" />
         <option value="$PROJECT_DIR$/order/templates/order/summary.html" />
         <option value="$PROJECT_DIR$/order/templates/order/profile.html" />
+        <option value="$PROJECT_DIR$/order/templates/order/base.html" />
+        <option value="$PROJECT_DIR$/order/templates/order/courier_ranking.html" />
         <option value="$PROJECT_DIR$/order/templates/order/user_orders.html" />
+        <option value="$PROJECT_DIR$/order/views.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
+    <option name="x" value="156" />
+    <option name="y" value="41" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
   </component>
@@ -221,7 +160,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -276,6 +214,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -352,12 +291,13 @@
       <workItem from="1545243721468" duration="38544000" />
       <workItem from="1545332622732" duration="84217000" />
       <workItem from="1546438679547" duration="9927000" />
-      <workItem from="1546502379406" duration="32124000" />
+      <workItem from="1546502379406" duration="34411000" />
+      <workItem from="1546697344594" duration="3812000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="218433000" />
+    <option name="totallyTimeSpent" value="224532000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -372,12 +312,12 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22921109" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23187633" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32936078" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.6321962" visible="true" weight="0.2156013" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.6316631" visible="true" weight="0.53737813" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -385,7 +325,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.36780384" side_tool="true" visible="true" weight="0.2156013" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.3683369" side_tool="true" visible="true" weight="0.53737813" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49840087" weight="0.29252437" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.32932165" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -465,16 +405,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/order/templates/order/recipient_address.html" />
-    <entry file="file://$PROJECT_DIR$/order/templates/order/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1207">
-          <caret line="71" selection-start-line="71" selection-end-line="71" />
-          <folding>
-            <element signature="n#style#0;n#span#0;n#a#0;n#li#0;n#ul#1;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/order/templates/order/about.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -586,84 +516,93 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/order/templates/order/summary.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="38" column="20" selection-start-line="38" selection-start-column="20" selection-end-line="38" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/order/templates/order/courier.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
-          <caret line="22" column="48" lean-forward="true" selection-start-line="22" selection-start-column="48" selection-end-line="22" selection-end-column="48" />
+          <caret line="22" column="48" selection-start-line="22" selection-start-column="48" selection-end-line="22" selection-end-column="48" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/order/templates/order/pricing_company.html">
+    <entry file="file://$PROJECT_DIR$/order/templates/order/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="25" column="32" lean-forward="true" selection-start-line="25" selection-start-column="32" selection-end-line="25" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/order/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2454">
-          <caret line="219" column="41" lean-forward="true" selection-start-line="219" selection-start-column="41" selection-end-line="219" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-            <element signature="e#1037#2576#0" />
-            <element signature="e#6933#6967#0" />
-            <element signature="e#7015#7051#0" />
-            <element signature="e#7101#7565#0" />
-            <element signature="e#7618#8050#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/order/templates/order/summary.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="20" lean-forward="true" selection-start-line="21" selection-start-column="20" selection-end-line="21" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/order/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1330">
-          <caret line="57" column="48" lean-forward="true" selection-start-line="57" selection-start-column="48" selection-end-line="57" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/order/templates/order/profile.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1105">
-          <caret line="65" lean-forward="true" selection-start-line="65" selection-end-line="65" />
-          <folding>
-            <element signature="n#style#0;n#form#0;n#div#2;n#div#0;n#!!top" expanded="true" />
-          </folding>
+        <state relative-caret-position="2108">
+          <caret line="124" column="34" selection-start-line="124" selection-start-column="34" selection-end-line="124" selection-end-column="34" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/order/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
-          <caret line="25" column="1" lean-forward="true" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
+          <caret line="25" column="1" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/order/templates/order/index.html">
+    <entry file="file://$PROJECT_DIR$/order/templates/order/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="124" column="34" lean-forward="true" selection-start-line="124" selection-start-column="34" selection-end-line="124" selection-end-column="34" />
+        <state relative-caret-position="291">
+          <caret line="61" column="80" selection-start-line="61" selection-start-column="80" selection-end-line="61" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/order/templates/order/courier_ranking.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="952">
+          <caret line="56" column="42" lean-forward="true" selection-start-line="56" selection-start-column="42" selection-end-line="56" selection-end-column="42" />
+          <folding>
+            <element signature="n#style#0;n#div#2;n#div#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/order/templates/order/pricing_company.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" column="32" selection-start-line="25" selection-start-column="32" selection-end-line="25" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/order/templates/order/profile.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="665">
+          <caret line="65" selection-start-line="65" selection-end-line="65" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/order/templates/order/pricing.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="14" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
+        <state relative-caret-position="119">
+          <caret line="7" selection-start-line="7" selection-end-line="9" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/order/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="259">
+          <caret line="151" lean-forward="true" selection-start-line="151" selection-end-line="151" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/order/templates/order/user_orders.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="43" column="67" selection-start-line="43" selection-start-column="67" selection-end-line="43" selection-end-column="67" />
+        <state relative-caret-position="412">
+          <caret line="83" column="30" lean-forward="true" selection-start-line="83" selection-start-column="30" selection-end-line="83" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/order/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="421" column="84" selection-start-line="421" selection-start-column="84" selection-end-line="421" selection-end-column="84" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

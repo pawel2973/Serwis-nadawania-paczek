@@ -167,20 +167,24 @@ class AboutCompanyView(generic.TemplateView):
 
 class CourierView(generic.TemplateView):
     template_name = 'order/courier.html'
-    
+
+
 class CourierRankingView(generic.TemplateView):
     template_name = 'order/courier_ranking.html'
 
     def get_context_data(self, **kwargs):
         context = super(CourierRankingView, self).get_context_data(**kwargs)
-        context['top'] = list(Order.objects.all().values('courier__name').annotate(total=Count('courier')).order_by('-total')[:5])
+        context['top'] = list(
+            Order.objects.all().values('courier__name').annotate(total=Count('courier')).order_by('-total')[:5])
         all_couriers = Order.objects.all().count()
-        for i in range(5):
+        for i in range(len(context['top'])):
             context['top'][i]['total'] /= all_couriers
             context['top'][i]['total'] *= 100
-            context['top'][i]['total'] = round(context['top'][i]['total'],2)
-        context['top'].append( {'courier__name':'Inne firmy','total':round(100 - sum(list(d['total'] for d in context['top'])),2)})
+            context['top'][i]['total'] = round(context['top'][i]['total'], 2)
+        context['top'].append(
+            {'courier__name': 'Inne firmy', 'total': round(100 - sum(list(d['total'] for d in context['top'])), 2)})
         return context
+
 
 class SenderAddressView(generic.FormView):
     template_name = 'order/sender_address.html'
@@ -405,7 +409,6 @@ class UpdateAddressProfileView(generic.UpdateView):
 
 
 class OrdersProfileView(generic.TemplateView):
-    # TODO: PRZYCISK ANULUJ ZAMOWIENIE
     template_name = 'order/user_orders.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -416,9 +419,22 @@ class OrdersProfileView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         get_profile = Profile.objects.get(user_id=self.request.user.id)
-        get_order_list = Order.objects.filter(profile_id=get_profile.id)
+        get_order_list = Order.objects.filter(profile_id=get_profile.id).order_by('-id')
+        print(get_order_list)
         context['order_list'] = get_order_list
         return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        order_id = request.POST.get('submit')
+        order_obj = Order.objects.get(pk=order_id)
+        if order_obj.status != 0:
+            context['cancel_error'] = "Nie możesz anulować zamówienia o nr: " + str(order_id)
+            return super(OrdersProfileView, self).render_to_response(context)
+        order_obj.status = 3
+        order_obj.save()
+        context['cancel_success'] = "Pomyślnie anulowano zamówienie o nr: " + str(order_id)
+        return super(OrdersProfileView, self).render_to_response(context)
 
 
 class ProfileAddressCreateView(generic.FormView):

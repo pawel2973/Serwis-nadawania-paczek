@@ -7,8 +7,18 @@
     <div class="row">
         <div class="col-lg-12">
 
-            {{ order.sender }}
-            {{ order.sender.address }}
+            {% if cancel_error %}
+                <div class="alert alert-danger text-center" role="alert">
+                    <strong>{{ cancel_error }}</strong>
+                </div>
+            {% endif %}
+
+            {% if cancel_success %}
+                <div class="alert alert-info text-center" role="alert">
+                    <strong>{{ cancel_success }}</strong>
+                </div>
+            {% endif %}
+
 
             <div class="accordion" id="accordionOrder">
 
@@ -38,13 +48,13 @@
                                     </tr>
                                     <tr>
                                         <td><strong>Status przesyłki</strong></td>
-                                        <td>{{ order.date }}</td>
-                                    </tr>
-                                     <tr>
-                                        <td><strong>Data zamówienia</strong></td>
                                         <td>{{ order.get_status_display }}</td>
                                     </tr>
-                                     <tr>
+                                    <tr>
+                                        <td><strong>Data zamówienia</strong></td>
+                                        <td>{{ order.date }}</td>
+                                    </tr>
+                                    <tr>
                                         <td><strong>Cena</strong></td>
                                         <td>{{ order.price }} zł</td>
                                     </tr>
@@ -62,7 +72,14 @@
                                     </tr>
                                     </tbody>
                                 </table>
-
+                                {% if order.status == 0 %}
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <button class="button btn-primary btn-md" value="{{ order.id }}" name="submit"
+                                                type="submit">Anuluj zamówienie
+                                        </button>
+                                    </form>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

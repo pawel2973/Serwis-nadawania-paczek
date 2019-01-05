@@ -168,6 +168,7 @@ class Order(models.Model):
         return "#" + str(self.id) + " | " + str(self.courier) + " | " + str(
             self.parcel) + " | status: " + str(PACK_STATUS[self.status][1]) + " | cena: " + str(self.price) + " zł"
 
+
 class Opinion(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE, null=False)
     date = models.DateField(default=datetime.now)
@@ -176,3 +177,59 @@ class Opinion(models.Model):
 
     def __str__(self):
         return "Ocena: " + str(self.rating) + " | " + str(self.order.courier) + "  | Dnia: " + str(self.date)
+
+
+class Gift(models.Model):
+    name = models.CharField(max_length=250)
+    premium_points = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+    gift_logo = models.FileField()
+
+    def __str__(self):
+        return str(self.name) + " | punkty premium: " + str(self.premium_points)
+
+
+class GiftAddress(models.Model):
+    name = models.CharField(max_length=90, validators=[name_validator()])
+    surname = models.CharField(max_length=90, validators=[name_validator()])
+    company_name = models.CharField(max_length=500, blank=True)  # isOptional
+    zip_code = models.CharField(max_length=6, validators=[zip_code_validator()])  # Poland only
+    city = models.CharField(max_length=350, validators=[name_validator()])
+    street = models.CharField(max_length=350)
+    house_number = models.IntegerField(validators=[MinValueValidator(0)])
+    apartment_number = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(0)])  # isOptional
+    telephone_number = models.CharField(max_length=20, validators=[MinLengthValidator(9)])  # !!! READ DOC !!!
+    email_address = models.EmailField(max_length=250)
+    nip = models.CharField(null=True, blank=True, max_length=10,
+                           validators=[MinLengthValidator(10), MaxLengthValidator(10)])  # !!! READ DOC !!!
+
+    def __str__(self):
+        show_nip = self.nip
+        show_apartment_number = self.apartment_number
+        show_company = self.company_name
+
+        if show_nip is None:
+            show_nip = ""
+        else:
+            show_nip = " - nip: " + show_nip
+        if show_apartment_number is None:
+            show_apartment_number = ""
+        else:
+            show_apartment_number = "/" + str(show_apartment_number)
+        if show_company is None:
+            show_company = ""
+
+        return str(self.name) + " " + str(self.surname) + " | " + str(
+            self.zip_code) + " " + str(self.city) + " ul. " + str(self.street) + " " + str(
+            self.house_number) + str(
+            show_apartment_number) + " | tel: " + str(self.telephone_number) + " | " + str(
+            self.email_address) + " | " + str(show_company) + str(show_nip)
+
+
+class OrderGift(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.PROTECT, null=False)
+    recipient = models.ForeignKey(GiftAddress, on_delete=models.PROTECT, null=True)
+    gift = models.ForeignKey(Gift, on_delete=models.PROTECT, null=False)
+    date = models.DateField(default=datetime.now)
+
+    def __str__(self):
+        return str(self.gift.name) + " | " + str(self.date)

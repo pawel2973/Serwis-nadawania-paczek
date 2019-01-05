@@ -4,24 +4,31 @@
 {% endblock %}
 
 {% block body %}
+    <br/>
+    {% if gift_order_error %}
+        <div class="alert alert-danger text-center" role="alert">
+            <strong>{{ gift_order_error }}</strong>
+        </div>
+    {% endif %}
+    {% if gift_order_success %}
+        <div class="alert alert-danger text-center" role="alert">
+            <strong>{{ gift_order_success }}</strong>
+        </div>
+    {% endif %}
     <div class="row">
-        <div class="col-lg-4">
-
-            <div class="col-12">
-                <div class="list-group" id="list-tab" role="tablist">
-                    <a class="list-group-item list-group-item-action active text-center" id="list-home-list"
-                       data-toggle="list"
-                       href="#list-home" role="tab" aria-controls="home"><h5>Witaj
-                        <strong>{{ profile.user.username }}</strong>
-                    </h5></a>
-                    <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list"
-                       href="#list-settings" role="tab" aria-controls="settings"><strong>Punkty
-                        premium:</strong> {{ profile.premium_points }}</a>
+        <!-- Welcome message -->
+        <div class="col-lg-12">
+            <div class="jumbotron jumbotron-fluid"
+                 style="background-color:transparent !important;  border-style:solid; border-width: thin;">
+                <div class="container">
+                    <h1 class="display-4">Witaj {{ profile.user.username }}</h1>
+                    <p class="lead">Zarządzaj swoim adresem oraz punktami premium.</p>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-4">
+        <!-- Show address -->
+        <div class="col-lg-12">
             <table class="table  table-bordered">
                 <thead>
                 <tr>
@@ -37,29 +44,125 @@
                         </tr>
                     {% endif %}
                 {% endfor %}
-
                 </tbody>
             </table>
+            <div class="text-center">
+                {% if not profile_address %}
+                    <!-- if user don't have address -->
+                    <a href="{% url 'order:profile_address_create' %}">
+                        <button class="btn btn-primary">Stworz adres</button>
+                    </a>
+                {% else %}
+                    <!-- user have address -->
+                    <a href="{% url 'order:profile_address_update' profile.address_id %}">
+                        <button class="btn btn-primary">Edytuj adres</button>&nbsp;
+                    </a>
+                    <form action="{% url 'order:profile_address_delete' profile.address_id %}" method="post"
+                          style="display: inline;">
+                        {% csrf_token %}
+                        <button class="btn btn-primary" type="submit">Usun adres</button>
+                    </form>
+                {% endif %}
+            </div>
         </div>
-        <div class="col-lg-4">
-            {% if not profile_address %}
-                <!-- if user don't have address -->
-                <a href="{% url 'order:profile_address_create' %}">
-                    <button class="btn btn-primary btn-lg">Stworz adres</button>
-                </a>
-            {% else %}
+    </div> <br/><br/>
 
-                <a href="{% url 'order:profile_address_update' profile.address_id %}">
-                    <button class="btn btn-primary btn-lg">Edytuj adres</button>
-                </a>
+    <!-- Show premium points -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item-info list-group-item-action active text-center" id="list-home-list"
+                   data-toggle="list"
+                   href="#list-home" role="tab" aria-controls="home"><h5><strong>Wybierz swoją nagrodę</strong></h5></a>
+                <a class="list-group-item-info list-group-item-action" id="list-settings-list" data-toggle="list"
+                   href="#list-settings" role="tab" aria-controls="settings"><strong>Punkty
+                    premium:</strong> {{ profile.premium_points }}</a>
+            </div>
+        </div>
+    </div> <br/>
 
-                <form action="{% url 'order:profile_address_delete' profile.address_id %}" method="post"
-                      style="display: inline;">
-                    {% csrf_token %}
-                    <button class="btn btn-primary btn-lg" type="submit">Usun adres</button>
-                </form>
+    <!-- Show gifts -->
+    <div class="row">
+        {% for gift in gifts %}
+            <div class="col-lg-4">
+                <div class="card">
+                    <img class="card-img-top" src="{{ gift.gift_logo.url }}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ gift.name }}</h5>
+                        <h6>Punkty premium</h6>
+                        <h7>{{ gift.premium_points }}</h7>
+                        <br/><br/>
+                        <form method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-outline-info btn-block" value="{{ gift.id }}" name="submit"
+                                    type="submit">Odbierz
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <br/>
+            </div>
+        {% endfor %}
+    </div>
 
-            {% endif %}
+    <!-- Gift order label -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item-info list-group-item-action active text-center"><h5><strong>Zamówione
+                    nagrody</strong></h5></a>
+            </div>
         </div>
     </div>
+
+    <!-- Show ordered gifts -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="accordion" id="accordionOrder">
+                {% for gift in gift_orders %}
+                    <div class="card">
+                        <div class="card-header" id="heading{{ forloop.counter }}">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                        data-target="#collapse{{ forloop.counter }}"
+                                        aria-expanded="true" aria-controls="collapse{{ forloop.counter }}">
+                                    {{ gift.id }}# {{ gift }}
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapse{{ forloop.counter }}" class="collapse"
+                             aria-labelledby="heading{{ forloop.counter }}"
+                             data-parent="#accordionOrder">
+                            <div class="card-body">
+                                <table class="table  table-bordered">
+                                    <tbody>
+                                    <tr>
+                                        <td><strong>Użytkownik</strong></td>
+                                        <td>{{ gift.profile }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Prezent</strong></td>
+                                        <td>{{ gift.gift }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Wykorzystano punktów premium</strong></td>
+                                        <td>{{ gift.gift.premium_points }} p.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Data</strong></td>
+                                        <td>{{ gift.date }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Adres odbiorcy</strong></td>
+                                        <td>{{ gift.recipient }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div> <br/>
 {% endblock %}

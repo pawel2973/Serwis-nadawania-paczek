@@ -16,7 +16,7 @@ from django.views.generic.edit import ModelFormMixin, FormMixin, FormView
 
 from .forms import FormParcelSize, AddressForm, OpinionForm
 from .models import Courier, PackPricing, PalletPricing, EnvelopePricing, Parcel, Order, SenderAddress, Address, \
-    RecipientAddress, Profile, Opinion
+    RecipientAddress, Profile, Opinion, GiftAddress, Gift, OrderGift
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.template.defaulttags import register
@@ -415,13 +415,57 @@ class ProfileView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         get_profile = Profile.objects.get(user_id=self.request.user.id)
-        print(get_profile.address_id)
-        print("ProfileView: " + str(get_profile))
+        get_gift_orders = OrderGift.objects.all().filter(profile=get_profile).order_by('-id')
+
         if get_profile.address is not None:
             profile_address = get_profile.address.__dict__
             context['profile_address'] = profile_address
+        if get_gift_orders is not None:
+            context['gift_orders'] = get_gift_orders
         context['profile'] = get_profile
+        get_gifts = Gift.objects.all().order_by('-premium_points')
+        context['gifts'] = get_gifts
         return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+
+        # Get gift premium points
+        gift_id = request.POST.get('submit')
+        gift_obj = Gift.objects.get(pk=gift_id)
+        gift_premium_points = gift_obj.premium_points
+
+        # Get profile premium points
+        profile_obj = Profile.objects.get(user_id=self.request.user.id)
+        profile_premium_points = profile_obj.premium_points
+
+        if profile_obj.address is None:
+            context['gift_order_error'] = "Nie podałeś adresu w swoim profilu!"
+            return super(ProfileView, self).render_to_response(context)
+        elif gift_premium_points > profile_premium_points:
+            context['gift_order_error'] = "Nie posiadasz wystarczającej ilości punktów premium!"
+            return super(ProfileView, self).render_to_response(context)
+        else:
+            # Remove some premium points
+            profile_obj.premium_points -= gift_premium_points
+            profile_obj.save()
+            # Create gift order
+            profile_address_obj = profile_obj.address
+            gift_address_obj = GiftAddress.objects.create(name=profile_address_obj.name,
+                                                          surname=profile_address_obj.surname,
+                                                          company_name=profile_address_obj.company_name,
+                                                          zip_code=profile_address_obj.zip_code,
+                                                          city=profile_address_obj.city,
+                                                          street=profile_address_obj.street,
+                                                          house_number=profile_address_obj.house_number,
+                                                          apartment_number=profile_address_obj.apartment_number,
+                                                          telephone_number=profile_address_obj.telephone_number,
+                                                          email_address=profile_address_obj.email_address,
+                                                          nip=profile_address_obj.nip)
+            OrderGift.objects.create(profile=profile_obj, recipient=gift_address_obj, gift=gift_obj)
+            context['profile'] = profile_obj
+            context['gift_order_success'] = "Nagroda została zamówiona pomyślnie. Oczekuj niespodzianki wkrótce."
+            return super(ProfileView, self).render_to_response(context)
 
 
 class DeleteAddressProfileView(generic.DeleteView):

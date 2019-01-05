@@ -257,6 +257,8 @@ class SummaryView(generic.TemplateView):
         recipient_form = self.request.session.get('recipient_form')
         context['recipient_obj'] = Address(**recipient_form)
 
+        # add premium points
+        context['premium_points'] = int(self.request.session.get('price'))
         return context
 
     def post(self, request, *args, **kwargs):
@@ -317,6 +319,10 @@ class SummaryView(generic.TemplateView):
                              recipient=recipient_address_obj,
                              sender=sender_address_obj, price=price)
 
+        # Add premium points
+        profile_obj.premium_points += int(price)
+        profile_obj.save()
+
         # DEL session vars
         del request.session['type']
         del request.session['weight']
@@ -330,7 +336,10 @@ class SummaryView(generic.TemplateView):
         if request.session.get('ratio') is not None:
             del request.session['ratio']
 
-        return redirect('order:index')
+        request.session['order_success'] = "Dziękujemy za złożenie zamówienia. " \
+                                           "Szczegóły oraz status konkretnego zamówienia " \
+                                           "możesz sprawdzić w liście poniżej."
+        return redirect('order:orders')
 
 
 class PricingView(generic.ListView):
@@ -372,7 +381,6 @@ class ProfileView(generic.TemplateView):
             profile_address = get_profile.address.__dict__
             context['profile_address'] = profile_address
         context['profile'] = get_profile
-
         return context
 
 
@@ -422,6 +430,10 @@ class OrdersProfileView(generic.TemplateView):
         get_order_list = Order.objects.filter(profile_id=get_profile.id).order_by('-id')
         print(get_order_list)
         context['order_list'] = get_order_list
+
+        if self.request.session.get('order_success') is not None:
+            context['order_success'] = self.request.session.get('order_success')
+            del self.request.session['order_success']
         return context
 
     def post(self, request, *args, **kwargs):
@@ -431,10 +443,20 @@ class OrdersProfileView(generic.TemplateView):
         if order_obj.status != 0:
             context['cancel_error'] = "Nie możesz anulować zamówienia o nr: " + str(order_id)
             return super(OrdersProfileView, self).render_to_response(context)
-        order_obj.status = 3
-        order_obj.save()
-        context['cancel_success'] = "Pomyślnie anulowano zamówienie o nr: " + str(order_id)
-        return super(OrdersProfileView, self).render_to_response(context)
+        else:
+            points_to_remove = int(order_obj.price)
+            get_profile = Profile.objects.get(user_id=self.request.user.id)
+            profile_obj = Profile.objects.get(id=get_profile.id)
+            profile_obj.premium_points -= points_to_remove
+            if profile_obj.premium_points < 0:
+                context['cancel_error'] = "Nie możesz anulować zamówienia o nr: " + str(
+                    order_id) + " ponieważ wykorzystałeś swoje punkty premium!"
+            else:
+                profile_obj.save()
+                order_obj.status = 3
+                order_obj.save()
+                context['cancel_success'] = "Pomyślnie anulowano zamówienie o nr: " + str(order_id)
+            return super(OrdersProfileView, self).render_to_response(context)
 
 
 class ProfileAddressCreateView(generic.FormView):

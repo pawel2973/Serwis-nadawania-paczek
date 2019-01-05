@@ -18,6 +18,11 @@
                     <strong>{{ cancel_success }}</strong>
                 </div>
             {% endif %}
+            {% if order_success %}
+                <div class="alert alert-info text-center" role="alert">
+                    <strong>{{ order_success }}</strong>
+                </div>
+            {% endif %}
 
 
             <div class="accordion" id="accordionOrder">

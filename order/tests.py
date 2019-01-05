@@ -6,6 +6,7 @@ from .forms import FormParcelSize, ContactForm
 from .models import Courier, EnvelopePricing, Address, RecipientAddress, SenderAddress, PackPricing, PalletPricing
 
 
+# Test for models.py
 class ModelTest(TestCase):
     def setUp(self):
         Courier.objects.create(name='UPC')
@@ -38,7 +39,27 @@ class ModelTest(TestCase):
 
     def test_address_self(self):
         self.assertTrue(isinstance(self.address_object, Address))
-        self.assertEqual(self.address_object.__str__(), self.address_object.zip_code + " " + self.address_object.city)
+        show_nip = self.address_object.nip
+        show_apartment_number = self.address_object.apartment_number
+        show_company = self.address_object.company_name
+
+        if show_nip is None:
+            show_nip = ""
+        else:
+            show_nip = " - nip: " + show_nip
+        if show_apartment_number is None:
+            show_apartment_number = ""
+        else:
+            show_apartment_number = "/" + str(show_apartment_number)
+        if show_company is None:
+            show_company = ""
+        self.assertEqual(self.address_object.__str__(),
+                         str(self.address_object.name) + " " + str(self.address_object.surname) + " | " + str(
+                             self.address_object.zip_code) + " " + str(self.address_object.city) + " ul. " + str(
+                             self.address_object.street) + " " + str(self.address_object.house_number) +
+                         str(show_apartment_number) + " | tel: " + str(
+                             self.address_object.telephone_number) + " | " + str(
+                             self.address_object.email_address) + " | " + str(show_company) + str(show_nip))
 
     def test_address_rec_self(self):
         address_recipient = RecipientAddress.objects.create(address=self.address_object)
@@ -66,6 +87,7 @@ class ModelTest(TestCase):
         self.assertEqual(pallet.__str__(), pallet.courier.__str__())
 
 
+# tests for forms.py
 class FormsTest(TestCase):
     def test_parcel_size_valid_form(self):
         data = {'type': 'koperta', 'weight': 0.5, 'length': 1, 'width': 1, 'height': 1}
@@ -101,9 +123,9 @@ class UrlsTest(TestCase):
         response = self.client.get(reverse('order:pricing'))
         self.assertEqual(200, response.status_code)
 
-    def test_calculate_view(self):
+    def test_calculate_view_without_entering_the_data(self):
         response = self.client.get(reverse('order:calculate'))
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(302, response.status_code)
 
     def test_login_view_anon(self):
         response = self.client.get(reverse('order:login'))
@@ -136,25 +158,57 @@ class UrlsTest(TestCase):
         response = self.client.get(reverse('order:courier'))
         self.assertEqual(200, response.status_code)
 
-    def test_profile_view_anon(self):
+    def test_profile_view_logged_in(self):
         self.client.login(username='Tester', password='for_test')
         response = self.client.get(reverse('order:profile'))
         self.assertEqual(200, response.status_code)
 
-    def test_profile_address_view_anon(self):
+    # test for anonymously entering profile url
+    def test_profile_view_anon(self):
+        response = self.client.get(reverse('order:profile'))
+        self.assertEqual(302, response.status_code)
+
+    def test_profile_address_create_view_logged_in(self):
         self.client.login(username='Tester', password='for_test')
-        response = self.client.get(reverse('order:profile_address'))
+        response = self.client.get(reverse('order:profile_address_create'))
         self.assertEqual(200, response.status_code)
+
+    # test for anonymously entering editing profile
+    def test_profile_address_create_view_anon(self):
+        response = self.client.get(reverse('order:profile_address_create'))
+        self.assertEqual(302, response.status_code)
 
     def test_orders_view(self):
         self.client.login(username='Tester', password='for_test')
         response = self.client.get(reverse('order:orders'))
         self.assertEqual(200, response.status_code)
 
+    def test_summary_without_entering_data(self):
+        self.client.login(username='Tester', password='for_test')
+        response = self.client.get(reverse('order:summary'))
+        self.assertEqual(302, response.status_code)
+
+    def test_recipient_without_previous_data_for_order(self):
+        self.client.login(username='Tester', password='for_test')
+        response = self.client.get(reverse('order:recipient_address'))
+        self.assertEqual(302, response.status_code)
+
+    def test_sender_without_previous_data_for_order(self):
+        self.client.login(username='Tester', password='for_test')
+        response = self.client.get(reverse('order:sender_address'))
+        self.assertEqual(302, response.status_code)
+
+    def test_orders_anon(self):
+        response = self.client.get(reverse('order:orders'))
+        self.assertEqual(302, response.status_code)
+
+    def test_ranking_view(self):
+        response = self.client.get(reverse('order:ranking'))
+        self.assertEqual(200, response.status_code)
+
     def test_made_up_page(self):
         response = self.client.get('/order/made_up_url.html')
         self.assertEqual(404, response.status_code)
-
 
 # class IndexViewTest(TestCase):
 #     def choose_pricing_test(self):

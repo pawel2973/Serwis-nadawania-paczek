@@ -8,6 +8,7 @@ pipeline {
         }
         stage('Test') {
             steps {
+                sh 'python3 manage.py makemigrations --merge'
                 sh 'python3 manage.py makemigrations order'
                 sh 'python3 manage.py migrate'
                 sh 'python3 manage.py jenkins --enable-coverage'

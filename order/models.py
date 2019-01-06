@@ -18,28 +18,6 @@ def zip_code_validator():
     return RegexValidator(r'\d{2}-\d{3}', 'Podaj poprawny adres pocztowy NN-NNN')
 
 
-# Profile model
-# ---------------------------------------------------------------------------------------------------------------------
-class Profile(models.Model):
-    # default: username, password, email, groups
-    user = models.OneToOneField(User, on_delete=models.CASCADE)  # user_id
-    address = models.OneToOneField(Address, on_delete=models.SET_NULL, null=True, blank=True)  # address_id
-    premium_points = models.IntegerField(default=0, validators=[MinValueValidator(0)])
-
-    # przy tworzeniu użytkownika user, tworzony jest automatycznie profil
-    @receiver(post_save, sender=User)
-    def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            Profile.objects.create(user=instance)
-
-    @receiver(post_save, sender=User)
-    def save_user_profile(sender, instance, **kwargs):
-        instance.profile.save()
-
-    def __str__(self):
-        return self.user.__str__()
-
-
 # Address models
 # ---------------------------------------------------------------------------------------------------------------------
 class Address(models.Model):
@@ -93,6 +71,28 @@ class SenderAddress(models.Model):
         return self.address.name + " " + self.address.surname
 
 
+# Profile model
+# ---------------------------------------------------------------------------------------------------------------------
+class Profile(models.Model):
+    # default: username, password, email, groups
+    user = models.OneToOneField(User, on_delete=models.CASCADE)  # user_id
+    address = models.OneToOneField(Address, on_delete=models.SET_NULL, null=True, blank=True)  # address_id
+    premium_points = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+
+    # przy tworzeniu użytkownika user, tworzony jest automatycznie profil
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.profile.save()
+
+    def __str__(self):
+        return self.user.__str__()
+
+
 # Courier model
 # ---------------------------------------------------------------------------------------------------------------------
 class Courier(models.Model):
@@ -101,18 +101,6 @@ class Courier(models.Model):
 
     def __str__(self):
         return self.name
-
-
-# Opinion model
-# ---------------------------------------------------------------------------------------------------------------------
-class Opinion(models.Model):
-    order = models.OneToOneField(Order, on_delete=models.CASCADE, null=False)
-    date = models.DateField(default=datetime.now)
-    content = models.TextField(max_length=3000)
-    rating = models.IntegerField(choices=list(zip(range(1, 11), range(1, 11))))
-
-    def __str__(self):
-        return "Ocena: " + str(self.rating) + " | " + str(self.order.courier) + "  | Dnia: " + str(self.date)
 
 
 # Parcel model
@@ -157,6 +145,18 @@ class Order(models.Model):
     def __str__(self):
         return "#" + str(self.id) + " | " + str(self.courier) + " | " + str(
             self.parcel) + " | status: " + str(PACK_STATUS[self.status][1]) + " | cena: " + str(self.price) + " zł"
+
+
+# Opinion model
+# ---------------------------------------------------------------------------------------------------------------------
+class Opinion(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, null=False)
+    date = models.DateField(default=datetime.now)
+    content = models.TextField(max_length=3000)
+    rating = models.IntegerField(choices=list(zip(range(1, 11), range(1, 11))))
+
+    def __str__(self):
+        return "Ocena: " + str(self.rating) + " | " + str(self.order.courier) + "  | Dnia: " + str(self.date)
 
 
 # Pricing models
@@ -205,16 +205,6 @@ class Gift(models.Model):
         return str(self.name) + " | punkty premium: " + str(self.premium_points)
 
 
-class OrderGift(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.PROTECT, null=False)
-    recipient = models.ForeignKey(GiftAddress, on_delete=models.PROTECT, null=True)
-    gift = models.ForeignKey(Gift, on_delete=models.PROTECT, null=False)
-    date = models.DateField(default=datetime.now)
-
-    def __str__(self):
-        return str(self.gift.name) + " | " + str(self.date)
-
-
 class GiftAddress(models.Model):
     name = models.CharField(max_length=90, validators=[name_validator()])
     surname = models.CharField(max_length=90, validators=[name_validator()])
@@ -250,3 +240,13 @@ class GiftAddress(models.Model):
             self.house_number) + str(
             show_apartment_number) + " | tel: " + str(self.telephone_number) + " | " + str(
             self.email_address) + " | " + str(show_company) + str(show_nip)
+
+
+class OrderGift(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.PROTECT, null=False)
+    recipient = models.ForeignKey(GiftAddress, on_delete=models.PROTECT, null=True)
+    gift = models.ForeignKey(Gift, on_delete=models.PROTECT, null=False)
+    date = models.DateField(default=datetime.now)
+
+    def __str__(self):
+        return str(self.gift.name) + " | " + str(self.date)

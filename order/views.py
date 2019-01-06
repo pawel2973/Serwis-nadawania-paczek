@@ -17,11 +17,8 @@ from django.contrib.auth.views import LoginView
 from django.template.defaulttags import register
 
 
-@register.filter
-def get_range(value):
-    return range(value)
-
-
+# Views of the package ordering process
+# ---------------------------------------------------------------------------------------------------------------------
 class IndexView(generic.FormView):
     template_name = 'order/index.html'
     form_class = FormParcelSize
@@ -93,7 +90,8 @@ class IndexView(generic.FormView):
                     context = {'form': form, 'error_parcel': 'Niepoprawne wymiary dla palety!'}
                     return render(request, 'order/index.html', context)
 
-            request.session['col_name_pricing'] = self.choose_pricing_col_and_ratio(parcel_type, weight, length, width, height)
+            request.session['col_name_pricing'] = self.choose_pricing_col_and_ratio(parcel_type, weight, length, width,
+                                                                                    height)
             request.session['type'] = parcel_type
             request.session['weight'] = weight
             request.session['length'] = length
@@ -101,13 +99,13 @@ class IndexView(generic.FormView):
             request.session['height'] = height
             if request.session.get('courier_id') is not None:
                 del request.session['courier_id']
-            return redirect('order:calculate')
+            return redirect('order:choose_courier')
         else:
             return render(request, 'order/index.html', {'form': form})
 
 
-class CalculateView(generic.ListView):
-    template_name = 'order/calculate.html'
+class ChooseCourierView(generic.ListView):
+    template_name = 'order/choose-courier.html'
 
     def dispatch(self, request, *args, **kwargs):
         parcel_type = self.request.session.get('type')
@@ -115,13 +113,13 @@ class CalculateView(generic.ListView):
         if parcel_type is None:
             return redirect('order:index')
         else:
-            return super(CalculateView, self).dispatch(request, *args, **kwargs)
+            return super(ChooseCourierView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         courier_id = request.session['courier_id'] = request.POST.get('courier')  # get courier_id from button
         if courier_id is None:
             request.session['error_courier'] = "Nie wybrałeś kuriera!"
-            return redirect('order:calculate')
+            return redirect('order:choose_courier')
         if request.session.get('error_courier') is not None:
             del request.session['error_courier']
 
@@ -161,31 +159,6 @@ class CalculateView(generic.ListView):
             return real_pack_price
         elif parcel_type == 'paleta':
             return PalletPricing.objects.values_list('courier', 'courier__name', col_name_pricing)
-
-
-class AboutCompanyView(generic.TemplateView):
-    template_name = 'order/about.html'
-
-
-class CourierView(generic.TemplateView):
-    template_name = 'order/courier.html'
-
-
-class CourierRankingView(generic.TemplateView):
-    template_name = 'order/courier_ranking.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(CourierRankingView, self).get_context_data(**kwargs)
-        context['top'] = list(
-            Order.objects.all().values('courier__name').annotate(total=Count('courier')).order_by('-total')[:5])
-        all_couriers = Order.objects.all().count()
-        for i in range(len(context['top'])):
-            context['top'][i]['total'] /= all_couriers
-            context['top'][i]['total'] *= 100
-            context['top'][i]['total'] = round(context['top'][i]['total'], 2)
-        context['top'].append(
-            {'courier__name': 'Inne firmy', 'total': round(100 - sum(list(d['total'] for d in context['top'])), 2)})
-        return context
 
 
 class SenderAddressView(generic.FormView):
@@ -344,6 +317,8 @@ class SummaryView(generic.TemplateView):
         return redirect('order:orders')
 
 
+# Pricing Views
+# ---------------------------------------------------------------------------------------------------------------------
 class PricingView(generic.ListView):
     template_name = 'order/pricing.html'
 
@@ -370,38 +345,14 @@ class PricingCompanyView(generic.TemplateView):
         return context
 
 
-class OpinionCreateView(generic.FormView):
-    template_name = 'order/opinion_create.html'
-    form_class = OpinionForm
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.GET.get('order_id') is None:
-            return redirect('order:index')
-        else:
-            return super(OpinionCreateView, self).dispatch(request, *args, **kwargs)
-
-    def get(self, request, *args, **kwargs):
-        request.session['order_id'] = request.GET.get('order_id')
-        return super(OpinionCreateView, self).get(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        form = OpinionForm(request.POST)  # A form bound to the POST data
-        if form.is_valid():
-            my_data = form.cleaned_data
-            order_obj = Order.objects.get(pk=request.session['order_id'])
-            try:
-                Opinion.objects.create(order=order_obj, content=my_data['content'],
-                                       rating=my_data['rating'])
-                del request.session['order_id']
-                return redirect('order:pricing_company', pk=order_obj.courier_id)
-            except IntegrityError:
-                return render(request, 'order/opinion_create.html',
-                              {'form': form, 'error_unique': 'To zamowienie juz ma dodana opinie'})
-            # return redirect('order:pricing_company', pk=order_obj.courier_id)
-        else:
-            return render(request, 'order/opinion_create.html', {'form': form})
+# About Company View
+# ---------------------------------------------------------------------------------------------------------------------
+class AboutCompanyView(generic.TemplateView):
+    template_name = 'order/about.html'
 
 
+# User Profile Views
+# ---------------------------------------------------------------------------------------------------------------------
 class ProfileView(generic.TemplateView):
     template_name = 'order/profile.html'
 
@@ -466,80 +417,6 @@ class ProfileView(generic.TemplateView):
             return super(ProfileView, self).render_to_response(context)
 
 
-class DeleteAddressProfileView(generic.DeleteView):
-    model = Address
-    success_url = reverse_lazy('order:profile')
-
-    def dispatch(self, request, *args, **kwargs):
-        if self.request.user.is_authenticated:
-            get_profile = Profile.objects.get(user_id=self.request.user.id)
-            obj = self.get_object()
-            # Check address ownership
-            if obj.id != get_profile.address_id:
-                return redirect('order:profile')
-            return super(DeleteAddressProfileView, self).dispatch(request, *args, **kwargs)
-        return redirect('order:index')
-
-
-class UpdateAddressProfileView(generic.UpdateView):
-    template_name = 'order/create_profile_address.html'
-    model = Address
-    form_class = AddressForm
-    success_url = reverse_lazy('order:profile')
-
-    def dispatch(self, request, *args, **kwargs):
-        if self.request.user.is_authenticated:
-            get_profile = Profile.objects.get(user_id=self.request.user.id)
-            obj = self.get_object()
-            # Check address ownership
-            if obj.id != get_profile.address_id:
-                return redirect('order:profile')
-            return super(UpdateAddressProfileView, self).dispatch(request, *args, **kwargs)
-        return redirect('order:index')
-
-
-class OrdersProfileView(generic.TemplateView):
-    template_name = 'order/user_orders.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if self.request.user.is_authenticated:
-            return super(OrdersProfileView, self).dispatch(request, *args, **kwargs)
-        return redirect('order:index')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        get_profile = Profile.objects.get(user_id=self.request.user.id)
-        get_order_list = Order.objects.filter(profile_id=get_profile.id).order_by('-id')
-        # print(get_order_list)
-        context['order_list'] = get_order_list
-        if self.request.session.get('order_success') is not None:
-            context['order_success'] = self.request.session.get('order_success')
-            del self.request.session['order_success']
-        return context
-
-    def post(self, request, *args, **kwargs):
-        context = self.get_context_data()
-        order_id = request.POST.get('submit')
-        order_obj = Order.objects.get(pk=order_id)
-        if order_obj.status != 0:
-            context['cancel_error'] = "Nie możesz anulować zamówienia o nr: " + str(order_id)
-            return super(OrdersProfileView, self).render_to_response(context)
-        else:
-            points_to_remove = int(order_obj.price)
-            get_profile = Profile.objects.get(user_id=self.request.user.id)
-            profile_obj = Profile.objects.get(id=get_profile.id)
-            profile_obj.premium_points -= points_to_remove
-            if profile_obj.premium_points < 0:
-                context['cancel_error'] = "Nie możesz anulować zamówienia o nr: " + str(
-                    order_id) + " ponieważ wykorzystałeś swoje punkty premium!"
-            else:
-                profile_obj.save()
-                order_obj.status = 3
-                order_obj.save()
-                context['cancel_success'] = "Pomyślnie anulowano zamówienie o nr: " + str(order_id)
-            return super(OrdersProfileView, self).render_to_response(context)
-
-
 class ProfileAddressCreateView(generic.FormView):
     template_name = 'order/create_profile_address.html'
     form_class = AddressForm
@@ -561,6 +438,138 @@ class ProfileAddressCreateView(generic.FormView):
             return render(request, self.template_name, {'form': form})
 
 
+class ProfileAddressUpdateView(generic.UpdateView):
+    template_name = 'order/create_profile_address.html'
+    model = Address
+    form_class = AddressForm
+    success_url = reverse_lazy('order:profile')
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            get_profile = Profile.objects.get(user_id=self.request.user.id)
+            obj = self.get_object()
+            # Check address ownership
+            if obj.id != get_profile.address_id:
+                return redirect('order:profile')
+            return super(ProfileAddressUpdateView, self).dispatch(request, *args, **kwargs)
+        return redirect('order:index')
+
+
+class ProfileAddressDeleteView(generic.DeleteView):
+    model = Address
+    success_url = reverse_lazy('order:profile')
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            get_profile = Profile.objects.get(user_id=self.request.user.id)
+            obj = self.get_object()
+            # Check address ownership
+            if obj.id != get_profile.address_id:
+                return redirect('order:profile')
+            return super(ProfileAddressDeleteView, self).dispatch(request, *args, **kwargs)
+        return redirect('order:index')
+
+
+# User Orders Views
+# ---------------------------------------------------------------------------------------------------------------------
+
+class OrdersView(generic.TemplateView):
+    template_name = 'order/user_orders.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return super(OrdersView, self).dispatch(request, *args, **kwargs)
+        return redirect('order:index')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        get_profile = Profile.objects.get(user_id=self.request.user.id)
+        get_order_list = Order.objects.filter(profile_id=get_profile.id).order_by('-id')
+        # print(get_order_list)
+        context['order_list'] = get_order_list
+        if self.request.session.get('order_success') is not None:
+            context['order_success'] = self.request.session.get('order_success')
+            del self.request.session['order_success']
+        return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        order_id = request.POST.get('submit')
+        order_obj = Order.objects.get(pk=order_id)
+        if order_obj.status != 0:
+            context['cancel_error'] = "Nie możesz anulować zamówienia o nr: " + str(order_id)
+            return super(OrdersView, self).render_to_response(context)
+        else:
+            points_to_remove = int(order_obj.price)
+            get_profile = Profile.objects.get(user_id=self.request.user.id)
+            profile_obj = Profile.objects.get(id=get_profile.id)
+            profile_obj.premium_points -= points_to_remove
+            if profile_obj.premium_points < 0:
+                context['cancel_error'] = "Nie możesz anulować zamówienia o nr: " + str(
+                    order_id) + " ponieważ wykorzystałeś swoje punkty premium!"
+            else:
+                profile_obj.save()
+                order_obj.status = 3
+                order_obj.save()
+                context['cancel_success'] = "Pomyślnie anulowano zamówienie o nr: " + str(order_id)
+            return super(OrdersView, self).render_to_response(context)
+
+
+# Opinion View
+# ---------------------------------------------------------------------------------------------------------------------
+class OpinionCreateView(generic.FormView):
+    template_name = 'order/opinion_create.html'
+    form_class = OpinionForm
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.GET.get('order_id') is None:
+            return redirect('order:index')
+        else:
+            return super(OpinionCreateView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        request.session['order_id'] = request.GET.get('order_id')
+        return super(OpinionCreateView, self).get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        form = OpinionForm(request.POST)  # A form bound to the POST data
+        if form.is_valid():
+            my_data = form.cleaned_data
+            order_obj = Order.objects.get(pk=request.session['order_id'])
+            try:
+                Opinion.objects.create(order=order_obj, content=my_data['content'],
+                                       rating=my_data['rating'])
+                del request.session['order_id']
+                return redirect('order:pricing_company', pk=order_obj.courier_id)
+            except IntegrityError:
+                return render(request, 'order/opinion_create.html',
+                              {'form': form, 'error_unique': 'To zamowienie juz ma dodana opinie'})
+            # return redirect('order:pricing_company', pk=order_obj.courier_id)
+        else:
+            return render(request, 'order/opinion_create.html', {'form': form})
+
+
+# Courier Ranking Views
+# ---------------------------------------------------------------------------------------------------------------------
+class CourierRankingView(generic.TemplateView):
+    template_name = 'order/courier_ranking.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CourierRankingView, self).get_context_data(**kwargs)
+        context['top'] = list(
+            Order.objects.all().values('courier__name').annotate(total=Count('courier')).order_by('-total')[:5])
+        all_couriers = Order.objects.all().count()
+        for i in range(len(context['top'])):
+            context['top'][i]['total'] /= all_couriers
+            context['top'][i]['total'] *= 100
+            context['top'][i]['total'] = round(context['top'][i]['total'], 2)
+        context['top'].append(
+            {'courier__name': 'Inne firmy', 'total': round(100 - sum(list(d['total'] for d in context['top'])), 2)})
+        return context
+
+
+# Register & Login Views
+# ---------------------------------------------------------------------------------------------------------------------
 class SignUpView(generic.CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('order:login')
@@ -579,3 +588,8 @@ class LogoutView(generic.RedirectView):
     def get(self, request, *args, **kwargs):
         logout(request)
         return super(LogoutView, self).get(request, *args, **kwargs)
+
+
+@register.filter
+def get_range(value):
+    return range(value)

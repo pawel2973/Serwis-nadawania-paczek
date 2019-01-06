@@ -123,8 +123,8 @@ class UrlsTest(TestCase):
         response = self.client.get(reverse('order:pricing'))
         self.assertEqual(200, response.status_code)
 
-    def test_calculate_view_without_entering_the_data(self):
-        response = self.client.get(reverse('order:calculate'))
+    def test_choose_courier_view_without_entering_the_data(self):
+        response = self.client.get(reverse('order:choose_courier'))
         self.assertEqual(302, response.status_code)
 
     def test_login_view_anon(self):
@@ -155,7 +155,7 @@ class UrlsTest(TestCase):
         self.assertRedirects(response, reverse('order:index'))
 
     def test_courier_view(self):
-        response = self.client.get(reverse('order:courier'))
+        response = self.client.get(reverse('order:choose_courier'))
         self.assertEqual(200, response.status_code)
 
     def test_profile_view_logged_in(self):

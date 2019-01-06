@@ -58,25 +58,8 @@ class FormParcelSize(forms.Form):  # Note that it is not inheriting from forms.M
     width = forms.FloatField(validators=[greaterThanZeroValidator])
     height = forms.FloatField(validators=[greaterThanZeroValidator])
 
+
 class OpinionForm(forms.ModelForm):
     class Meta:
         model = Opinion
         fields = ['rating', 'content']
-
-# class EnvelopeForm(forms.Form):
-#     pack_type = forms.CharField(default="koperta", hidden=True)
-#     weight = forms.FloatField(validators=[MinValueValidator(0), MaxValueValidator(0.5)])
-#     length = forms.FloatField(disabled=True)
-#     width = forms.FloatField(disabled=True)
-#     height = forms.FloatField(disabled=True)
-
-
-# def clean(self):
-#     cleaned_data = super(MyForm, self).clean()
-#     typ_paczki = cleaned_data.get('typ_paczki')
-#     waga_paczki = cleaned_data.get('waga_paczki')
-#     dlugosc = cleaned_data.get('dlugosc')
-#     szerokosc = cleaned_data.get('szerokosc')
-#     wysokosc = cleaned_data.get('wysokosc')
-#     if not typ_paczki and not waga_paczki and not dlugosc and not szerokosc and not wysokosc:
-#         raise forms.ValidationError('You have to write something!')

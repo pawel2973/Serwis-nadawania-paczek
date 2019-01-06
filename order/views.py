@@ -1,6 +1,3 @@
-import pickle
-import random
-
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 # from django.http import request
@@ -11,8 +8,6 @@ from django.http import Http404, HttpResponseForbidden, HttpResponseRedirect, re
 from django.shortcuts import render, redirect, render_to_response
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic import RedirectView
-from django.views.generic.edit import ModelFormMixin, FormMixin, FormView
 
 from .forms import FormParcelSize, AddressForm, OpinionForm
 from .models import Courier, PackPricing, PalletPricing, EnvelopePricing, Parcel, Order, SenderAddress, Address, \
@@ -21,19 +16,21 @@ from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.template.defaulttags import register
 
+
 @register.filter
 def get_range(value):
     return range(value)
+
 
 class IndexView(generic.FormView):
     template_name = 'order/index.html'
     form_class = FormParcelSize
 
-    def choose_pricing_col_and_ratio(self, type, weight, length, width, height):
+    def choose_pricing_col_and_ratio(self, parcel_type, weight, length, width, height):
         col_name_pricing = None
-        if type == "koperta":  # Envelope Price
+        if parcel_type == "koperta":  # Envelope Price
             col_name_pricing = 'up_to_1'
-        elif type == "paczka":  # Pack Price
+        elif parcel_type == "paczka":  # Pack Price
             # Set ratio for pack
             if length <= 60 and width <= 50 and height <= 30:  # pack size A
                 self.request.session['ratio'] = 1.0
@@ -57,7 +54,7 @@ class IndexView(generic.FormView):
             elif weight <= 30:
                 col_name_pricing = 'up_to_30'
 
-        elif type == "paleta":  # Pallet Price
+        elif parcel_type == "paleta":  # Pallet Price
             if weight <= 300:
                 col_name_pricing = 'up_to_300'
             elif weight <= 500:
@@ -74,30 +71,30 @@ class IndexView(generic.FormView):
 
         if form.is_valid():
             # SESSION VARS
-            type = request.POST['type']
+            parcel_type = request.POST['type']
             weight = float(request.POST['weight'])
             length = float(request.POST['length'])
             width = float(request.POST['width'])
             height = float(request.POST['height'])
 
-            if type == "koperta":
+            if parcel_type == "koperta":
                 # envelope size: .5kg x 35cm x 25cm x 5cm
                 if length > 35 or width > 25 or height > 5 or weight > 1:
                     context = {'form': form, 'error_parcel': 'Niepoprawne wymiary dla koperty!'}
                     return render(request, 'order/index.html', context)
-            elif type == "paczka":
+            elif parcel_type == "paczka":
                 # pack size: 30kg x 100cm x 90cm x 70cm
                 if length > 100 or width > 90 or height > 70 or weight > 30:  # pack size C
                     context = {'form': form, 'error_parcel': 'Niepoprawne wymiary dla paczki!'}
                     return render(request, 'order/index.html', context)
-            elif type == "paleta":
+            elif parcel_type == "paleta":
                 # pallet size: 1000kg x 200cm x 140cm x 200cm
                 if length > 200 or width > 140 or height > 200 or weight > 1000:  # pack size C
                     context = {'form': form, 'error_parcel': 'Niepoprawne wymiary dla palety!'}
                     return render(request, 'order/index.html', context)
 
-            request.session['col_name_pricing'] = self.choose_pricing_col_and_ratio(type, weight, length, width, height)
-            request.session['type'] = type
+            request.session['col_name_pricing'] = self.choose_pricing_col_and_ratio(parcel_type, weight, length, width, height)
+            request.session['type'] = parcel_type
             request.session['weight'] = weight
             request.session['length'] = length
             request.session['width'] = width
@@ -113,9 +110,9 @@ class CalculateView(generic.ListView):
     template_name = 'order/calculate.html'
 
     def dispatch(self, request, *args, **kwargs):
-        type = self.request.session.get('type')
+        parcel_type = self.request.session.get('type')
 
-        if type is None:
+        if parcel_type is None:
             return redirect('order:index')
         else:
             return super(CalculateView, self).dispatch(request, *args, **kwargs)
@@ -129,19 +126,19 @@ class CalculateView(generic.ListView):
             del request.session['error_courier']
 
         col_name_pricing = request.session.get('col_name_pricing')
-        type = request.session.get('type')  # get pack type from session
+        parcel_type = request.session.get('type')  # get pack type from session
         ratio = request.session.get('ratio')
 
-        if type == "koperta":
+        if parcel_type == "koperta":
             query = list(
                 EnvelopePricing.objects.filter(courier__id=courier_id).values(col_name_pricing))  # query: price from db
             price = query[0].get(col_name_pricing)  # value: price from query
             request.session['price'] = price  # save to session
-        elif type == "paczka":
+        elif parcel_type == "paczka":
             query = list(PackPricing.objects.filter(courier__id=courier_id).values(col_name_pricing))
             price = query[0].get(col_name_pricing) * ratio
             request.session['price'] = price
-        elif type == "paleta":
+        elif parcel_type == "paleta":
             query = list(PalletPricing.objects.filter(courier__id=courier_id).values(col_name_pricing))
             price = query[0].get(col_name_pricing)
             request.session['price'] = price
@@ -149,12 +146,12 @@ class CalculateView(generic.ListView):
 
     def get_queryset(self):
         col_name_pricing = self.request.session.get('col_name_pricing')
-        type = self.request.session.get('type')
+        parcel_type = self.request.session.get('type')
         ratio = self.request.session.get('ratio')
 
-        if type == 'koperta':
+        if parcel_type == 'koperta':
             return EnvelopePricing.objects.values_list('courier', 'courier__name', col_name_pricing)
-        elif type == 'paczka':
+        elif parcel_type == 'paczka':
             pack_price_col = list(PackPricing.objects.values_list('courier', 'courier__name', col_name_pricing))
             real_pack_price = list()
 
@@ -162,7 +159,7 @@ class CalculateView(generic.ListView):
                 price = round(x[2] * ratio, 2)
                 real_pack_price.append(tuple([x[0], x[1], price]))
             return real_pack_price
-        elif type == 'paleta':
+        elif parcel_type == 'paleta':
             return PalletPricing.objects.values_list('courier', 'courier__name', col_name_pricing)
 
 
@@ -268,14 +265,14 @@ class SummaryView(generic.TemplateView):
 
     def post(self, request, *args, **kwargs):
         # Creating parcel
-        type = self.request.session.get('type')
+        parcel_type = self.request.session.get('type')
         weight = float(self.request.session.get('weight'))
         length = float(self.request.session.get('length'))
         width = float(self.request.session.get('width'))
         height = float(self.request.session.get('height'))
 
         # Creating Parcel db
-        parcel_obj = Parcel.objects.create(length=length, height=height, width=width, weight=weight, type=type)
+        parcel_obj = Parcel.objects.create(length=length, height=height, width=width, weight=weight, type=parcel_type)
         parcel_id = parcel_obj.id
         parcel_obj = Parcel.objects.get(id=parcel_id)
 
@@ -394,11 +391,12 @@ class OpinionCreateView(generic.FormView):
             order_obj = Order.objects.get(pk=request.session['order_id'])
             try:
                 Opinion.objects.create(order=order_obj, content=my_data['content'],
-                                   rating=my_data['rating'])
+                                       rating=my_data['rating'])
                 del request.session['order_id']
                 return redirect('order:pricing_company', pk=order_obj.courier_id)
             except IntegrityError:
-                return render(request, 'order/opinion_create.html', {'form': form,'error_unique':'To zamowienie juz ma dodana opinie'})
+                return render(request, 'order/opinion_create.html',
+                              {'form': form, 'error_unique': 'To zamowienie juz ma dodana opinie'})
             # return redirect('order:pricing_company', pk=order_obj.courier_id)
         else:
             return render(request, 'order/opinion_create.html', {'form': form})
@@ -574,7 +572,7 @@ class SignUpView(generic.CreateView):
         return super().dispatch(*args, **kwargs)
 
 
-class LogoutView(RedirectView):
+class LogoutView(generic.RedirectView):
     # Provides users the ability to logout
     url = '/'
 

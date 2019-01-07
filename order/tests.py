@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
-from .forms import FormParcelSize, ContactForm
+from .forms import FormParcelSize
 from .models import Courier, EnvelopePricing, Address, RecipientAddress, SenderAddress, PackPricing, PalletPricing
 
 
@@ -98,18 +98,6 @@ class FormsTest(TestCase):
         data = {'type': 'koperta', 'weight': -1, 'length': 1, 'width': 1, 'height': 1}
         form = FormParcelSize(data=data)
         self.assertFalse(form.is_valid())
-
-    def test_contact_form_valid_form(self):
-        data = {'name': 'John', 'email': 'moj@email.com',
-                'message': 'Hey guys i just wanted to tell you its just a test.'}
-        form = ContactForm(data=data)
-        self.assertTrue(form.is_valid())
-
-    def test_contact_form_invalid_form(self):
-        data = {'name': 'John', 'message': 'Hey guys i just wanted to tell you its just a test.'}
-        form = ContactForm(data=data)
-        self.assertFalse(form.is_valid())
-
 
 class UrlsTest(TestCase):
     def setUp(self):

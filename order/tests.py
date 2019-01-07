@@ -144,7 +144,7 @@ class UrlsTest(TestCase):
 
     def test_courier_view(self):
         response = self.client.get(reverse('order:choose_courier'))
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(302, response.status_code)
 
     def test_profile_view_logged_in(self):
         self.client.login(username='Tester', password='for_test')

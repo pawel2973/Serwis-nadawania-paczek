@@ -1,9 +1,10 @@
 {% extends 'order/base.html' %}
 
-{% block carousel %}
-{% endblock %}
+
+
 
 {% block body %}
+<div style="margin-top:50px;">
 <div class="row">
     <div class="col-lg-12">
 
@@ -77,20 +78,28 @@
                             </tr>
                             </tbody>
                         </table>
+					
                         {% if order.status == 0 %}
+								
                         <form method="post">
+				
                             {% csrf_token %}
+							  <div class="text-center" style="margin-bottom:15px">
                             <button class="button btn-primary btn-md" value="{{ order.id }}" name="submit"
                                     type="submit">Anuluj zamówienie
                             </button>
+						
                         </form>
                         {% endif %}
 
                         <form action="{% url 'order:opinion_create' %}" method="get">
                             <input type="hidden" name="order_id" value="{{ order.id }}"/>
-                            <button class="button btn-primary btn-md"
-                                    type="submit">Oceń zamówienie
+							  <div class="text-center" style="margin-top:15px">
+                            <button class="button btn-primary" type="submit">Oceń zamówienie
                             </button>
+							</div>
+							</form>
+							</div>
                         </form>
                     </div>
                 </div>
@@ -99,4 +108,5 @@
         </div>
     </div>
 </div>
+
 {% endblock %}

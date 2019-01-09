@@ -56,32 +56,29 @@
 
 }
 
-.boxed input[type="radio"] {
-    display: none;
-}
 
-.boxed input[type="radio"]:checked + label {
-    border: solid 2px blue;
-}
-
-.boxed2 label {
+.boxed label {
     border-radius: 25px;
     display: inline-block;
     width: 100px;
-    padding: 30px;
+    padding: 20px;
     border: solid 2px #ccc;
     transition: all 0.3s;
     align: center;
+  text-align: center;
+  cursor: pointer;
 }
 
-.boxed2 input[type="radio"] {
-    /*display: none;*/
-    display: compact;
-
+.boxed input[type="radio"] {
+   visibility:hidden;
 }
 
-.boxed2 input[type="radio"]:checked + label {
+.boxed input[type="radio"]:checked + {
     border: solid 2px blue;
+}
+
+.id_type_0[type="radio"]:checked + {
+	   border: solid 2px blue;
 }
 
 .inputPaka {
@@ -154,7 +151,7 @@ input {
     border: none;
 }
 
-.focus-inputPaka::after {
+.focus-inputPaka::after  {
     font-family: Poppins-Regular;
     font-size: 15px;
     color: #999999;
@@ -174,7 +171,7 @@ input {
     transition: all 0.4s;
 }
 
-.inputPaka:focus + .focus-inputPaka::after {
+.inputPaka:focus + .focus-inputPaka::after  {
     top: -15px;
 }
 
@@ -369,7 +366,7 @@ textarea {
 }
 
 
-.inputPaka:focus + .focus-inputPaka::after {
+.inputPaka:focus + .focus-inputPaka::after  {
     top: -15px;
 }
 
@@ -384,7 +381,18 @@ textarea {
 .has-val.inputPaka + .focus-inputPaka::before {
     width: 100%;
 }
-
+.waga.inputPaka + .focus-inputPaka::after {
+    top: -15px;
+}
+.dlugosc.inputPaka + .focus-inputPaka::after {
+    top: -15px;
+}
+.wysokosc.inputPaka + .focus-inputPaka::after {
+    top: -15px;
+}
+.szerokosc.inputPaka + .focus-inputPaka::after {
+    top: -15px;
+}
 .btn-show-pass {
     font-size: 15px;
     color: #999999;
@@ -405,4 +413,42 @@ textarea {
     -o-transition: all 0.4s;
     -moz-transition: all 0.4s;
     transition: all 0.4s;
+}
+
+.accordion {
+	margin-bottom: 150px;
+}
+
+.button btn-primary btn-md{
+    font-family: Poppins-Medium;
+    font-size: 15px;
+    color: #fff;
+    line-height: 1.2;
+    text-transform: uppercase;
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    width: 100%;
+    height: 50px;}
+
+
+
+.szerokosc:read-only { 
+  border-bottom:3px solid #ff0000;
+}
+.waga:read-only { 
+margin-top:6px;
+  border-bottom:3px solid #ff0000;
+}
+.dlugosc:read-only { 
+  border-bottom:3px solid #ff0000;
+}
+.wysokosc:read-only { 
+  border-bottom:3px solid #ff0000;
 }

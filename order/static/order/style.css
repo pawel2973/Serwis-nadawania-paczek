@@ -46,15 +46,7 @@
     padding: 0;
 }
 
-.boxed label {
-    border-radius: 25px;
-    display: inline-block;
-    width: 100px;
-    padding: 30px;
-    border: solid 2px #ccc;
-    transition: all 0.3s;
 
-}
 
 
 .boxed label {
@@ -73,13 +65,11 @@
    visibility:hidden;
 }
 
-.boxed input[type="radio"]:checked + {
+.boxed input[type="radio"]:checked + label {
     border: solid 2px blue;
 }
 
-.id_type_0[type="radio"]:checked + {
-	   border: solid 2px blue;
-}
+
 
 .inputPaka {
     font-family: Poppins-Regular;

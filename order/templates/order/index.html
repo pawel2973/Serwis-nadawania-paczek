@@ -44,18 +44,17 @@
                     <div class="form-row">
 
                         <!-- RODZAJ -->
-                        <div style="text-align: center;">
+                        <div class="text-center">
                             <div class="boxed">
+                                <input type="radio" id="id_type_0" name="type" value="koperta">
+                                <label for="id_type_0">koperta</label>
 
-                                {% for radio in form.type %}
-                                         {{radio}}
+                                <input type="radio" id="id_type_1" name="type" value="paczka">
+                                <label for="id_type_1">paczka</label>
 
-                                {% endfor %}<br/>
-
-
-                                                                
-                               
-                                <br>
+                                <input type="radio" id="id_type_2" name="type" value="paleta">
+                                <label for="id_type_2">paleta</label>
+                                <br /><br />
                             </div>
                         </div>
 
@@ -66,12 +65,12 @@
                         <div class="form-row">
 
                             <!-- WAGA -->
-          
+
                             <div class="wrap-inputPaka">
                                 <!-- <input class="inputPaka" type="text" name="waga"> -->
-                           
+
                                  {{ form.weight|add_class:"inputPaka"|add_class:"waga" }}
-                              
+
                                 <span class="focus-inputPaka" data-placeholder="Waga" style="margin-bottom:20px"></span>
 
                             </div>
@@ -86,25 +85,25 @@
 
                             <div class="wrap-inputPaka">
                                   {{ form.length|add_class:"dlugosc"|add_class:"inputPaka" }}
-                           
+
                                 <!--  <input class="inputPaka" type="text" name="dlugosc">-->
                                 <span class="focus-inputPaka" data-placeholder="Długość"></span>
                             </div>
                         </div>
                         <div class="form-group col-md-4">
                             <div class="wrap-inputPaka">
-                           
+
                                  {{ form.width|add_class:"szerokosc"|add_class:"inputPaka" }}
-                             
+
                                 <!-- <input class="inputPaka" type="text" name="szerokosc">-->
                                 <span class="focus-inputPaka" data-placeholder="Szerokość"></span>
                             </div>
                         </div>
                         <div class="form-group col-md-4">
                             <div class="wrap-inputPaka">
-                           
+
                                    {{ form.height|add_class:"wysokosc"|add_class:"inputPaka" }}
-                           
+
                                 <!-- <input class="inputPaka" type="text" name="wysokość">-->
                                 <span class="focus-inputPaka" data-placeholder="Wysokość"></span>
                             </div>
@@ -114,7 +113,7 @@
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                        
+
 
                         </div>
                         <div class="form-group col-md-4">

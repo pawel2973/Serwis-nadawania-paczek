@@ -522,24 +522,30 @@ class OpinionCreateView(generic.FormView):
     form_class = OpinionForm
 
     def dispatch(self, request, *args, **kwargs):
-        if request.GET.get('order_id') is None:
-            return redirect('order:index')
-        else:
-            return super(OpinionCreateView, self).dispatch(request, *args, **kwargs)
+        order_id = request.GET.get('order_id')
+        if self.request.user.is_authenticated:
+            if order_id is not None:
+                try:
+                    int(order_id)
+                except ValueError:
+                    return redirect('order:index')
+                if Order.objects.get(pk=order_id).profile.user == self.request.user:
+                    return super(OpinionCreateView, self).dispatch(request, *args, **kwargs)
+        return redirect('order:index')
 
-    def get(self, request, *args, **kwargs):
-        request.session['order_id'] = request.GET.get('order_id')
-        return super(OpinionCreateView, self).get(request, *args, **kwargs)
+    # def get(self, request, *args, **kwargs):
+    #     request.session['order_id'] = request.GET.get('order_id')
+    #     return super(OpinionCreateView, self).get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         form = OpinionForm(request.POST)  # A form bound to the POST data
         if form.is_valid():
             my_data = form.cleaned_data
-            order_obj = Order.objects.get(pk=request.session['order_id'])
+            order_obj = Order.objects.get(pk=request.GET.get('order_id'))
             try:
                 Opinion.objects.create(order=order_obj, content=my_data['content'],
                                        rating=my_data['rating'])
-                del request.session['order_id']
+                # del request.session['order_id']
                 return redirect('order:pricing_company', pk=order_obj.courier_id)
             except IntegrityError:
                 return render(request, 'order/opinion_create.html',

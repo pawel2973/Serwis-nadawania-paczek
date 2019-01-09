@@ -39,18 +39,17 @@
             </div>
             <form action="" method="post">
                 {% csrf_token %}
-                <div class="form-group">
+                <div class="form-group" style="margin-bottom:80px;">
 
                     <div class="form-row">
 
                         <!-- RODZAJ -->
                         <div style="text-align: center;">
-                            <div class="boxed2">
-
-                    
+                            <div class="boxed">
 
                                 {% for radio in form.type %}
-                                    {{ radio }}
+                                         {{radio}}
+                       
                                 {% endfor %}<br/>
 
                             
@@ -67,49 +66,47 @@
                         <div class="form-row">
 
                             <!-- WAGA -->
-
+          
                             <div class="wrap-inputPaka">
                                 <!-- <input class="inputPaka" type="text" name="waga"> -->
-                                <div class="alert alert-warning ">
-                                    Waga: {{ form.weight|add_class:"waga" }}
-                                </div>
-                                <span class="focus-inputPaka" data-placeholder=""></span>
+                           
+                                 {{ form.weight|add_class:"inputPaka"|add_class:"waga" }}
+                              
+                                <span class="focus-inputPaka" data-placeholder="Waga" style="margin-bottom:20px"></span>
 
                             </div>
                         </div>
                     </div>
 
                     <!-- WYMIARY -->
-                    <div class="alert alert-success alert-info text-center" role="alert"><strong>Wymiary(cm)</strong>
+                    <div class="alert alert-success alert-info text-center" style="margin-bottom:35px" role="alert"><strong>Wymiary(cm)</strong>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-4">
 
                             <div class="wrap-inputPaka">
-                                <div class="alert alert-warning ">
-                                    Długość: {{ form.length|add_class:"dlugosc" }}
-
-                                </div>
+                                  {{ form.length|add_class:"dlugosc"|add_class:"inputPaka" }}
+                           
                                 <!--  <input class="inputPaka" type="text" name="dlugosc">-->
-                                <span class="focus-inputPaka" data-placeholder=""></span>
+                                <span class="focus-inputPaka" data-placeholder="Długość"></span>
                             </div>
                         </div>
                         <div class="form-group col-md-4">
                             <div class="wrap-inputPaka">
-                                <div class="alert alert-warning ">
-                                    Szerokość: {{ form.width|add_class:"szerokosc" }}
-                                </div>
+                           
+                                 {{ form.width|add_class:"szerokosc"|add_class:"inputPaka" }}
+                             
                                 <!-- <input class="inputPaka" type="text" name="szerokosc">-->
-                                <span class="focus-inputPaka" data-placeholder=""></span>
+                                <span class="focus-inputPaka" data-placeholder="Szerokość"></span>
                             </div>
                         </div>
                         <div class="form-group col-md-4">
                             <div class="wrap-inputPaka">
-                                <div class="alert alert-warning ">
-                                     Wysokość:  {{ form.height|add_class:"wysokosc" }}
-                                </div>
+                           
+                                   {{ form.height|add_class:"wysokosc"|add_class:"inputPaka" }}
+                           
                                 <!-- <input class="inputPaka" type="text" name="wysokość">-->
-                                <span class="focus-inputPaka" data-placeholder=""></span>
+                                <span class="focus-inputPaka" data-placeholder="Wysokość"></span>
                             </div>
                         </div>
                     </div>
@@ -117,12 +114,7 @@
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="gridCheck">
-                                <label class="form-check-label" for="gridCheck">
-                                    Specjalne traktowanie
-                                </label>
-                            </div>
+                        
 
                         </div>
                         <div class="form-group col-md-4">

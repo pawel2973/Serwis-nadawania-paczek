@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
-from .forms import FormParcelSize
+from .forms import FormParcelSize, ContactForm
 from .models import Courier, EnvelopePricing, Address, RecipientAddress, SenderAddress, PackPricing, PalletPricing
 
 
@@ -99,6 +99,18 @@ class FormsTest(TestCase):
         form = FormParcelSize(data=data)
         self.assertFalse(form.is_valid())
 
+    def test_contact_form_valid_form(self):
+        data = {'name': 'John', 'email': 'moj@email.com',
+                'message': 'Hey guys i just wanted to tell you its just a test.'}
+        form = ContactForm(data=data)
+        self.assertTrue(form.is_valid())
+
+    def test_contact_form_invalid_form(self):
+        data = {'name': 'John', 'message': 'Hey guys i just wanted to tell you its just a test.'}
+        form = ContactForm(data=data)
+        self.assertFalse(form.is_valid())
+
+
 class UrlsTest(TestCase):
     def setUp(self):
         User.objects.create_user(username='Tester', password='for_test')
@@ -111,8 +123,8 @@ class UrlsTest(TestCase):
         response = self.client.get(reverse('order:pricing'))
         self.assertEqual(200, response.status_code)
 
-    def test_choose_courier_view_without_entering_the_data(self):
-        response = self.client.get(reverse('order:choose_courier'))
+    def test_calculate_view_without_entering_the_data(self):
+        response = self.client.get(reverse('order:calculate'))
         self.assertEqual(302, response.status_code)
 
     def test_login_view_anon(self):
@@ -143,8 +155,8 @@ class UrlsTest(TestCase):
         self.assertRedirects(response, reverse('order:index'))
 
     def test_courier_view(self):
-        response = self.client.get(reverse('order:choose_courier'))
-        self.assertEqual(302, response.status_code)
+        response = self.client.get(reverse('order:courier'))
+        self.assertEqual(200, response.status_code)
 
     def test_profile_view_logged_in(self):
         self.client.login(username='Tester', password='for_test')

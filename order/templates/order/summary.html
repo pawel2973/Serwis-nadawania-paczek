@@ -10,6 +10,7 @@
         </div>
         <br/>
     </div>
+	    <div class="container-fluid" style="margin-bottom:100px; margin-top:50px">
     <div class="row">
         <div class="col-lg-12 center">
 
@@ -46,11 +47,12 @@
             <div class="text-center">
                 <form action="" method="post">
                     {% csrf_token %}
-                    <button class="btn btn-primary" type="submit">Potwierdz zamowiene</button>
+                    <button class="btn btn-primary"  type="submit">Potwierdz zamowiene</button>
                 </form>
                 <br/>
                 <a class="btn btn-primary" href="{% url 'order:index' %}">Stwórz zamówienie ponownie</a>
             </div>
         </div>
     </div>
+	</div>
 {% endblock %}

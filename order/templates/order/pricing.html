@@ -1,19 +1,34 @@
 {% extends 'order/base.html' %}
 
-{% block body %}
-    <div class="row">
+{% block carousel %}
+{% endblock %}
 
+{% block body %}
+    <!-- Choose Courier label -->
+    <div class="row">
         <div class="col-lg-12">
             <br>
             <div class="alert alert-info text-center" role="alert">
-                <strong>Wybierz firmę kurierską i sprawdź cennik.</strong>
-            </div>
-            <div class="text-center">
-                {% for courier in object_list %}
-                    <a href="{% url 'order:pricing_company' courier.id %}"
-                       class="btn btn-outline-primary my-3 my-sm-0 btn-lg">{{ courier.name }}</a>
-                {% endfor %}
+                <strong>Wybierz firmę kurierską i sprawdź cennik oraz opinie.</strong>
             </div>
         </div>
+    </div>
+
+    <!-- Show couriers -->
+    <div class="row">
+        {% for courier in object_list %}
+            <div class="col-lg-4">
+                <div class="card">
+                    <img class="card-img-top" src="https://st2.depositphotos.com/7023650/10343/v/950/depositphotos_103439638-stock-illustration-courier-vector-delivery-logo.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">{{ courier.name }}</h5>
+                        <a href="{% url 'order:pricing_company' courier.id %}">
+                            <button class="btn btn-outline-info btn-block">Sprawdź cennik</button>
+                        </a>
+                    </div>
+                </div>
+                <br/>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}

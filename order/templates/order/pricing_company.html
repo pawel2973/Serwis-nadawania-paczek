@@ -1,182 +1,216 @@
 {% extends 'order/base.html' %}
+{% load staticfiles %}
+{% load staticfiles %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'order/pricing_table_style.css' %}"/>
+{% endblock %}
+
 
 {% block body %}
-<div class="wrapper">
+    <div class="wrapper">
 
-    <div class="container-fluid">
-        {% if not error %}
-        <br>
-        <div class="alert alert-primary text-center" role="alert">
-            <h1>{{ envelopepricing.courier }}</h1>
-        </div>
-
-        <div class="row">
-
-            <!-- KOPERTA -->
-            <div class="col-lg-4">
-                <table class="table  table-bordered">
-                      <thead>
-                    <tr>
-                        <th colspan="2" class="text-center">Koperta</th>
-                    
-                    </tr>
-                    </thead>
-                    <thead>
-                    <tr>
-                        <th scope="col">Waga</th>
-                        <th scope="col">Cena Brutto</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>do 1 kg</td>
-                        <td>{{ envelopepricing.up_to_1 }} zł</td>
-                    </tr>
-                    </tbody>
-                </table>
-
-            </div>
-
-            <!-- PACZKA -->
-            <div class="col-lg-4">
-                <table class="table  table-bordered">
-                    <thead>
-                    <tr>
-                        <th colspan="2" class="text-center">Paczka</th>
-                    
-                    </tr>
-                    </thead>
-                    <thead>
-                    <tr>
-                        <th scope="col">Waga</th>
-                        <th scope="col">Cena Brutto</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>do 1 kg</td>
-                        <td>{{ packpricing.up_to_1 }} zł</td>
-                    </tr>
-                    <tr>
-                        <td>do 2 kg</td>
-                        <td>{{ packpricing.up_to_2 }} zł</td>
-                    </tr>
-                    <tr>
-                        <td>do 5 kg</td>
-                        <td>{{ packpricing.up_to_5 }} zł</td>
-                    </tr>
-                    <tr>
-                        <td>do 10 kg</td>
-                        <td>{{ packpricing.up_to_10 }} zł</td>
-                    </tr>
-                    <tr>
-                        <td>do 15 kg</td>
-                        <td>{{ packpricing.up_to_15 }} zł</td>
-                    </tr>
-                    <tr>
-                        <td>do 20 kg</td>
-                        <td>{{ packpricing.up_to_20 }} zł</td>
-                    </tr>
-                    <tr>
-                        <td>do 30 kg</td>
-                        <td>{{ packpricing.up_to_30 }} zł</td>
-                    </tr>
-                    </tbody>
-                </table>
-
-            </div>
-
-            <!-- PALETA -->
-            <div class="col-lg-4">
-                <table class="table  table-bordered">
-                         <thead>
-                    <tr>
-                        <th colspan="2" class="text-center">Paleta</th>
-                    
-                    </tr>
-                    </thead>
-                    <thead>
-                    <tr>
-                        <th scope="col">Waga</th>
-                        <th scope="col">Cena Brutto</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>do 300 kg</td>
-                        <td>{{ palletpricing.up_to_300 }} zł</td>
-                    </tr>
-                    <tr>
-                        <td>do 500 kg</td>
-                        <td>{{ palletpricing.up_to_500 }} zł</td>
-                    </tr>
-                    <tr>
-                        <td>do 800 kg</td>
-                        <td>{{ palletpricing.up_to_800 }} zł</td>
-                    </tr>
-                    <tr>
-                        <td>do 1000 kg</td>
-                        <td>{{ palletpricing.up_to_1000 }} zł</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        {% else %}
-        <br>
-        <div class="alert alert-danger text-center" role="alert">
-            <h1>Wybierz prawidłową firmę kurierską!</h1>
-        </div>
-        <div class="text-center">
-            <a class="btn btn-primary" href="{% url 'order:pricing' %}" role="button">Powrót do wyboru
-                kuriera</a>
-        </div>
-
-
-        {% endif %}
-        {% if not no_opinions %}
-        <div class="accordion" id="accordionOrder">
-            {% for value in opinion %}
-            <div class="card">
-                <div class="card-header" id="heading{{ forloop.counter }}">
-                    <h2 class="mb-0">
-                        <button class="btn btn-link" type="button" data-toggle="collapse"
-                                data-target="#collapse{{ forloop.counter }}"
-                                aria-expanded="true" aria-controls="collapse{{ forloop.counter }}">
-                            {{ value }}
-
-
-                        </button>
-                    </h2>
+        <div class="container-fluid">
+            {% if not error %}
+                <!-- SHOW PRICING COMPANY -->
+                <div id="generic_price_table">
+                    <section>
+                        <div class="container">
+                            <!--BLOCK ROW START-->
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="generic_content active clearfix">
+                                        <div class="generic_head_price clearfix">
+                                            <!-- Show Pack Type-->
+                                            <div class="generic_head_content clearfix">
+                                                <div class="head_bg"></div>
+                                                <div class="head">
+                                                    <span>Koperta</span>
+                                                </div>
+                                            </div>
+                                            <!-- Show Courier Name -->
+                                            <div class="generic_price_tag clearfix">
+                                                <span class="price">
+                                                    <span class="currency">{{ envelopepricing.courier }}</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <!--FEATURE LIST START-->
+                                        <div class="generic_feature_list">
+                                            <ul>
+                                                <li><span>do 1 kg</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;|
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    {{ envelopepricing.up_to_1 }} zł
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <!--//FEATURE LIST END-->
+                                    </div>
+                                    <!--//PRICE CONTENT END-->
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="generic_content active clearfix">
+                                        <div class="generic_head_price clearfix">
+                                            <!-- Show Pack Type-->
+                                            <div class="generic_head_content clearfix">
+                                                <div class="head_bg"></div>
+                                                <div class="head">
+                                                    <span>Paczka</span>
+                                                </div>
+                                            </div>
+                                            <!-- Show Courier Name -->
+                                            <div class="generic_price_tag clearfix">
+                                                <span class="price">
+                                                    <span class="currency">{{ packpricing.courier }}</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <!--FEATURE LIST START-->
+                                        <div class="generic_feature_list">
+                                            <ul>
+                                                <li><span>do 1 kg</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;|
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    {{ packpricing.up_to_1 }} zł
+                                                </li>
+                                                <li><span>do 2 kg</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;|
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    {{ packpricing.up_to_2 }} zł
+                                                </li>
+                                                <li><span>do 5 kg</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;|
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    {{ packpricing.up_to_5 }} zł
+                                                </li>
+                                                <li><span>do 10 kg</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;|
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    {{ packpricing.up_to_10 }} zł
+                                                </li>
+                                                <li><span>do 15 kg</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;|
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    {{ packpricing.up_to_15 }} zł
+                                                </li>
+                                                <li><span>do 20 kg</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;|
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    {{ packpricing.up_to_20 }} zł
+                                                </li>
+                                                <li><span>do 30 kg</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;|
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    {{ packpricing.up_to_30 }} zł
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <!--//FEATURE LIST END-->
+                                    </div>
+                                    <!--//PRICE CONTENT END-->
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="generic_content active clearfix">
+                                        <div class="generic_head_price clearfix">
+                                            <!-- Show Pack Type-->
+                                            <div class="generic_head_content clearfix">
+                                                <div class="head_bg"></div>
+                                                <div class="head">
+                                                    <span>Paleta</span>
+                                                </div>
+                                            </div>
+                                            <!-- Show Courier Name -->
+                                            <div class="generic_price_tag clearfix">
+                                                <span class="price">
+                                                    <span class="currency">{{ palletpricing.courier }}</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <!--FEATURE LIST START-->
+                                        <div class="generic_feature_list">
+                                            <ul>
+                                                <li><span>do 300 kg</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;|
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    {{ palletpricing.up_to_300 }} zł
+                                                </li>
+                                                <li><span>do 500 kg</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;|
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    {{ palletpricing.up_to_500 }} zł
+                                                </li>
+                                                <li><span>do 800 kg</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;|
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    {{ palletpricing.up_to_800 }} zł
+                                                </li>
+                                                <li><span>do 1000 kg</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;|
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    {{ palletpricing.up_to_1000 }} zł
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <!--//FEATURE LIST END-->
+                                    </div>
+                                    <!--//PRICE CONTENT END-->
+                                </div>
+                            </div>
+                            <!--//BLOCK ROW END-->
+                        </div>
+                    </section>
                 </div>
+            {% else %}
+                <br>
+                <div class="alert alert-danger text-center" role="alert">
+                    <h1>Wybierz prawidłową firmę kurierską!</h1>
+                </div>
+                <div class="text-center">
+                    <a class="btn btn-primary" href="{% url 'order:pricing' %}" role="button">Powrót do wyboru
+                        kuriera</a>
+                </div><br/>
+            {% endif %}
 
-                <div id="collapse{{ forloop.counter }}" class="collapse"
-                     aria-labelledby="heading{{ forloop.counter }}"
-                     data-parent="#accordionOrder">
-                    <div class="card-body">
+            {% if not no_opinions %}
+                <div class="accordion" id="accordionOrder">
+                    {% for value in opinion %}
+                        <div class="card">
+                            <div class="card-header" id="heading{{ forloop.counter }}">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse"
+                                            data-target="#collapse{{ forloop.counter }}"
+                                            aria-expanded="true" aria-controls="collapse{{ forloop.counter }}">
+                                        {{ value }}
+                                    </button>
+                                </h2>
+                            </div>
 
+                            <div id="collapse{{ forloop.counter }}" class="collapse"
+                                 aria-labelledby="heading{{ forloop.counter }}"
+                                 data-parent="#accordionOrder">
+                                <div class="card-body">
 
                         <span>Ocena: {% for i in value.rating|get_range %}
                             *
-                            {% endfor %}</span><br/>
+                        {% endfor %}</span><br/>
 
-                        <span>Kurier: {{value.order.courier}}</span><br/>
-                        <span>Data: {{value.order.date}}</span><br/>
-                        <span>{{ value.content }}</span>
-                    </div>
+                                    <span>Kurier: {{ value.order.courier }}</span><br/>
+                                    <span>Data: {{ value.order.date }}</span><br/>
+                                    <span>{{ value.content }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    {% endfor %}
                 </div>
-            </div>
-
-
-            {% endfor %}
+            {% else %}
+                <div class="alert alert-info text-center" role="alert">
+                    Ta firma nie posiada żadnych opinii.
+                </div>
+            {% endif %}
         </div>
-        {% else %}
-        <div class="alert alert-info text-center" role="alert">
-            Ta firma nie posiada żadnych opinii.
-        </div>
-        {% endif %}
     </div>
-</div>
 {% endblock %}
 

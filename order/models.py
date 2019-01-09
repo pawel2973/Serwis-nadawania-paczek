@@ -1,12 +1,14 @@
 from django.contrib.auth.models import User
 from django.core.validators import MinLengthValidator, MaxLengthValidator, MinValueValidator, RegexValidator, \
-    MaxValueValidator  # !!! READ DOC !!!
+    MaxValueValidator
 from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.utils.datetime_safe import datetime
 
 
+# Validators
+# ---------------------------------------------------------------------------------------------------------------------
 def name_validator():
     return RegexValidator(
         r"^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$",
@@ -17,6 +19,8 @@ def zip_code_validator():
     return RegexValidator(r'\d{2}-\d{3}', 'Podaj poprawny adres pocztowy NN-NNN')
 
 
+# Address models
+# ---------------------------------------------------------------------------------------------------------------------
 class Address(models.Model):
     name = models.CharField(max_length=90, validators=[name_validator()])
     surname = models.CharField(max_length=90, validators=[name_validator()])
@@ -54,6 +58,22 @@ class Address(models.Model):
             self.email_address) + " | " + str(show_company) + str(show_nip)
 
 
+class RecipientAddress(models.Model):
+    address = models.OneToOneField(Address, on_delete=models.PROTECT, null=True)  # address_id
+
+    def __str__(self):
+        return self.address.name + " " + self.address.surname
+
+
+class SenderAddress(models.Model):
+    address = models.OneToOneField(Address, on_delete=models.PROTECT, null=True)  # address_id
+
+    def __str__(self):
+        return self.address.name + " " + self.address.surname
+
+
+# Profile model
+# ---------------------------------------------------------------------------------------------------------------------
 class Profile(models.Model):
     # default: username, password, email, groups
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # user_id
@@ -74,20 +94,8 @@ class Profile(models.Model):
         return self.user.__str__()
 
 
-class RecipientAddress(models.Model):
-    address = models.OneToOneField(Address, on_delete=models.PROTECT, null=True)  # address_id
-
-    def __str__(self):
-        return self.address.name + " " + self.address.surname
-
-
-class SenderAddress(models.Model):
-    address = models.OneToOneField(Address, on_delete=models.PROTECT, null=True)  # address_id
-
-    def __str__(self):
-        return self.address.name + " " + self.address.surname
-
-
+# Courier model
+# ---------------------------------------------------------------------------------------------------------------------
 class Courier(models.Model):
     # add ranking
     name = models.CharField(max_length=250)
@@ -96,6 +104,64 @@ class Courier(models.Model):
         return self.name
 
 
+# Parcel model
+# ---------------------------------------------------------------------------------------------------------------------
+class Parcel(models.Model):
+    length = models.FloatField(validators=[MinValueValidator(0)])
+    width = models.FloatField(validators=[MinValueValidator(0)])
+    height = models.FloatField(validators=[MinValueValidator(0)])
+    weight = models.FloatField(validators=[MinValueValidator(0)])
+    type = models.CharField(max_length=8)  # enum ???
+    content = models.TextField(max_length=3000, blank=True)  # dodac blank
+
+    def __str__(self):
+        return self.type + " / " + str(self.weight) + " kg / " + str(self.length) + " x " + str(
+            self.weight) + " x " + str(self.height) + " cm "
+
+
+PACK_STATUS = (
+    (0, 'Przygotowane do wysyłki'),
+    (1, 'W drodze'),
+    (2, 'Dostarczono'),
+    (3, 'Anulowano'),
+)
+
+
+# Order model
+# ---------------------------------------------------------------------------------------------------------------------
+class Order(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.PROTECT, null=False)  # profile_id != user_id
+    courier = models.ForeignKey(Courier, on_delete=models.CASCADE, null=False)  # courier_id
+    parcel = models.OneToOneField(Parcel, on_delete=models.CASCADE, null=False)  # parcel_id
+    recipient = models.ForeignKey(RecipientAddress, on_delete=models.CASCADE, null=False)  # recipient_id
+    sender = models.ForeignKey(SenderAddress, on_delete=models.CASCADE, null=False)  # sender_id
+    status = models.IntegerField(
+        default=0,
+        choices=PACK_STATUS,
+        validators=[MinValueValidator(0), MaxValueValidator(3)],
+    )
+    price = models.FloatField(validators=[MinValueValidator(0)])
+    date = models.DateField(default=datetime.now)
+
+    def __str__(self):
+        return "#" + str(self.id) + " | " + str(self.courier) + " | " + str(
+            self.parcel) + " | status: " + str(PACK_STATUS[self.status][1]) + " | cena: " + str(self.price) + " zł"
+
+
+# Opinion model
+# ---------------------------------------------------------------------------------------------------------------------
+class Opinion(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, null=False)
+    date = models.DateField(default=datetime.now)
+    content = models.TextField(max_length=3000)
+    rating = models.IntegerField(choices=list(zip(range(1, 11), range(1, 11))))
+
+    def __str__(self):
+        return "Ocena: " + str(self.rating) + " | " + str(self.order.courier) + "  | Dnia: " + str(self.date)
+
+
+# Pricing models
+# ---------------------------------------------------------------------------------------------------------------------
 class PackPricing(models.Model):
     courier = models.OneToOneField(Courier, on_delete=models.CASCADE, null=True)  # courier_id
     up_to_1 = models.FloatField(validators=[MinValueValidator(0)])
@@ -129,56 +195,8 @@ class EnvelopePricing(models.Model):
         return self.courier.__str__()
 
 
-class Parcel(models.Model):
-    length = models.FloatField(validators=[MinValueValidator(0)])
-    width = models.FloatField(validators=[MinValueValidator(0)])
-    height = models.FloatField(validators=[MinValueValidator(0)])
-    weight = models.FloatField(validators=[MinValueValidator(0)])
-    type = models.CharField(max_length=8)  # enum ???
-    content = models.TextField(max_length=3000, blank=True)  # dodac blank
-
-    def __str__(self):
-        return self.type + " / " + str(self.weight) + " kg / " + str(self.length) + " x " + str(
-            self.weight) + " x " + str(self.height) + " cm "
-
-
-PACK_STATUS = (
-    (0, 'Przygotowane do wysyłki'),
-    (1, 'W drodze'),
-    (2, 'Dostarczono'),
-    (3, 'Anulowano'),
-)
-
-
-class Order(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.PROTECT, null=False)  # profile_id != user_id
-    courier = models.ForeignKey(Courier, on_delete=models.CASCADE, null=False)  # courier_id
-    parcel = models.OneToOneField(Parcel, on_delete=models.CASCADE, null=False)  # parcel_id
-    recipient = models.ForeignKey(RecipientAddress, on_delete=models.CASCADE, null=False)  # recipient_id
-    sender = models.ForeignKey(SenderAddress, on_delete=models.CASCADE, null=False)  # sender_id
-    status = models.IntegerField(
-        default=0,
-        choices=PACK_STATUS,
-        validators=[MinValueValidator(0), MaxValueValidator(3)],
-    )
-    price = models.FloatField(validators=[MinValueValidator(0)])
-    date = models.DateField(default=datetime.now)
-
-    def __str__(self):
-        return "#" + str(self.id) + " | " + str(self.courier) + " | " + str(
-            self.parcel) + " | status: " + str(PACK_STATUS[self.status][1]) + " | cena: " + str(self.price) + " zł"
-
-
-class Opinion(models.Model):
-    order = models.OneToOneField(Order, on_delete=models.CASCADE, null=False)
-    date = models.DateField(default=datetime.now)
-    content = models.TextField(max_length=3000)
-    rating = models.IntegerField(choices=list(zip(range(1, 11), range(1, 11))))
-
-    def __str__(self):
-        return "Ocena: " + str(self.rating) + " | " + str(self.order.courier) + "  | Dnia: " + str(self.date)
-
-
+# Gift service models
+# ---------------------------------------------------------------------------------------------------------------------
 class Gift(models.Model):
     name = models.CharField(max_length=250)
     premium_points = models.IntegerField(default=0, validators=[MinValueValidator(0)])

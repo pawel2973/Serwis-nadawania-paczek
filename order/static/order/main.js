@@ -5,7 +5,16 @@
 
     /*==================================================================
     [ Focus input ]*/
-
+      $('.inputPaka').each(function(){
+        $(this).on('blur', function(){
+            if($(this).val().trim() != "") {
+                $(this).addClass('has-val');
+            }
+            else {
+                $(this).removeClass('has-val');
+            }
+        })    
+    });
   $(document).ready(function() {
     $("#show_hide_password a").on('click', function(event) {
         event.preventDefault();
@@ -28,7 +37,6 @@ $(document).ready(function(){
             $(".dlugosc").val(9).prop("readonly", false);
 			$(".szerokosc").val(14).prop("readonly", false);
 			$(".wysokosc").val(7).prop("readonly", false);
-			
         } 
 		
     });
@@ -48,10 +56,10 @@ $(document).ready(function(){
 	$(document).ready(function(){
     $("#id_type_1").on("click", function () {
         if ($(this).is(":checked")) {
-				$(".waga").val(1000).prop("readonly", false);
-            $(".dlugosc").val(200).prop("readonly",true);
-			$(".szerokosc").val(140).prop("readonly",true);
-			$(".wysokosc").val(200).prop("readonly", false);
+				$(".waga").val(1000).prop("readonly", true);
+            $(".dlugosc").val(200).prop("readonly",false);
+			$(".szerokosc").val(140).prop("readonly",false);
+			$(".wysokosc").val(200).prop("readonly", true);
         } 
     });
 	});
@@ -84,7 +92,7 @@ $(document).ready(function(){
 		this.value=1;}
       this.value = Math.abs(parseFloat(this.value)).toFixed(2);
     } else {
-      this.value = 1;
+      this.value = 0;
     }
   });
   $(".szerokosc").on("keydown", function(e) {
@@ -111,7 +119,7 @@ $(document).ready(function(){
 		this.value=1;}
       this.value = Math.abs(parseFloat(this.value)).toFixed(2);
     } else {
-      this.value = 1;
+      this.value = 0;
     }
   });
   $(".wysokosc").on("keydown", function(e) {
@@ -138,7 +146,7 @@ $(document).ready(function(){
 		this.value=1;}
       this.value = Math.abs(parseFloat(this.value)).toFixed(2);
     } else {
-      this.value = 1;
+      this.value = 0;
     }
   });
   
@@ -166,24 +174,14 @@ $(document).ready(function(){
 		this.value=1;}
       this.value = Math.abs(parseFloat(this.value)).toFixed(2);
     } else {
-      this.value = 1;
+      this.value = 0;
     }
   });
 });
 	
 	
 	
-	      $('.inputPaka').each(function(){
-        $(this).on('blur', function(){
-            if($(this).val().trim() != "") {
-                $(this).addClass('has-val');
-            }
-            else {
-                $(this).removeClass('has-val');
-            }
-        })    
-    });
-
+	
 	
 	
 	

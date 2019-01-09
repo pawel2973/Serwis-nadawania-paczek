@@ -1,6 +1,5 @@
 {% extends 'order/base.html' %}
 {% load staticfiles %}
-{% load staticfiles %}
 
 {% block styles %}
     <link rel="stylesheet" type="text/css" href="{% static 'order/pricing_table_style.css' %}"/>
@@ -192,7 +191,7 @@
                                 <div class="card-body">
 
                         <span>Ocena: {% for i in value.rating|get_range %}
-                            *
+                            <img src="{% static 'order/images/star_yellow.png' %}" alt="star">
                         {% endfor %}</span><br/>
 
                                     <span>Kurier: {{ value.order.courier }}</span><br/>
@@ -204,7 +203,7 @@
 
 
                     {% endfor %}
-                </div>
+                </div> <br/><br/>
             {% else %}
                 <div class="alert alert-info text-center" role="alert">
                     Ta firma nie posiada żadnych opinii.

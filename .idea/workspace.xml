@@ -74,8 +74,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/order/templates/order/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="563">
-              <caret line="129" column="7" selection-start-line="129" selection-start-column="7" selection-end-line="129" selection-end-column="7" />
+            <state relative-caret-position="240">
+              <caret line="110" column="20" lean-forward="true" selection-start-line="110" selection-start-column="20" selection-end-line="110" selection-end-column="110" />
             </state>
           </provider>
         </entry>
@@ -83,8 +83,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/order/templates/order/pricing.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="495">
-              <caret line="33" column="14" lean-forward="true" selection-start-line="33" selection-start-column="14" selection-end-line="33" selection-end-column="14" />
+            <state relative-caret-position="291">
+              <caret line="22" column="92" selection-start-line="22" selection-start-column="92" selection-end-line="22" selection-end-column="92" />
             </state>
           </provider>
         </entry>
@@ -92,8 +92,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/order/templates/order/pricing_company.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="51" column="54" lean-forward="true" selection-start-line="51" selection-start-column="54" selection-end-line="51" selection-end-column="54" />
+            <state relative-caret-position="427">
+              <caret line="205" column="33" selection-start-line="205" selection-start-column="33" selection-end-line="205" selection-end-column="33" />
               <folding>
                 <element signature="e#2069#2075#0#HTML" expanded="true" />
                 <element signature="e#2075#2081#0#HTML" expanded="true" />
@@ -329,8 +329,8 @@
         <option value="$PROJECT_DIR$/order/static/order/style.css" />
         <option value="$PROJECT_DIR$/order/templates/order/index.html" />
         <option value="$PROJECT_DIR$/order/templates/order/base.html" />
-        <option value="$PROJECT_DIR$/order/templates/order/pricing.html" />
         <option value="$PROJECT_DIR$/order/static/order/pricing_table_style.css" />
+        <option value="$PROJECT_DIR$/order/templates/order/pricing.html" />
         <option value="$PROJECT_DIR$/order/templates/order/pricing_company.html" />
       </list>
     </option>
@@ -381,6 +381,14 @@
               <item name="Inzynieria-OprogramowaniaT" type="b2602c69:ProjectViewProjectNode" />
               <item name="Inzynieria-OprogramowaniaT" type="462c0819:PsiDirectoryNode" />
               <item name="order" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="order" type="462c0819:PsiDirectoryNode" />
+              <item name="images" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Inzynieria-OprogramowaniaT" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Inzynieria-OprogramowaniaT" type="462c0819:PsiDirectoryNode" />
+              <item name="order" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -406,14 +414,15 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Perkoz\Documents\GitHub\Inzynieria-OprogramowaniaT\order\static\order\images" />
+      <recent name="C:\Users\Perkoz\Documents\GitHub\Inzynieria-Oprogramowania\order\static\order\images" />
+      <recent name="C:\Users\Perkoz\Documents\GitHub\Inzynieria-Oprogramowania\order\static\order" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Alan\Documents\GitHub\Inzynieria-Oprogramowania\order\templates\order" />
       <recent name="C:\Users\Perkoz\Documents\GitHub\Inzynieria-Oprogramowania\order\templates\order" />
       <recent name="C:\Users\Perkoz\Documents\GitHub\Inzynieria-Oprogramowania\order\static\order\images" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Perkoz\Documents\GitHub\Inzynieria-Oprogramowania\order\static\order\images" />
-      <recent name="C:\Users\Perkoz\Documents\GitHub\Inzynieria-Oprogramowania\order\static\order" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -477,12 +486,12 @@
       <workItem from="1546730703886" duration="8780000" />
       <workItem from="1547047618693" duration="366000" />
       <workItem from="1547050109410" duration="2611000" />
-      <workItem from="1547071467432" duration="557000" />
+      <workItem from="1547071467432" duration="1173000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="243573000" />
+    <option name="totallyTimeSpent" value="244189000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -732,13 +741,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/order/templates/order/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="563">
-          <caret line="129" column="7" selection-start-line="129" selection-start-column="7" selection-end-line="129" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/order/static/order/pricing_table_style.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="563">
@@ -746,17 +748,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/order/templates/order/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="110" column="20" lean-forward="true" selection-start-line="110" selection-start-column="20" selection-end-line="110" selection-end-column="110" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/order/templates/order/pricing.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="33" column="14" lean-forward="true" selection-start-line="33" selection-start-column="14" selection-end-line="33" selection-end-column="14" />
+        <state relative-caret-position="291">
+          <caret line="22" column="92" selection-start-line="22" selection-start-column="92" selection-end-line="22" selection-end-column="92" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/order/templates/order/pricing_company.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="51" column="54" lean-forward="true" selection-start-line="51" selection-start-column="54" selection-end-line="51" selection-end-column="54" />
+        <state relative-caret-position="427">
+          <caret line="205" column="33" selection-start-line="205" selection-start-column="33" selection-end-line="205" selection-end-column="33" />
           <folding>
             <element signature="e#2069#2075#0#HTML" expanded="true" />
             <element signature="e#2075#2081#0#HTML" expanded="true" />

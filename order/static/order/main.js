@@ -22,15 +22,15 @@
 });
 
 $(document).ready(function(){
-    $("#id_type_2").on("click", function () {
+    $("#id_type_1").on("click", function () {
         if ($(this).is(":checked")) {
 				$(".waga").val(1).prop("readonly", false);
             $(".dlugosc").val(9).prop("readonly", false);
 			$(".szerokosc").val(14).prop("readonly", false);
 			$(".wysokosc").val(7).prop("readonly", false);
-			
-        } 
-		
+
+        }
+
     });
 })
 $(document).ready(function(){
@@ -40,13 +40,13 @@ $(document).ready(function(){
             $(".dlugosc").val(35).prop("readonly", true);
 			$(".szerokosc").val(25).prop("readonly", true);
 			$(".wysokosc").val(5).prop("readonly", true);
-        } 
+        }
     });
 });
 
 
 	$(document).ready(function(){
-    $("#id_type_1").on("click", function () {
+    $("#id_type_2").on("click", function () {
         if ($(this).is(":checked")) {
 				$(".waga").val(1000).prop("readonly", false);
             $(".dlugosc").val(200).prop("readonly",true);
@@ -184,11 +184,27 @@ $(document).ready(function(){
         })    
     });
 
-	
-	
-	
-	
-	
-	
+var modalBtns = [...document.querySelectorAll(".btn")];
+modalBtns.forEach(function(btn){
+  btn.onclick = function() {
+    var modal = btn.getAttribute('data-modal');
+    document.getElementById(modal).style.display = "block";
+  }
+});
+
+
+var closeBtns = [...document.querySelectorAll(".close")];
+closeBtns.forEach(function(btn){
+  btn.onclick = function() {
+    var modal = btn.closest('.modal');
+    modal.style.display = "none";
+  }
+});
+
+window.onclick = function(event) {
+  if (event.target.className === "modal") {
+    event.target.style.display = "none";
+  }
+}
 	
 })(jQuery);

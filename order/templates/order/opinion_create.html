@@ -1,7 +1,7 @@
 {% extends 'order/base.html' %}
 
 {% block body %}
-
+<div class="container-fluid">
     <div style="text-align: center;">
 
             {% if error_unique %}
@@ -9,26 +9,65 @@
                 <strong>To zamówienie już ma wystawioną opinię!</strong>
               </div>
             {% endif %}
-
+<div class="alert alert-info text-center" style="margin-top:30px; margin-bottom:50px;" role="alert">
+                  Wystaw opinię!
+                </div>
      <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
                             <div class="form-row">
-                                {% load widget_tweaks %}
-                                {% csrf_token %}
-                                {% for field in form %}
+                                      <div class="col-lg-12 col-sm-6">
+                                <input type="hidden" name="csrfmiddlewaretoken" value="9OPvcPQaGEgcybkCr0sLRlKEiixOmP5Hjz40J8kT3kWSXVJKmqt1cqgmyXdYGE6z">
+                                  <div class="form-group">
+                                        <span class="text-danger small"></span>
+                                      
+                                        <div class="col-lg-12 col-sm-4">
+                                                   <div class="wrap-inputPaka">
+                                            <textarea name="content" cols="40" rows="10" maxlength="3000" class="inputPaka" required id="id_content">
+</textarea>
+											       <span class="focus-inputPaka" data-placeholder="Opis"></span>
+												   </div>
+											</div>
+
+											</div>
+                                
+                           
                                     <div class="form-group">
-                                        <span class="text-danger small">{{ field.errors }}</span>
-                                        <label class="control-label col-lg-12 col-sm-2"> {{ field.label_tag }}</label>
+                                        <span class="text-danger small"></span>
+                                       
                                         <div class="col-lg-12 col-sm-10">
                                                    <div class="wrap-inputPaka">
-                                            {{ field }}
+                                            <select name="rating" class="inputPaka" required id="id_rating">
+  <option value="" selected>Wybierz ocene</option>
+
+  <option value="1">1</option>
+
+  <option value="2">2</option>
+
+  <option value="3">3</option>
+
+  <option value="4">4</option>
+
+  <option value="5">5</option>
+
+  <option value="6">6</option>
+
+  <option value="7">7</option>
+
+  <option value="8">8</option>
+
+  <option value="9">9</option>
+
+  <option value="10">10</option>
+
+</select>
 											       <span class="focus-inputPaka" data-placeholder=""></span>
 												   </div>
 											</div>
 
 											</div>
-                                {% endfor %}
-                            </div>
+                                 
                             <button class="btn btn-primary" name="submit_opinion" type="submit">Wystaw opinię</button>
+                           </div>       
                         </form>
     </div>
+	</div>
 {% endblock %}

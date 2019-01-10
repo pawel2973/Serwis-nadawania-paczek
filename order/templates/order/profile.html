@@ -50,17 +50,29 @@
                 {% if not profile_address %}
                     <!-- if user don't have address -->
                     <a href="{% url 'order:profile_address_create' %}">
-                        <button class="btn btn-primary">Stworz adres</button>
+                        <button class="btn">Stworz adres</button>
                     </a>
                 {% else %}
                     <!-- user have address -->
                     <a href="{% url 'order:profile_address_update' profile.address_id %}">
-                        <button class="btn btn-primary">Edytuj adres</button>&nbsp;
+                        <button class="btn">Edytuj adres</button>&nbsp;
                     </a>
+					       <button class="btn" type="submit" data-modal="modalOne">Usun adres</button>
                     <form action="{% url 'order:profile_address_delete' profile.address_id %}" method="post"
                           style="display: inline;">
                         {% csrf_token %}
-                        <button class="btn btn-primary" type="submit">Usun adres</button>
+                 
+						
+						<div id="modalOne" class="modal">
+							<div class="modal-content">
+    <span class="close" >&times;</span>
+	
+    <h3>Czy na pewno chcesz usunąć adres?</h3>
+	<button class="btn" style="   margin: 0 auto;" type="submit" >Usun adres</button>
+                            </button>
+	
+  </div>
+  </div>
                     </form>
                 {% endif %}
             </div>

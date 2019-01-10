@@ -4,7 +4,8 @@
 
 
 {% block body %}
-<div style="margin-top:50px;">
+
+<div class="container-fluid">
 <div class="row">
     <div class="col-lg-12">
 
@@ -81,32 +82,50 @@
 					
                         {% if order.status == 0 %}
 								
-                        <form method="post">
-				
-                            {% csrf_token %}
+                        
+					 {% csrf_token %}
+                           
 							  <div class="text-center" style="margin-bottom:15px">
-                            <button class="button btn-primary btn-md" value="{{ order.id }}" name="submit"
-                                    type="submit">Anuluj zamówienie
+                            <button class="btn"
+                                    type="submit" data-modal="modalOne{{ forloop.counter }}">Anuluj zamówienie
                             </button>
-						
-                        </form>
+							<form method="post">
+							 {% csrf_token %}
+							<div id="modalOne{{ forloop.counter }}" class="modal">
+							<div class="modal-content">
+    <span class="close">&times;</span>
+	
+    <h3>Czy na pewno chcesz anulować zamówienie? </h3>
+	  <button class="btn" style=" margin: 0 auto;" 
+                                    type="submit" value="{{ order.id }}" name="submit">Anuluj zamówienie
+                            </button>
+	
+  </div>
+  </div>
+ </form>
+</div>
+				
+                       
                         {% endif %}
 
                         <form action="{% url 'order:opinion_create' %}" method="get">
                             <input type="hidden" name="order_id" value="{{ order.id }}"/>
 							  <div class="text-center" style="margin-top:15px">
-                            <button class="button btn-primary" type="submit">Oceń zamówienie
+                            <button class="btn" type="submit">Oceń zamówienie
                             </button>
 							</div>
 							</form>
 							</div>
-                        </form>
+							</div>
+							</div>
+                       {% endfor %}
+						
                     </div>
                 </div>
             </div>
-            {% endfor %}
+         
         </div>
-    </div>
-</div>
+		
+ 
 
 {% endblock %}

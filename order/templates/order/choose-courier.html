@@ -12,7 +12,7 @@
         </div>
         <br />
 
-        <div class="boxed">
+        <div class="boxed" >
             <form action="" method="post">
                 {% csrf_token %}
                 {# KOPERTA #}
@@ -28,15 +28,16 @@
 
                     {% for pack in object_list %}
                         <input type="radio" id="{{ pack.0 }}" name="courier" value="{{ pack.0 }}">
-                        <label for="{{ pack.0 }}"><strong>{{ pack.1 }}</strong>{{ pack.2 }}zł</label>
+                        <label for="{{ pack.0 }}"><strong>{{ pack.1   }}</strong><br/>{{ pack.2 }}zł</label>
                     {% endfor %}
                 {% endif %}
 
                 {# PALETA #}
                 {% if request.session.type == 'paleta' %}
+				
                     {% for pallet in object_list %}
                         <input type="radio" id="{{ pallet.0 }}" name="courier" value="{{ pallet.0 }}">
-                        <label for="{{ pallet.0 }}"><strong>{{ pallet.1 }}</strong> {{ pallet.2 }}zł</label>
+                        <label for="{{ pallet.0 }}"><strong>{{ pallet.1 }}</strong> {{ pallet.2 }} zł</label>
                     {% endfor %}
                 {% endif %}
 

@@ -47,21 +47,21 @@
                             class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'order:pricing' %}">Cennik</a>
+                    <a class="nav-link" href="{% url 'order:pricing' %}"> <i class="fas fa-dollar-sign"></i> Cennik</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'order:about' %}">O firmie</a>
+                    <a class="nav-link" href="{% url 'order:about' %}"><i class="fas fa-building"></i> O firmie</a>
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'order:profile' %}">Profil</a>
+                        <a class="nav-link" href="{% url 'order:profile' %}"><i class="fas fa-user"></i> Profil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'order:orders' %}">Zamówienia</a>
+                        <a class="nav-link" href="{% url 'order:orders' %}"><i class="fas fa-cart-plus"></i> Zamówienia</a>
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'order:ranking' %}">Ranking</a>
+                    <a class="nav-link" href="{% url 'order:ranking' %}"><i class="fas fa-award"></i> Ranking</a>
                 </li>
             </ul>
 
@@ -69,7 +69,7 @@
                 <li class="nav-item">
                     {% if user.is_authenticated %}
                         <a class="nav-link" href="#"> <span
-                                style="color: blue">zalogowany jako: {{ user.username }}</span></a>
+                                style="color: blue">Zalogowany jako: {{ user.username }}</span></a>
                     {% endif %}
                 </li>
                 <li class="nav-item">

@@ -11,114 +11,8 @@
         </div>
         <br/>
     </div>
-    <!--
-    <div class="form-row">
-
-        <div class="form-group col-md-6">
-            <div class="wrap-inputPaka">
-                <input class="inputPaka" type="text" name="imie">
-                <span class="focus-inputPaka" data-placeholder="Imię odbiorcy"></span>
-            </div>
-            <div class="wrap-inputPaka">
-                <input class="inputPaka" type="text" name="nazwisko odbiorcy">
-                <span class="focus-inputPaka" data-placeholder="Nazwisko odbiorcy"></span>
-            </div>
-            <div class="wrap-inputPaka">
-                <input class="inputPaka" type="text" name="kod pocztowy odbiorcy">
-                <span class="focus-inputPaka" data-placeholder="Kod pocztowy odbiorcy"></span>
-            </div>
-            <div class="wrap-inputPaka">
-                <input class="inputPaka" type="text" name="miejscowosc odbiorcy">
-                <span class="focus-inputPaka" data-placeholder="Miejscowość odbiorcy"></span>
-            </div>
-            <div class="wrap-inputPaka">
-                <input class="inputPaka" type="text" name="ulica odbiorcy">
-                <span class="focus-inputPaka" data-placeholder="Ulica odbiorcy"></span>
-            </div>
-            <div class="wrap-inputPaka">
-                <input class="inputPaka" type="text" name="nr domu odbiorcy">
-                <span class="focus-inputPaka" data-placeholder="Nr domu odbiorcy"></span>
-            </div>
-            <div class="wrap-inputPaka">
-                <input class="inputPaka" type="text" name="nr lokalu odbiorcy">
-                <span class="focus-inputPaka" data-placeholder="Nr lokalu odbiorcy"></span>
-            </div>
-            <div class="wrap-inputPaka">
-                <input class="inputPaka" type="text" name="nr telefonu odbiorcy">
-                <span class="focus-inputPaka" data-placeholder="Nr telefonu odbiorcy"></span>
-            </div>
-            <div class="wrap-inputPaka">
-                <input class="inputPaka" type="text" name="email odbiorcy">
-                <span class="focus-inputPaka" data-placeholder="Email odbiorcy"></span>
-            </div>
-        </div>
-
-        <div class="form-group col-md-6">
-            <div class="wrap-inputPaka">
-                <input class="inputPaka" type="text" name="imie">
-                <span class="focus-inputPaka" data-placeholder="Imię nadawcy"></span>
-            </div>
-            <div class="wrap-inputPaka">
-                <input class="inputPaka" type="text" name="nazwisko nadawcy">
-                <span class="focus-inputPaka" data-placeholder="Nazwisko nadawcy"></span>
-            </div>
-            <div class="wrap-inputPaka">
-                <input class="inputPaka" type="text" name="kod pocztowy nadawcy">
-                <span class="focus-inputPaka" data-placeholder="Kod pocztowy nadawcy"></span>
-            </div>
-            <div class="wrap-inputPaka">
-                <input class="inputPaka" type="text" name="miejscowosc nadawcy">
-                <span class="focus-inputPaka" data-placeholder="Miejscowość nadawcy"></span>
-            </div>
-            <div class="wrap-inputPaka">
-                <input class="inputPaka" type="text" name="ulica nadawcy">
-                <span class="focus-inputPaka" data-placeholder="Ulica nadawcy"></span>
-            </div>
-            <div class="wrap-inputPaka">
-                <input class="inputPaka" type="text" name="nr domu nadawcy">
-                <span class="focus-inputPaka" data-placeholder="Nr domu nadawcy"></span>
-            </div>
-            <div class="wrap-inputPaka">
-                <input class="inputPaka" type="text" name="nr lokalu nadawcy">
-                <span class="focus-inputPaka" data-placeholder="Nr lokalu nadawcy"></span>
-            </div>
-            <div class="wrap-inputPaka">
-                <input class="inputPaka" type="text" name="nr telefonu nadawcy">
-                <span class="focus-inputPaka" data-placeholder="Nr telefonu nadawcy"></span>
-            </div>
-            <div class="wrap-inputPaka">
-                <input class="inputPaka" type="text" name="email nadawcy">
-                <span class="focus-inputPaka" data-placeholder="Email nadawcy"></span>
-            </div>
-
-        </div>
-
-    </div>
-    <div style="text-align: center;">
-        <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseOrder"
-                aria-expanded="false" aria-controls="collapseExample">
-            Zamów
-        </button>
-    </div>
-
-
-
-
-    <div class="wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12">
-                    {#% for courier in object_list %#}
-                        <a href="{#% url 'order:pricing_company' courier.id %#}"
-                           class="btn btn-outline-danger my-2 my-sm-0">{{ courier.name }}</a>
-                    {#% endfor %#}
-                </div>
-            </div>
-        </div>
-    </div> -->
-
-
-    <div class="container-fluid" style="margin-bottom:100px; margin-top:50px">
+   
+  <div class="container-fluid" style="margin-bottom:100px; margin-top:50px">
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-default">
@@ -126,20 +20,130 @@
 
                         <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
                             <div class="form-row">
-                             {% load widget_tweaks %}
-                                {% csrf_token %}
-                                {% for field in form %}
+                             
+                                <input type="hidden" name="csrfmiddlewaretoken" value="zY8ykYZScRqwZNa3nzqZeGuJ5szi972KJJn3RhtBzx6coxzbiZrfzL0rl7fstW3C">
+                                
                                     <div class="form-group">
-                                        <span class="text-danger small">{{ field.errors }}</span>
-                                        <label class="control-label col-lg-12 col-sm-2"> {{ field.label_tag }}</label>
+                                        <span class="text-danger small"></span>
+                                        <label class="control-label col-lg-12 col-sm-2"> <label for="id_name">Imie:</label></label>
                                         <div class="col-lg-12 col-sm-10">
 										            <div class="wrap-inputPaka">
-                                            {{ field|add_class:"inputPaka" }} 
+                                            <input type="text" name="name" maxlength="90" class="inputPaka" required id="id_name"> 
 											       <span class="focus-inputPaka" data-placeholder=""></span>
 												   </div>
 											</div>
                                     </div>
-                                {% endfor %}
+                                
+                                    <div class="form-group">
+                                        <span class="text-danger small"></span>
+                                        <label class="control-label col-lg-12 col-sm-2"> <label for="id_surname">Nazwisko:</label></label>
+                                        <div class="col-lg-12 col-sm-10">
+										            <div class="wrap-inputPaka">
+                                            <input type="text" name="surname" maxlength="90" class="inputPaka" required id="id_surname"> 
+											       <span class="focus-inputPaka" data-placeholder=""></span>
+												   </div>
+											</div>
+                                    </div>
+                                
+                                    <div class="form-group">
+                                        <span class="text-danger small"></span>
+                                        <label class="control-label col-lg-12 col-sm-2"> <label for="id_company_name">Nazwa Firmy:</label></label>
+                                        <div class="col-lg-12 col-sm-10">
+										            <div class="wrap-inputPaka">
+                                            <input type="text" name="company_name" maxlength="500" class="inputPaka" id="id_company_name"> 
+											       <span class="focus-inputPaka" data-placeholder=""></span>
+												   </div>
+											</div>
+                                    </div>
+                                
+                                    <div class="form-group">
+                                        <span class="text-danger small"></span>
+                                        <label class="control-label col-lg-12 col-sm-2"> <label for="id_zip_code">Kod pocztowy:</label></label>
+                                        <div class="col-lg-12 col-sm-10">
+										            <div class="wrap-inputPaka">
+                                            <input type="text" name="zip_code" maxlength="6" class="inputPaka" required id="id_zip_code"> 
+											       <span class="focus-inputPaka" data-placeholder=""></span>
+												   </div>
+											</div>
+                                    </div>
+                                
+                                    <div class="form-group">
+                                        <span class="text-danger small"></span>
+                                        <label class="control-label col-lg-12 col-sm-2"> <label for="id_city">Miejscowość:</label></label>
+                                        <div class="col-lg-12 col-sm-10">
+										            <div class="wrap-inputPaka">
+                                            <input type="text" name="city" maxlength="350" class="inputPaka" required id="id_city"> 
+											       <span class="focus-inputPaka" data-placeholder=""></span>
+												   </div>
+											</div>
+                                    </div>
+                                
+                                    <div class="form-group">
+                                        <span class="text-danger small"></span>
+                                        <label class="control-label col-lg-12 col-sm-2"> <label for="id_street">Ulica:</label></label>
+                                        <div class="col-lg-12 col-sm-10">
+										            <div class="wrap-inputPaka">
+                                            <input type="text" name="street" maxlength="350" class="inputPaka" required id="id_street"> 
+											       <span class="focus-inputPaka" data-placeholder=""></span>
+												   </div>
+											</div>
+                                    </div>
+                                
+                                    <div class="form-group">
+                                        <span class="text-danger small"></span>
+                                        <label class="control-label col-lg-12 col-sm-2"> <label for="id_house_number">Numer domu:</label></label>
+                                        <div class="col-lg-12 col-sm-10">
+										            <div class="wrap-inputPaka">
+                                            <input type="number" name="house_number" class="inputPaka" required id="id_house_number"> 
+											       <span class="focus-inputPaka" data-placeholder=""></span>
+												   </div>
+											</div>
+                                    </div>
+                                
+                                    <div class="form-group">
+                                        <span class="text-danger small"></span>
+                                        <label class="control-label col-lg-12 col-sm-2"> <label for="id_apartment_number">Numer mieszkania:</label></label>
+                                        <div class="col-lg-12 col-sm-10">
+										            <div class="wrap-inputPaka">
+                                            <input type="number" name="apartment_number" class="inputPaka" id="id_apartment_number"> 
+											       <span class="focus-inputPaka" data-placeholder=""></span>
+												   </div>
+											</div>
+                                    </div>
+                                
+                                    <div class="form-group">
+                                        <span class="text-danger small"></span>
+                                        <label class="control-label col-lg-12 col-sm-2"> <label for="id_telephone_number">Numer telefonu:</label></label>
+                                        <div class="col-lg-12 col-sm-10">
+										            <div class="wrap-inputPaka">
+                                            <input type="text" name="telephone_number" maxlength="20" class="inputPaka" required id="id_telephone_number"> 
+											       <span class="focus-inputPaka" data-placeholder=""></span>
+												   </div>
+											</div>
+                                    </div>
+                                
+                                    <div class="form-group">
+                                        <span class="text-danger small"></span>
+                                        <label class="control-label col-lg-12 col-sm-2"> <label for="id_email_address">Adres email:</label></label>
+                                        <div class="col-lg-12 col-sm-10">
+										            <div class="wrap-inputPaka">
+                                            <input type="email" name="email_address" maxlength="250" class="inputPaka" required id="id_email_address"> 
+											       <span class="focus-inputPaka" data-placeholder=""></span>
+												   </div>
+											</div>
+                                    </div>
+                                
+                                    <div class="form-group">
+                                        <span class="text-danger small"></span>
+                                        <label class="control-label col-lg-12 col-sm-2"> <label for="id_nip">Nip:</label></label>
+                                        <div class="col-lg-12 col-sm-10">
+										            <div class="wrap-inputPaka">
+                                            <input type="text" name="nip" maxlength="10" class="inputPaka" id="id_nip"> 
+											       <span class="focus-inputPaka" data-placeholder=""></span>
+												   </div>
+											</div>
+                                    </div>
+                                
                             </div>
 							 <div class="text-center">
                             <button class="btn btn-primary" type="submit">Zatwierdź</button>
@@ -151,4 +155,10 @@
             </div>
         </div>
     </div>
+
+</div>
+<script src="/static/order/main.js"></script>
+</body>
+</html>
+
 {% endblock %}

@@ -2,20 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0a526048-9d6a-4fb2-8217-039bd0853065" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Inzynieria-Oprogramowania.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Inzynieria-Oprogramowania.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/static/order/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/order/static/order/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/static/order/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/order/static/order/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/order/templates/order/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/order/templates/order/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/templates/order/choose-courier.html" beforeDir="false" afterPath="$PROJECT_DIR$/order/templates/order/choose-courier.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/templates/order/create_profile_address.html" beforeDir="false" afterPath="$PROJECT_DIR$/order/templates/order/create_profile_address.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/templates/order/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/order/templates/order/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/templates/order/opinion_create.html" beforeDir="false" afterPath="$PROJECT_DIR$/order/templates/order/opinion_create.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/templates/order/recipient_address.html" beforeDir="false" afterPath="$PROJECT_DIR$/order/templates/order/recipient_address.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/templates/order/sender_address.html" beforeDir="false" afterPath="$PROJECT_DIR$/order/templates/order/sender_address.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order/templates/order/user_orders.html" beforeDir="false" afterPath="$PROJECT_DIR$/order/templates/order/user_orders.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,7 +17,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/order/forms.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="238">
@@ -38,6 +27,11 @@
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/order/__init__.py">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -188,7 +182,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1936" />
@@ -296,12 +290,12 @@
       <workItem from="1547047618693" duration="366000" />
       <workItem from="1547050109410" duration="2611000" />
       <workItem from="1547071467432" duration="1173000" />
-      <workItem from="1547079241797" duration="1261000" />
+      <workItem from="1547079241797" duration="1867000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="245450000" />
+    <option name="totallyTimeSpent" value="246056000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -313,7 +307,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="784" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21558245" />
@@ -478,6 +472,9 @@
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/order/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>

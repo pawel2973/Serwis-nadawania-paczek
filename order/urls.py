@@ -20,6 +20,7 @@ urlpatterns = [
     path('orders/', views.OrdersView.as_view(), name='orders'),
     path('courier-opinion-create/', views.OpinionCreateView.as_view(), name='opinion_create'),
     path('courier-ranking/', views.CourierRankingView.as_view(), name='ranking'),
+    path('charts/', views.ChartsView.as_view(), name='charts'),
     path('signup/', views.SignUpView.as_view(), name='signup'),
     path('login/', views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
     path('logout/', views.LogoutView.as_view(), {'template_name': 'order/index.html'}, name='logout'),

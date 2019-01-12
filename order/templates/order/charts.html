@@ -1,0 +1,31 @@
+{% extends 'order/base.html' %}
+{% load staticfiles %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'order/pricing_table_style.css' %}"/>
+    <!-- Include FusionCharts core file -->
+    <script type="text/javascript" src="http://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+    <!-- Include FusionCharts Theme file -->
+    <script type="text/javascript"
+            src="http://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+{% endblock %}
+
+{% block carousel %}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <!--  CHART: COURIER -> PARCELS -->
+        <div class="col-lg-6">
+            <div id="chart-1" class="text-center">{{ output|safe }}</div>
+            <h3>{{ courier_parcels_bar3D|safe }}</h3>
+        </div>
+
+
+    <!--  CHART: Average courier rating -->
+
+
+    </div>
+
+{% endblock %}
+

@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 # from django.http import request
 from django.core.checks import messages
 from django.db import IntegrityError
-from django.db.models import Count
+from django.db.models import Count, Avg
 from django.http import Http404, HttpResponseForbidden, HttpResponseRedirect, request, HttpResponse
 from django.shortcuts import render, redirect, render_to_response
 from django.urls import reverse_lazy
@@ -15,6 +15,7 @@ from .models import Courier, PackPricing, PalletPricing, EnvelopePricing, Parcel
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.template.defaulttags import register
+from .fusioncharts import FusionCharts
 
 
 # Views of the package ordering process
@@ -571,6 +572,42 @@ class CourierRankingView(generic.TemplateView):
             context['top'][i]['total'] = round(context['top'][i]['total'], 2)
         context['top'].append(
             {'courier__name': 'Inne firmy', 'total': round(100 - sum(list(d['total'] for d in context['top'])), 2)})
+        return context
+
+
+class ChartsView(generic.TemplateView):
+    template_name = 'order/charts.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ChartsView, self).get_context_data(**kwargs)
+
+        # CHART: COURIER -> PARCELS
+        # -----------------------------------------------------------
+        dataSource = {}
+        dataSource['chart'] = {
+            "caption": "Liczba zamówionych przesyłek",
+            "theme": "fusion"
+        }
+
+        # Convert the data in the `actualData` array into a format that can be consumed by FusionCharts.
+        # The data for the chart should be in an array wherein each element of the array is a JSON object
+        # having the `label` and `value` as keys.
+        dataSource['data'] = []
+
+        courier_order_list = Order.objects.all().values('courier__name').annotate(total=Count('courier')).order_by(
+            '-total')
+
+        for idx, dict in enumerate(courier_order_list):
+            data = {}
+            data['label'] = dict['courier__name']
+            data['value'] = dict['total']
+            dataSource['data'].append(data)
+
+        # FusionCharts class constructor
+        courier_parcels_bar3D = FusionCharts("bar3d", "ex1", "100%", "400", "chart-1", "json", dataSource)
+
+        context['courier_parcels_bar3D'] = courier_parcels_bar3D.render()
+
         return context
 
 

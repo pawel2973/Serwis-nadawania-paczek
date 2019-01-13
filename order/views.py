@@ -1,3 +1,5 @@
+import calendar
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 # from django.http import request
@@ -585,7 +587,7 @@ class ChartsView(generic.TemplateView):
         # -----------------------------------------------------------
         dataSource = {}
         dataSource['chart'] = {
-            "caption": "Liczba zamówionych przesyłek",
+            "caption": "Liczba zamówionych przesyłek dla podanej firmy kurierskiej",
             "theme": "fusion"
         }
 
@@ -597,10 +599,10 @@ class ChartsView(generic.TemplateView):
         courier_order_list = Order.objects.all().values('courier__name').annotate(total=Count('courier')).order_by(
             '-total')
 
-        for idx, dict in enumerate(courier_order_list):
+        for dicto in courier_order_list:
             data = {}
-            data['label'] = dict['courier__name']
-            data['value'] = dict['total']
+            data['label'] = dicto['courier__name']
+            data['value'] = dicto['total']
             dataSource['data'].append(data)
 
         # FusionCharts class constructor
@@ -608,7 +610,107 @@ class ChartsView(generic.TemplateView):
 
         context['courier_parcels_bar3D'] = courier_parcels_bar3D.render()
 
+        # CHART: COUNT ORDERS DAY BY DAY
+        # -----------------------------------------------------------
+        dataSource = {}
+        dataSource['chart'] = {
+            "caption": "Liczba zamówionych przesyłek dzien po dniu - wszystkie lata",
+            "theme": "fusion"
+        }
+
+        dataSource['categories'] = []
+        dataSource['dataset'] = []
+
+        category = {}
+        category['category'] = []
+
+        data = {}
+        data['data'] = []
+
+        courier_order_list2 = Order.objects.all() \
+            .values('date') \
+            .annotate(count=Count('id')) \
+            .order_by("-date").reverse()
+
+        for dicto in courier_order_list2:
+            date = str(dicto['date'])
+            category['category'].append({"label": date})
+            data['data'].append({"value": dicto['count']})
+        dataSource['categories'].append(category)
+        dataSource['dataset'].append(data)
+
+        courier_2 = FusionCharts("scrollline2d", "ex2", "100%", "400", "chart-2", "json", dataSource)
+        context['courier_2'] = courier_2.render()
+
+        # CHART: COUNT ORDERS BY MONTH SPECIFIC YEAR
+        # -----------------------------------------------------------
+        dataSource = {}
+        dataSource['chart'] = {
+            "caption": "Liczba zamówionych przesyłek w ciągu miesiąca. Rok: 2019",
+            "theme": "carbon"
+        }
+
+        dataSource['categories'] = []
+        dataSource['dataset'] = []
+
+        category = {}
+        category['category'] = []
+
+        data = {}
+        data['data'] = []
+
+        courier_order_list3 = Order.objects.filter(date__year='2019').values_list('date__month').annotate(
+            total_item=Count('id'))
+
+        for x in range(len(courier_order_list3)):
+            date = calendar.month_abbr[courier_order_list3[x][0]]
+            category['category'].append({"label": date})
+            data['data'].append({"value": courier_order_list3[x][1]})
+        dataSource['categories'].append(category)
+        dataSource['dataset'].append(data)
+        print(dataSource)
+
+        courier_3 = FusionCharts("scrollcolumn2d", "ex3", "100%", "400", "chart-3", "json", dataSource)
+        context['courier_3'] = courier_3.render()
+
         return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+
+        # CHART: COUNT ORDERS BY MONTH SPECIFIC YEAR
+        # -----------------------------------------------------------
+        selected_year = request.POST.get('year')
+
+        dataSource = {}
+        dataSource['chart'] = {
+            "caption": "Liczba zamówionych przesyłek w ciągu miesiąca. Rok: " + str(selected_year),
+            "theme": "carbon"
+        }
+
+        dataSource['categories'] = []
+        dataSource['dataset'] = []
+
+        category = {}
+        category['category'] = []
+
+        data = {}
+        data['data'] = []
+
+        courier_order_list3 = Order.objects.filter(date__year=str(selected_year)).values_list('date__month').annotate(
+            total_item=Count('id'))
+
+        for x in range(len(courier_order_list3)):
+            date = calendar.month_abbr[courier_order_list3[x][0]]
+            category['category'].append({"label": date})
+            data['data'].append({"value": courier_order_list3[x][1]})
+        dataSource['categories'].append(category)
+        dataSource['dataset'].append(data)
+        print(dataSource)
+
+        courier_3 = FusionCharts("scrollcolumn2d", "ex3", "100%", "400", "chart-3", "json", dataSource)
+        context['courier_3'] = courier_3.render()
+        return super(ChartsView, self).render_to_response(context)
 
 
 # Register & Login Views

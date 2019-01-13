@@ -16,14 +16,29 @@
 {% block body %}
     <div class="row">
         <!--  CHART: COURIER -> PARCELS -->
-        <div class="col-lg-6">
-            <div id="chart-1" class="text-center">{{ output|safe }}</div>
+        <div class="col-lg-12">
+            <div id="chart-1" class="text-center">{{ courier_parcels_bar3D|safe }}</div>
             <h3>{{ courier_parcels_bar3D|safe }}</h3>
         </div>
 
+        <div class="col-lg-12">
+            <div id="chart-2" class="text-center">{{ courier_2|safe }}</div>
+            <h3>{{ courier_2|safe }}</h3>
+        </div>
 
-    <!--  CHART: Average courier rating -->
-
+        <div class="col-lg-12">
+            <div id="chart-3" class="text-center">{{ courier_3|safe }}</div>
+            <h3>{{ courier_3|safe }}</h3>
+            <form method="post" action="">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Wybierz dany rok</label>
+                    <input class="form-control" name="year" type="number" min="2000" max="2099" step="1" value="2019" />
+                    <button type="submit" class="btn btn-primary btn-block">OK</button>
+                </div>
+            </form>
+        </div>
+        <!--  CHART: Average courier rating -->
 
     </div>
 

@@ -19,15 +19,6 @@ pipeline {
     post {
         always {
             junit 'reports/junit.xml'
-             // publish coverage html
-            //publishHTML target: [
-            //    allowMissing: false,
-            //    alwaysLinkToLastBuild: false,
-            //    keepAll: true,
-            //    reportDir: 'reports/coverage',
-            //    reportFiles: 'index.html',
-            //    reportName: 'Coverage Test Report'
-            //]
         }
         success {
             cobertura coberturaReportFile: 'reports/coverage.xml' 

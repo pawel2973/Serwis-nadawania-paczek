@@ -5,7 +5,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 # from django.http import request
 from django.core.checks import messages
 from django.db import IntegrityError
-from django.db.models import Count, Avg
+from django.db.models import Count, Avg, Sum
+from django.db.models.functions import TruncMonth, TruncYear
 from django.http import Http404, HttpResponseForbidden, HttpResponseRedirect, request, HttpResponse
 from django.shortcuts import render, redirect, render_to_response
 from django.urls import reverse_lazy

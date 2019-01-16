@@ -4,7 +4,7 @@
 
 
 # Spis treści
-1 [Opis projektu](#opis-projektu)
+1. [Opis projektu](#opis-projektu)
   - [Analiza wymagań funkcjonalnych](#analiza-wymagań-funkcjonalnych)
     - [Gość](#gość)
     - [Użytkownik](#użytkownik)
@@ -12,7 +12,7 @@
   - [Wykorzystane technologie oraz biblioteki](#wykorzystane-technologie-oraz-biblioteki)
     - [Lista technologii wykorzystanych w projekcie](#lista-technologii-wykorzystanych-w-projekcie)
     - [Biblioteki wykorzystane do generowania wykresów](#biblioteki-wykorzystane-do-generowania-wykresów)
-2 [Przykładowe użycie aplikacji](#przykładowe-użycie-aplikacji)
+2. [Przykładowe użycie aplikacji](#przykładowe-użycie-aplikacji)
   - [Przeglądanie statystyk](#przeglądanie-statystyk)
   - [Proces zamówienia kuriera](#proces-zamówienia-kuriera)
   - [Przegląd rankingu kurierów](#przegląd-rankingu-kurierów)

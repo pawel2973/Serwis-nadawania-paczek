@@ -4,10 +4,13 @@
 
 
 # Spis treści
-##### [Opis projektu](#opis)
-##### [Analiza wymagań funkcjonalnych](#analiza)
+**[Opis projektu](#opis-projektu-1)**
+** [Analiza wymagań funkcjonalnych](#analiza-wymagan-1)**
   - [Gość](#gość)
-
+  - [Użytkownik](#użytkownik)
+  - [Admin](#admin)
+** [Wykorzystane technologie oraz biblioteki](#wykorzystane-technologie-oraz-biblioteki-1)**
+ 
 # Opis projektu
 Stworzona przez nas aplikacja webowa umożliwia zamówienie kuriera w celu
 wysłania przesyłki. Każdy gość odwiedzający nasz serwis uzyskuje możliwość wyceny

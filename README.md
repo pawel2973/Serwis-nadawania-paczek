@@ -1,21 +1,24 @@
 # Dokumentacja projektowa
 
+
 ### Aplikacja webowa umożliwiająca zamówienie kuriera w celu wysłania przesyłki oraz analiza i wizualizacja danych dotyczących wykorzystania serwisu przez użytkowników.
 
 
 # Spis treści
 1. [Opis projektu](#opis-projektu)
-  - [Analiza wymagań funkcjonalnych](#analiza-wymagań-funkcjonalnych)
-    - [Gość](#gość)
-    - [Użytkownik](#użytkownik)
-    - [Admin](#admin)
-  - [Wykorzystane technologie oraz biblioteki](#wykorzystane-technologie-oraz-biblioteki)
-    - [Lista technologii wykorzystanych w projekcie](#lista-technologii-wykorzystanych-w-projekcie)
-    - [Biblioteki wykorzystane do generowania wykresów](#biblioteki-wykorzystane-do-generowania-wykresów)
+      - [Analiza wymagań funkcjonalnych](#analiza-wymagań-funkcjonalnych)
+        - [Gość](#gość)
+        - [Użytkownik](#użytkownik)
+        - [Admin](#admin)
+      - [Wykorzystane technologie oraz biblioteki](#wykorzystane-technologie-oraz-biblioteki)
+        - [Lista technologii wykorzystanych w projekcie](#lista-technologii-wykorzystanych-w-projekcie)
+        - [Biblioteki wykorzystane do generowania wykresów](#biblioteki-wykorzystane-do-generowania-wykresów)
 2. [Przykładowe użycie aplikacji](#przykładowe-użycie-aplikacji)
-  - [Przeglądanie statystyk](#przeglądanie-statystyk)
-  - [Proces zamówienia kuriera](#proces-zamówienia-kuriera)
-  - [Przegląd rankingu kurierów](#przegląd-rankingu-kurierów)
+      - [Przeglądanie statystyk](#przeglądanie-statystyk)
+      - [Proces zamówienia kuriera](#proces-zamówienia-kuriera)
+      - [Przegląd rankingu kurierów](#przegląd-rankingu-kurierów)
+      
+      
 # Opis projektu
 Stworzona przez nas aplikacja webowa umożliwia zamówienie kuriera w celu
 wysłania przesyłki. Każdy gość odwiedzający nasz serwis uzyskuje możliwość wyceny
@@ -73,6 +76,7 @@ w naszym projekcie to SQLlite.
 - FusionCharts
 - GoogleCharts
 - Plotly
+
 
 # Przykładowe użycie aplikacji
 ### Przeglądanie statystyk

@@ -63,3 +63,50 @@ w naszym projekcie to SQLlite.
 - GoogleCharts
 - Plotly
 
+# Przykładowe użycie aplikacj
+### Przeglądanie statystyk
+- Logujemy się do aplikacji jako administrator aby podglądnąć statystyki serwisu.
+<br />![1](screenshots/Image-1.png) <br/>
+- Po kliknięciu w zakładkę “Wykresy” przenosimy się do podstrony ze statystykami.
+<br />![1](screenshots/Image-2.png) <br/>
+- Wykres słupkowy obrazujący liczbę wszystkich zamówień dla wszystkich firm kurierskich w naszym serwisie.
+<br />![1](screenshots/Image-3.png) <br/>
+- Wykres liniowo-punktowy obrazujący szczegółowo liczbę zamówień w każdym dniu.
+<br />![1](screenshots/Image-4.png) <br/>
+- Wykres słupkowy przedstawiający liczbę zamówionych przesyłek w danym miesiącu
+po wybraniu konkretnego roku kalendarzowego.
+<br />![1](screenshots/Image-5.png) <br/>
+- Wykres słupkowy obrazujący z jakiej miejscowości są użytkownicy
+<br />![1](screenshots/Image-6.png) <br/>
+- Wykres punktowo-liniowy obrazujący przychody w danym miesiącu kalendarzowym
+<br />![1](screenshots/Image-7.png) <br/>
+- Wykres słupkowy przedstawiający średnią ocenę firm kurierskich wystawianych
+przez użytkowników
+<br />![1](screenshots/Image-8.png) <br/>
+
+### Proces zamówienia kuriera
+- Rozpoczynamy od wyboru rodzaju przesyłki.
+<br />![1](screenshots/Image-9.png) <br/>
+- Następnie wybieramy firmę kurierską. Każda firma posiada inny cennik.
+<br />![1](screenshots/Image-10.png) <br/>
+- Kolejny krokiem jest podanie adresu nadawcy.
+<br />![1](screenshots/Image-11.png) <br/>
+- Następnie podajemy adres odbiorcy.
+<br />![1](screenshots/Image-12.png) <br/>
+- Gdy uzupełniliśmy wszystkie dane poprawnie możemy potwierdzić nasze
+zamówienie.
+<br />![1](screenshots/Image-13.png) <br/>
+- Gdy złożymy zamówienie, możemy sprawdzić jego stan w zakładce zamówienia -
+możemy również dodać ocenę lub anulować zamówienie.
+<br />![1](screenshots/Image-14.png) <br/>
+- Przykładowe wystawienie oceny dla wcześniejszego zamówienia
+<br />![1](screenshots/Image-15.png) <br/>
+- W zakładce “Cennik” możemy zobaczyć opinie dla danych firm.
+<br />![1](screenshots/Image-16.png) <br/>
+
+### Przegląd rankingu kurierów
+Każdy użytkownik serwisu może przeglądnąć nasz ranking firm kurierskich.
+- 5 Najpopularniejsz firm kurierskich (procentowy udział w liczbie zamówień)
+<br />![1](screenshots/Image-17.png) <br/>
+- Wykres kołowy przedstawia procentowo powyższe dane
+<br />![1](screenshots/Image-18.png) <br/>

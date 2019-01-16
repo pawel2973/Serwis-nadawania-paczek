@@ -4,6 +4,9 @@
 
 
 # Spis treści
+##### [Opis projektu](#opis)
+##### [Analiza wymagań funkcjonalnych](#analiza)
+  - [Gość](#gość)
 
 # Opis projektu
 Stworzona przez nas aplikacja webowa umożliwia zamówienie kuriera w celu
@@ -63,7 +66,7 @@ w naszym projekcie to SQLlite.
 - GoogleCharts
 - Plotly
 
-# Przykładowe użycie aplikacj
+# Przykładowe użycie aplikacji
 ### Przeglądanie statystyk
 - Logujemy się do aplikacji jako administrator aby podglądnąć statystyki serwisu.
 <br />![1](screenshots/Image-1.png) <br/>

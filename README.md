@@ -4,14 +4,14 @@
 
 
 # Spis treści
-⋅⋅1 [Opis projektu](#opis-projektu)**
-⋅⋅2 [Analiza wymagań funkcjonalnych](#analiza-wymagan)**
-  - [Gość](#gość)
-  - [Użytkownik](#użytkownik)
-  - [Admin](#admin)
-⋅⋅3 [Wykorzystane technologie oraz biblioteki](#wykorzystane-technologie-oraz-biblioteki)**
-  - Lista technologii wykorzystanych w projekcie
-  - Biblioteki wykorzystane do generowania wykresów
+1 [Opis projektu](#opis-projektu)
+  - [Analiza wymagań funkcjonalnych](#analiza-wymagań-funkcjonalnych)
+  ⋅⋅* [Gość](#gość)
+  ⋅⋅* [Użytkownik](#użytkownik)
+  ⋅⋅* [Admin](#admin)
+  - [Wykorzystane technologie oraz biblioteki](#wykorzystane-technologie-oraz-biblioteki)
+  ⋅⋅* Lista technologii wykorzystanych w projekcie
+  ⋅⋅* Biblioteki wykorzystane do generowania wykresów
  
 # Opis projektu
 Stworzona przez nas aplikacja webowa umożliwia zamówienie kuriera w celu

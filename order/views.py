@@ -18,6 +18,8 @@ from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.template.defaulttags import register
 from .fusioncharts import FusionCharts
+import plotly.offline as opy
+import plotly.graph_objs as go
 
 
 # Views of the package ordering process
@@ -668,11 +670,92 @@ class ChartsView(generic.TemplateView):
             data['data'].append({"value": courier_order_list3[x][1]})
         dataSource['categories'].append(category)
         dataSource['dataset'].append(data)
-        print(dataSource)
+        # print(dataSource)
 
         courier_3 = FusionCharts("scrollcolumn2d", "ex3", "100%", "400", "chart-3", "json", dataSource)
         context['courier_3'] = courier_3.render()
 
+        city_count = list(
+            Profile.objects.all().values('address__city').annotate(total=Count('address')).order_by('-total'))
+
+        city = []
+        count = []
+        for x in range(len(city_count)):
+            city.append(city_count[x]['address__city'])
+            count.append(city_count[x]['total'])
+        data1 = [
+            go.Bar(
+                x=city,
+                y=count
+            )
+        ]
+        layout1 = go.Layout(title='Popularność miast wśród użytkowników', yaxis=dict(title='Lczba użytkowników'),
+                            xaxis=dict(title='Miasto'))
+        figure = go.Figure(data=data1, layout=layout1)
+        div_cities = opy.plot(figure, auto_open=False, output_type='div')
+
+        # return div
+        context['city_chart'] = div_cities
+
+        sum_price = []
+        month = []
+
+        price_count = list(
+            Order.objects.all().annotate(month=TruncMonth('date')).values('month').annotate(
+                totalSales=Sum('price')).values('month', 'totalSales').order_by('month')
+        )
+        # print(price_count)
+        for x in range(len(price_count)):
+            month.append(price_count[x]['month'])
+            sum_price.append(price_count[x]['totalSales'])
+        data2 = [
+            go.Scatter(
+                x=month,
+                y=sum_price,
+                mode='lines+markers',
+                marker=dict(
+                    color='rgb(49,130,189)'
+                )
+            )
+        ]
+        layout2 = go.Layout(title='Przychód w danym miesiącu', yaxis=dict(hoverformat='.2f',
+                                                                          title='Przychód [zł]'),
+                            xaxis=dict(title='Miesiąc'))
+        figure2 = go.Figure(data=data2, layout=layout2)
+        div_price = opy.plot(figure2, auto_open=False, output_type='div')
+
+        # return div
+        context['price_chart'] = div_price
+
+        avg_opinion = []
+        courier_name = []
+
+        opinion_count = list(
+            Opinion.objects.all().values('order__courier__name').annotate(average=Avg('rating')).order_by('-average')
+        )
+
+        for x in range(len(opinion_count)):
+            courier_name.append(opinion_count[x]['order__courier__name'])
+            avg_opinion.append(opinion_count[x]['average'])
+        data3 = [
+            go.Bar(
+                x=courier_name,
+                y=avg_opinion,
+                marker=dict(
+                    color=avg_opinion,  # set color equal to a variable
+                    colorscale='Viridis',
+                )
+            )
+        ]
+        layout3 = go.Layout(title='Średnia ocena kurierów przez użytkowników', yaxis=dict(hoverformat='.2f',
+                                                                                          title='Średnia ocena'),
+                            xaxis=dict(title='Firma kurierska'))
+        figure3 = go.Figure(data=data3, layout=layout3)
+        div_rating = opy.plot(figure3, auto_open=False, output_type='div')
+
+        # return div
+        context['rating_chart'] = div_rating
+        
         return context
 
     def post(self, request, *args, **kwargs):

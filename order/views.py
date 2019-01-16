@@ -582,7 +582,12 @@ class CourierRankingView(generic.TemplateView):
 
 class ChartsView(generic.TemplateView):
     template_name = 'order/charts.html'
-
+    
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_staff:
+            return super(ChartsView, self).dispatch(request, *args, **kwargs)
+        return redirect('order:index')
+    
     def get_context_data(self, **kwargs):
         context = super(ChartsView, self).get_context_data(**kwargs)
 

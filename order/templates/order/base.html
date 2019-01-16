@@ -66,9 +66,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'order:ranking' %}"><i class="fas fa-award"></i> Ranking</a>
                 </li>
+                {% if user.is_staff %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'order:charts' %}"><i class="fas fa-award"></i> Wykresy</a>
                 </li>
+                {% endif %}
             </ul>
 
             <ul class="navbar-nav ml-auto">

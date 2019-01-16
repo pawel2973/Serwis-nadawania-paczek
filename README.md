@@ -1,7 +1,7 @@
 # Dokumentacja projektowa
 
-
 ### Aplikacja webowa umożliwiająca zamówienie kuriera w celu wysłania przesyłki oraz analiza i wizualizacja danych dotyczących wykorzystania serwisu przez użytkowników.
+
 
 # Spis treści
 
@@ -26,24 +26,24 @@ są na podstawie informacji zawartych w bazie danych.
 
 ### Analiza wymagań funkcjonalnych
 #### Gość
-● Gość może utworzyć konto w naszej aplikacji.
-● Gość może przeglądać dostępnych kurierów oraz cennik.
-● Gość może obliczyć cenę przesyłki.
-● Gość może przeglądać ranking kurierów.
-● Gość może przeglądać opinie dotyczące kurierów.
+- Gość może utworzyć konto w naszej aplikacji.
+- Gość może przeglądać dostępnych kurierów oraz cennik.
+- Gość może obliczyć cenę przesyłki.
+- Gość może przeglądać ranking kurierów.
+- Gość może przeglądać opinie dotyczące kurierów.
 #### Użytkownik
-● Użytkownik może tworzyć/edytować/aktualizować swoje dane adresowe.
-● Użytkownik może zamówić kuriera, by nadać paczkę.
-● Użytkownik może wybrać kuriera z listy kurierów.
-● Użytkownik może wyświetlać swoje zamówienia.
-● Użytkownik może anulować swoje zamówienie.
-● Użytkownik może obliczyć koszty wysłania paczki.
-● Użytkownik może wystawiać opinie po złożonym zamówieniu
-● Użytkownik może zbierać punkty premium.
-● Użytkownik może użyć punktów premium do odebrania prezentów.
+- Użytkownik może tworzyć/edytować/aktualizować swoje dane adresowe.
+- Użytkownik może zamówić kuriera, by nadać paczkę.
+- Użytkownik może wybrać kuriera z listy kurierów.
+- Użytkownik może wyświetlać swoje zamówienia.
+- Użytkownik może anulować swoje zamówienie.
+- Użytkownik może obliczyć koszty wysłania paczki.
+- Użytkownik może wystawiać opinie po złożonym zamówieniu
+- Użytkownik może zbierać punkty premium.
+- Użytkownik może użyć punktów premium do odebrania prezentów.
 #### Admin
-● Admin może przeglądać statystyki realizowane w formie wykresów.
-● Admin może zarządzać bazą danych.
+- Admin może przeglądać statystyki realizowane w formie wykresów.
+- Admin może zarządzać bazą danych.
 
 
 ### Wykorzystane technologie oraz biblioteki
@@ -51,15 +51,15 @@ Aplikacja webowa została stworzona w oparciu o framework Django przeznaczony
 do tworzenia aplikacji internetowych. System zarządzania bazą danych wykorzystywany
 w naszym projekcie to SQLlite.
 #### Lista technologii wykorzystanych w projekcie:
-● Python: 3.6.6
-● Django: 2.1.2
-● HTML5
-● CSS3
-● JavaScript
-● JQuery: 3.1
-● Bootstrap: 4.1.3
+- Python: 3.6.6
+- Django: 2.1.2
+- HTML5
+- CSS3
+- JavaScript
+- JQuery: 3.1
+- Bootstrap: 4.1.3
 #### Biblioteki wykorzystane do generowania wykresów:
-● FusionCharts
-● GoogleCharts
-● Plotly
+- FusionCharts
+- GoogleCharts
+- Plotly
 
